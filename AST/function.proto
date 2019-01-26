@@ -1,0 +1,56 @@
+message Function {
+  /*unique*/int id;
+  /*parser-*/optional string name;
+
+  repeated Parameter parameters;
+
+  Block body;
+}
+
+message Parameter {
+  /*unqiue*/int id;
+
+  optional string name;
+  int /*Type*/ type;
+}
+
+message Block {
+  int /*Type*/ returns;
+  repeated Variable variables;
+  repeated Expression body;
+}
+
+message Variable {
+  /*unique*/ int id;
+
+  optional string name;
+  int /*Type*/ type;
+}
+
+message Expression {
+ int /*Type*/ type;
+ oneof type {
+
+ }
+}
+
+message FunctionCall {
+  int /*Function*/ function;
+
+}
+
+message VariableGet {
+  int id;
+}
+
+message VariableSet {
+  int /*Variable*/ id;
+  Expresssion value;
+}
+
+
+message VariableInitialization {
+  int /*Variable*/ id;
+  boolean constant;
+
+}

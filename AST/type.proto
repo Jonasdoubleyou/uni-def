@@ -1,0 +1,16 @@
+message Type {
+  oneof type {
+    ComplexType complex;
+    PrimitiveType type;
+  }
+}
+
+
+message ComplexType {
+  /*unique*/int id;
+  /*parser-*/optional string name;
+
+  repeated int /*Type*/ fields;
+}
+
+enum PrimitiveType { String, Integer, Float, Boolean }

@@ -1,0 +1,7 @@
+message Module {
+  repeated string domain;
+  repeated Module dependencies;
+  
+  repeated Function functions;
+  repeated Type types;
+}
