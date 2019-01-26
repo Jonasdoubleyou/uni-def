@@ -61,4 +61,4 @@ Or directly read how that AST behaves during [Execution].
 [@polynomdivision]: https://github.com/polynomdivision
 [@jonasdoubleyou]: https://github.com/jonasdoubleyou
 [AST definition in Protobuf]: ./AST/
-[Execution]: :/execution/index.md
+[Execution]: ./execution/index.md
