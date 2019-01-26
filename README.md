@@ -59,6 +59,6 @@ Or directly read how that AST behaves during [Execution].
 
 [xkcd]: https://imgs.xkcd.com/comics/standards.png
 [@polynomdivision]: https://github.com/polynomdivision
-[jonasdoubleyou]: https://github.com/jonasdoubleyou
+[@jonasdoubleyou]: https://github.com/jonasdoubleyou
 [AST definition in Protobuf]: ./AST/
 [Execution]: :/execution/index.md
