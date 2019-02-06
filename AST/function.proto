@@ -101,6 +101,8 @@ message Expression {
 
    FunctionReference function;
    VariableReference reference;
+
+   Literal literal;
  }
 }
 
@@ -128,4 +130,15 @@ message Argument {
 message Access {
   Expression object;
   int property;
+}
+
+/*Values in the code*/
+message Literal {
+  oneof type {
+    int integer;
+    float floating;
+    boolean bool;
+    string str;
+    boolean void;
+  }
 }
