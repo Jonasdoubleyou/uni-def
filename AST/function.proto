@@ -103,6 +103,8 @@ message Expression {
    VariableReference reference;
 
    Literal literal;
+
+   Return return;
  }
 }
 
@@ -141,4 +143,9 @@ message Literal {
     string str;
     boolean void;
   }
+}
+
+/* Stops executing the function and returns its value */
+message Return {
+  Expression value;
 }
