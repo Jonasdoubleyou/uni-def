@@ -1,7 +1,51 @@
 message Module {
-  repeated string domain;
-  repeated Module dependencies;
-  
+  /* The unique identifier of this module */
+  ModuleReference id;
+
+  /* A list of modules this module depends on,
+     that will be loaded by the UNI runtime before executing this program.
+
+     if the modules got main functions, they will be executed before
+     this module's main gets executed.
+
+     These modules can then be referenced by their moduleID inside of
+     functions and types of this module.
+
+     If a Dependency can't be loaded, this module can't be loaded too
+  */
+  repeated ModuleReference dependencies;
+
   repeated Function functions;
   repeated Type types;
+
+  /* The main function that directly gets executed when loading this module.
+     The Function may have no parameters and no parent function.
+  */
+  optional Function main;
+}
+
+message ModuleReference {
+  /*
+    The domain is an unique identifier for a module across the UNI ecosystem
+    By example:
+    "uni" -> the global module containing all basic language features
+    "uni" "crypto" -> The crypto module
+    "local" "test" -> Your test module
+
+    Domains may only contain lowercase alphabetic letters,
+    the first domain must be "uni" or "local"
+  */
+  repeated string domain;
+
+  /* The moduleID is unique to the Module,
+      inside of its parent module.
+      The parent references itself as 0, function/types of this module,
+      are referenced with a moduleID of 0.
+      References to other modules inside of this module use the moduleID
+      defined in Module.dependencies, not the one in the loaded module's id (which is 0).
+   */
+  int moduleID;
+
+  /* The version should be increased on every breaking change to notify users */
+  int version;
 }

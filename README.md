@@ -37,7 +37,7 @@ why not define a language as an AST?
 Through that, developer tools (IDEs, Debuggers etc.) can directly work on the AST without the need to parse text,
 they can also turn code typed by the programmer directly into an AST. If preferred the IDE could represent a Function
 inside the AST either as `fun` (kotlin ish), `function` (C ish) or whatever the programmer prefers. Code is not bound
-to how it looks, it is what it means.
+to how it looks, it is what it means, you can visualize it as flow-diagrams, code or anything that comes to your mind.
 
 Questions like "{ only after a newline?" or "80 chars per row?" amongst others are no longer existent,
 they are just IDE settings.
@@ -45,6 +45,14 @@ they are just IDE settings.
 We chose Protobuf as a dataformat to represent the AST, through that tooling can be written in a lot of
 different languages that got a Protobuf library, and the AST can easily be transfered between tools.
 Also Protobufs can be represented in a very compact way, reducing code size to a minimum.
+
+# Philosophy - part 2
+
+Keep it simple, stupid. UNI is based on Modules that define a certain functionality,
+modules depend on other modules. Modules contain types and functions and a special initializer function.
+That's it. There are no classes, extension functions, decorators whatever.
+Because they are all syntactic sugar for ... well, types and functions.  
+
 
 This Repo is a formal definition of the language, various tools can be found elsewhere:
 
