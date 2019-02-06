@@ -1,16 +1,54 @@
+
+/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" points to */
+message TypeReference {
+  int type;
+  int moduleID;
+}
+
+/* */
 message Type {
   oneof type {
     ComplexType complex;
     PrimitiveType type;
+    FunctionType function;
   }
 }
 
-
+/* A Type that composes other Types, known as its properties.
+   Example: "User" is a ComplexType that has the property "name" which is of type PrimitiveType.String
+*/
 message ComplexType {
   /*unique*/int id;
   /*parser-*/optional string name;
 
-  repeated int /*Type*/ fields;
+  repeated Property properties;
 }
 
-enum PrimitiveType { String, Integer, Float, Boolean }
+message Property {
+  /* unique inside of the type */
+  int id;
+  TypeReference type;
+  /*parser-*/optional string name;
+}
+
+/* A Type that represents the most low-level types that can't be split up */
+enum PrimitiveType {
+  String, /* A bunch of UTF-16 characters, characters of a String are itself Strings */
+  Integer, /* A number that is a multiple of 1 ranging from 2 power 32 to 1 - 2 power 32 */
+  Float, /* A 64bit FLoating point number defined according to "Some cool spec" */
+  Boolean, /* True / False */
+  Void /* Nothing, really nothing */
+}
+
+/*A Type that represents a Function.
+  A FunctionReference fullfills this type if returns & arguments are equal
+*/
+message FunctionType {
+  repeated FunctionTypeArgument arguments;
+  TypeReference returns;
+}
+
+message FunctionTypeArgument {
+  int id;
+  TypeReference type;
+}
