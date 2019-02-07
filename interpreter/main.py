@@ -164,8 +164,7 @@ class Interpreter:
         """
         opcode = instruction[0]
         if opcode == "PRINT":
-            # TODO: Evaluate the next argument if neccessary
-            if not type(instruction[1]).__name__ == "str":
+            if type(instruction[1]).__name__ == "tuple":
                 value = self.execute_instruction(instruction[1],
                                                  function,
                                                  instruction_index)
@@ -174,9 +173,7 @@ class Interpreter:
 
             print(value)
         elif opcode == "SET":
-            # TODO: Evaluate the next argument if neccessary
-            if not type(instruction[2]).__name__ == "str":
-                debug("Evaluating argument of opcode SET")
+            if type(instruction[2]).__name__ == "tuple":
                 value = self.execute_instruction(instruction[2],
                                                  function,
                                                  instruction_index)
@@ -203,7 +200,7 @@ class Interpreter:
                                          function,
                                          instruction_index)
         elif opcode == "RETURN":
-            if not type(instruction[1]).__name__ == "str":
+            if type(instruction[1]).__name__ == "tuple":
                 return self.execute_instruction(instruction[1],
                                                 function,
                                                 instruction_index)
