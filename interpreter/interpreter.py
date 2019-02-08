@@ -27,7 +27,7 @@ class Interpreter:
     """
     Global attributes:
     @root_module (Object): The module of the module we're trying to load
-    @modules (list): List of modules we know of
+    @modules (Dict): List of modules we know of. Module name -> [Module] Object
 
     # The interpreter state
     @callstack (Array): The callstack of the interpreter
@@ -41,7 +41,7 @@ class Interpreter:
 
     def __init__(self, root_module, hooks={}, debug=False):
         self.root_module = root_module
-        self.modules = []
+        self.modules = {}
         self.print_debug = debug
 
         # Internal state of the interpreter
