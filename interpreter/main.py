@@ -38,7 +38,7 @@ def stub(cls):
 class Function(object):
     def __init__(self, name, instructions):
         stub("Function")
-        
+
         self.name = name
         self.instructions = instructions
 
@@ -66,7 +66,16 @@ class Interpreter:
     def __init__(self, root_module):
         self.root_module = root_module
         self.modules = []
+
+        # Internal state of the interpreter
         self.callstack = []
+        self.curr_function = None
+        self.pc = -1
+        self.ret = None
+        self.waiting_instruction = False
+        # Which argument (index) in the waiting_instruction were we
+        # fetching the result
+        self.argument_eval_stack = []
 
         # Set up hooks
         self.function_call_hooks = {
@@ -98,9 +107,65 @@ class Interpreter:
         main_function = self.get_main_function()
 
         if not main_function is None:
-            self.execute_function(main_function, None, 0)
+            return_value = self.execute_function(main_function)
+            if not return_value is None:
+                sys.exit(return_value)
+            else:
+                sys.exit(0)
         else:
             error("No entry point found")
+
+    def execute_function(self, function):
+        """
+        Execute a function
+
+        Args:
+          @function: The [Function] object to execute
+
+        Returns:
+          Returns the value that is preceeded by a "RETURN" opcode. None
+          Otherwise.
+        """
+        debug("Called function {}".format(function.name))
+
+        self.curr_function = function
+        self.pc = 0
+        while True:
+            # Check if the current function has more instructions to
+            # execute
+            if self.pc >= len(self.curr_function.instructions):
+                # Is the callstack non-empty?
+                if self.callstack:
+                    # Go up the callstack
+                    top = self.callstack.pop(-1)
+                    self.curr_function = top.function
+                    self.pc = top.instruction_index
+                else:
+                    # Otherwise we're done
+                    break
+            else:
+                # Get the current instruction
+                instruction = self.curr_function.instructions[self.pc]
+
+                debug("CI: {}".format(instruction))
+                return_value = self.execute_instruction(instruction,
+                                                        self.curr_function,
+                                                        self.pc)
+                if instruction[0] == "RETURN":
+                    debug("Returning {}".format(return_value))
+
+                    # Jump to where the callstack tells us to jump
+                    top = self.callstack.pop(-1)
+                    self.pc = top.instruction_index
+                    self.curr_function = top.function
+
+                    return return_value
+
+            # Always increment the programm counter
+            self.pc += 1
+
+        # TODO: Void type
+        return None
 
     def print_callstack(self):
         """
@@ -173,12 +238,13 @@ class Interpreter:
 
             print(value)
         elif opcode == "SET":
-            if type(instruction[2]).__name__ == "tuple":
-                value = self.execute_instruction(instruction[2],
-                                                 function,
-                                                 instruction_index)
-            else:
-                value = instruction[2]
+            # if type(instruction[2]).__name__ == "tuple":
+            #     value = self.execute_instruction(instruction[2],
+            #                                      function,
+            #                                      instruction_index)
+            # else:
+            #    value = instruction[2]
+            value = instruction[2]
             self.root_module.variables[instruction[1]] = value
         elif opcode == "GET":
             # TODO: Do we know the variable
@@ -195,57 +261,24 @@ class Interpreter:
                 self.function_call_hooks[call]()
                 return None
 
-            debug("Calling function {}".format(call))
-            return self.execute_function(self.get_function(call),
-                                         function,
-                                         instruction_index)
+            self.callstack.append(CallstackEntry(self.curr_function,
+                                                 self.pc))
+
+            return self.execute_function(self.get_function(call))
+
         elif opcode == "RETURN":
             if type(instruction[1]).__name__ == "tuple":
-                return self.execute_instruction(instruction[1],
-                                                function,
-                                                instruction_index)
-            return instruction[1]
+                value = self.execute_instruction(instruction[1],
+                                                 function,
+                                                 instruction_index)
+            else:
+                value = instruction[1]
+
+            return value
         else:
-            not_implemented("Language function {}".format(instruction[0]))
+            # not_implemented("Language function {}".format(instruction[0]))
+            return instruction[0]
 
-        return None
-
-    def execute_function(self,
-                         function,
-                         caller_function,
-                         caller_instruction_index):
-        """
-        Try to execute a given function
-
-        Args:
-          @function: The function to execute
-          @caller: The calling function
-          @caller_instruction_index: Where was the caller when the call was
-              issued
-
-        Returns:
-          Returns the value specified by the function by using a return
-          statement. None otherwise.
-        """
-        # Add the caller to the callstack
-        self.callstack.append(CallstackEntry(caller_function,
-                                             caller_instruction_index))
-
-        # Work on executing the function
-        instruction_index = 0
-        for instruction in function.instructions:
-            debug(instruction)
-            ret = self.execute_instruction(instruction,
-                                           function,
-                                           instruction_index)
-            if instruction[0] == "RETURN":
-                debug("Found a return instruction!")
-                debug("Returning \"{}\"".format(ret))
-                self.callstack.pop(-1)
-                return ret
-            instruction_index += 1
-
-        self.callstack.pop(-1)
         return None
 
 def print_usage():
@@ -355,6 +388,19 @@ def main():
             ("SET", "A", ("CALL", "return_stuff")),
             ("PRINT", ("GET", "A")),
             ("PRINT", "DONE")
+        ]), {})
+    elif test_file == "return_test":
+        test_module = Module("test_module", [
+            Function("return_stuff", [
+                ("RETURN", "Hallo")
+            ]),
+            Function("return_other_stuff", [
+                ("RETURN", "Welt")
+            ])
+        ], Function("main", [
+            ("PRINT", ("CALL", "return_stuff")),
+            ("CALL", "print_callstack"),
+            ("PRINT", ("CALL", "return_other_stuff"))
         ]), {})
     else:
         print("Invalid test specified")
