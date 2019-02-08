@@ -1,15 +1,5 @@
 import sys
 
-global DEBUG_MODE
-DEBUG_MODE = False
-
-def debug(msg):
-    """
-    Print a debug message.
-    """
-    if DEBUG_MODE:
-        print("[DEBUG] {}".format(msg))
-
 def warn(msg):
     """
     Print a warning message.
@@ -60,28 +50,48 @@ class Interpreter:
     """
     Global attributes:
     @root_module (Object): The module of the module we're trying to load
-    @function_stack (Array): The callstack of the interpreter
+    @modules (list): List of modules we know of
+
+    # The interpreter state
+    @callstack (Array): The callstack of the interpreter
+    @curr_function (Object): Reference to the function we're currently executing
+    @pc (int): The "Program Counter": Which instruction (index) of
+        @curr_function are we currently executing
+    @function_call_hooks (Dict): Mapping of function names which are to be
+        intercepted when they are called.
+        Function name -> Actual Python function
     """
 
-    def __init__(self, root_module):
+    def __init__(self, root_module, hooks={}, debug=False):
         self.root_module = root_module
         self.modules = []
+        self.print_debug = debug
 
         # Internal state of the interpreter
         self.callstack = []
         self.curr_function = None
         self.pc = -1
-        self.ret = None
-        self.waiting_instruction = False
-        # Which argument (index) in the waiting_instruction were we
-        # fetching the result
-        self.argument_eval_stack = []
 
         # Set up hooks
         self.function_call_hooks = {
             "print_callstack": self.print_callstack,
             "print_variables": self.print_variables
         }
+
+        # Append custom hooks (Useful for testing)
+        for name, func in hooks.items():
+            self.function_call_hooks[name] = func
+
+        self.debug("Dumping hooked functions")
+        for name in self.function_call_hooks:
+            self.debug("- " + name)
+
+    def debug(self, msg):
+        """
+        Print a debug message.
+        """
+        if self.print_debug:
+            print("[DEBUG] {}".format(msg))
 
     def callstack_peek(self):
         """
@@ -107,13 +117,11 @@ class Interpreter:
         main_function = self.get_main_function()
 
         if not main_function is None:
-            return_value = self.execute_function(main_function)
-            if not return_value is None:
-                sys.exit(return_value)
-            else:
-                sys.exit(0)
-        else:
-            error("No entry point found")
+            return self.execute_function(main_function)
+
+        error("No entry point found")
+        # TODO: Rework this
+        return None
 
     def execute_function(self, function):
         """
@@ -126,7 +134,7 @@ class Interpreter:
           Returns the value that is preceeded by a "RETURN" opcode. None
           Otherwise.
         """
-        debug("Called function {}".format(function.name))
+        self.debug("Called function {}".format(function.name))
 
         self.curr_function = function
         self.pc = 0
@@ -147,17 +155,21 @@ class Interpreter:
                 # Get the current instruction
                 instruction = self.curr_function.instructions[self.pc]
 
-                debug("CI: {}".format(instruction))
-                return_value = self.execute_instruction(instruction,
-                                                        self.curr_function,
-                                                        self.pc)
-                if instruction[0] == "RETURN":
-                    debug("Returning {}".format(return_value))
+                self.debug("CI: {}".format(instruction))
+                return_value = self.execute_instruction(instruction)
 
-                    # Jump to where the callstack tells us to jump
-                    top = self.callstack.pop(-1)
-                    self.pc = top.instruction_index
-                    self.curr_function = top.function
+                if instruction[0] == "RETURN":
+                    self.debug("Returning {}".format(return_value))
+
+                    # Before we set the PC and the instruction index, we nened
+                    # to check if we even can do that. This should, however,
+                    # only be the case when we would return to
+                    # Interpreter.run_module!
+                    if self.callstack:
+                        # Jump to where the callstack tells us to jump
+                        top = self.callstack.pop(-1)
+                        self.pc = top.instruction_index
+                        self.curr_function = top.function
 
                     return return_value
 
@@ -211,7 +223,7 @@ class Interpreter:
 
         return None
 
-    def execute_instruction(self, instruction, function, instruction_index):
+    def execute_instruction(self, instruction):
         """
         Try and execute a single instruction
 
@@ -219,33 +231,27 @@ class Interpreter:
           @instruction: An array following the specification for an instruction:
               (<OPCODE>, <ARGUMENTS>). If <Arguments> contains another
               array, then it will be evaluated when the argument is processed.
-          @function: The function to which this instruction belongs.
-          @instruction_index: The index of the instruction list from which we
-              jumped here.
 
         Returns:
           In case that the opcode specifies a return value, it will be returned
           here. ´None´ otherwise.
         """
+        if not type(instruction).__name__ == "tuple":
+            return instruction
+
         opcode = instruction[0]
+
         if opcode == "PRINT":
             if type(instruction[1]).__name__ == "tuple":
-                value = self.execute_instruction(instruction[1],
-                                                 function,
-                                                 instruction_index)
+                value = self.execute_instruction(instruction[1])
             else:
                 value = instruction[1]
 
             print(value)
         elif opcode == "SET":
-            # if type(instruction[2]).__name__ == "tuple":
-            #     value = self.execute_instruction(instruction[2],
-            #                                      function,
-            #                                      instruction_index)
-            # else:
-            #    value = instruction[2]
-            value = instruction[2]
-            self.root_module.variables[instruction[1]] = value
+            # value = instruction[2]
+            self.root_module.variables[instruction[1]] = self.execute_instruction(instruction[2])
+
         elif opcode == "GET":
             # TODO: Do we know the variable
             if not instruction[1] in self.root_module.variables.keys():
@@ -258,6 +264,7 @@ class Interpreter:
             call = instruction[1]
 
             if call in self.function_call_hooks.keys():
+                self.debug("Calling hooked function")
                 self.function_call_hooks[call]()
                 return None
 
@@ -268,16 +275,14 @@ class Interpreter:
 
         elif opcode == "RETURN":
             if type(instruction[1]).__name__ == "tuple":
-                value = self.execute_instruction(instruction[1],
-                                                 function,
-                                                 instruction_index)
+                value = self.execute_instruction(instruction[1])
             else:
                 value = instruction[1]
 
             return value
         else:
             # not_implemented("Language function {}".format(instruction[0]))
-            return instruction[0]
+            return instruction
 
         return None
 
@@ -311,8 +316,7 @@ def main():
         sys.exit(1)
 
     # TODO: Move this inside the Interpreter?
-    global DEBUG_MODE
-    DEBUG_MODE = "-d" in sys.argv or "--debug" in sys.argv
+    debug_mode = "-d" in sys.argv or "--debug" in sys.argv
  
     # Tests
     test_file = sys.argv[-1]
@@ -406,7 +410,7 @@ def main():
         print("Invalid test specified")
         sys.exit(1)
 
-    intr = Interpreter(test_module)
+    intr = Interpreter(test_module, debug=debug_mode)
     intr.run_module()
 
 if __name__ == "__main__":
