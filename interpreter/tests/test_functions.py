@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from ..interpreter import Interpreter, Function, Module
 
@@ -7,6 +8,12 @@ class TestFunctionActions(unittest.TestCase):
     Test if functions behave like they should
     """
 
+    def debug(self):
+        if "UNI_DEBUG" in os.environ.keys():
+            return os.environ["UNI_DEBUG"] == "1"
+
+        return False
+    
     def test_function_call(self):
         """
         Test whether function calls actually work
@@ -46,7 +53,7 @@ class TestFunctionActions(unittest.TestCase):
             "hook_f1": set_f1,
             "hook_f2": set_f2,
             "hook_f3": set_f3,
-        }, True)
+        }, self.debug())
         intr.run_module()
 
         self.assertTrue(f1_called)
@@ -96,7 +103,7 @@ class TestFunctionActions(unittest.TestCase):
             "hook_f2": set_f2,
             "hook_main": set_main,
             "hook_print": hook_print,
-        }, True)
+        }, self.debug())
         intr.run_module()
 
         self.assertTrue(f1_returned)
@@ -113,7 +120,7 @@ class TestFunctionActions(unittest.TestCase):
             "var": "abc"
         })
 
-        intr = Interpreter(module, {}, True)
+        intr = Interpreter(module, {}, self.debug())
         intr.run_module()
 
         b_value = intr.root_module.variables["B"]
@@ -131,7 +138,7 @@ class TestFunctionActions(unittest.TestCase):
             ("RETURN", ("CALL", "f1"))
         ]), {})
 
-        intr = Interpreter(module, {}, True)
+        intr = Interpreter(module, {}, self.debug())
         return_value = intr.run_module()
 
         self.assertEqual(return_value, "Secret_Password")
