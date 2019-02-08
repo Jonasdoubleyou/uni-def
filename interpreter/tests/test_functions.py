@@ -1,6 +1,6 @@
 import unittest
 
-from ..main import Interpreter, Function, Module
+from ..interpreter import Interpreter, Function, Module
 
 class TestFunctionActions(unittest.TestCase):
     """
