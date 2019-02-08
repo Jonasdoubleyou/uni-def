@@ -70,3 +70,4 @@ Or directly read how that AST behaves during [Execution].
 [@jonasdoubleyou]: https://github.com/jonasdoubleyou
 [AST definition in Protobuf]: ./AST/
 [Execution]: ./execution/index.md
+[Interpreter]: ./interpreter/README.md
