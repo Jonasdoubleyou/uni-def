@@ -1,22 +1,30 @@
 syntax = "proto3";
 
-import "./module.proto";
-import "./function.proto";
+import "module.proto";
+import "function.proto";
 
 
-/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" point32s to */
+/* Used to refer at a type */
 message TypeReference {
-  int32 type = 0;
-  int32 moduleID = 1;
+  oneof primitiveOrComplex {
+    PrimitiveType primitive = 1;
+    // ComplexTypeReference complex = 2;
+  }
 }
 
-/* */
+/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" point32s to */
+//message ComplexTypeReference {
+//  int32 type = 1;
+//  int32 moduleID = 2;
+//}
+
+/* Describes a Type defined in the module */
 message Type {
-  oneof typeType {
-    // ComplexType complex = 0;
-    PrimitiveType type = 1;
-    // FunctionType function = 2;
-  }
+  int32 id = 1;
+  // oneof typeType {
+    // ComplexType complex = 2;
+    // FunctionType function = 3;
+  // }
 }
 
 /* A Type that composes other Types, known as its properties.
@@ -30,12 +38,12 @@ message Type {
 //  repeated Property properties = 2;
 //}
 
-message Property {
-  /* unique inside of the type */
-  int32 id = 0;
-  TypeReference type = 1;
-  /*parser-*/optional string name = 2;
-}*/
+// message Property {
+//  /* unique inside of the type */
+//  int32 id = 0;
+//  TypeReference type = 1;
+//  /*parser-*/optional string name = 2;
+// }
 
 /* A Type that represents the most low-level types that can't be split up */
 enum PrimitiveType {

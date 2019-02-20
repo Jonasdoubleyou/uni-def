@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-import "./type.proto";
-import "./function.proto";
+import "type.proto";
+import "function.proto";
 
 message Module {
   /* The unique identifier of this module */
-  ModuleReference id = 0;
+  ModuleReference id = 1;
 
   /* A list of modules this module depends on,
      that will be loaded by the UNI runtime before executing this program.
@@ -18,15 +18,15 @@ message Module {
 
      If a Dependency can't be loaded, this module can't be loaded too
   */
-  repeated ModuleReference dependencies = 1;
+  repeated ModuleReference dependencies = 2;
 
-  repeated Function functions = 2;
-  repeated Type types = 3;
+  repeated Function functions = 3;
+  repeated Type types = 4;
 
   /* The main function that directly gets executed when loading this module.
      The Function may have no parameters and no parent function.
   */
-  optional Function main = 4;
+  /*optional*/ Function main = 5;
 }
 
 message ModuleReference {
@@ -40,7 +40,7 @@ message ModuleReference {
     Domains may only contain lowercase alphabetic letters,
     the first domain must be "uni" or "local"
   */
-  repeated string domain = 0;
+  repeated string domain = 1;
 
   /* The moduleID is unique to the Module,
       inside of its parent module.
@@ -49,8 +49,8 @@ message ModuleReference {
       References to other modules inside of this module use the moduleID
       defined in Module.dependencies, not the one in the loaded module's id (which is 0).
    */
-  int32 moduleID = 1;
+  int32 moduleID = 2;
 
   /* The version should be increased on every breaking change to notify users */
-  int32 version = 2;
+  int32 version = 3;
 }
