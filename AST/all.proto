@@ -1,0 +1,270 @@
+syntax = "proto3";
+
+
+// A workaround as imports doesn't seem to work
+
+// FUNCTION.PROTO
+
+message Function {
+  /* The id of this function, must be unique inside the modules functions. "main" functions got the id 0 */
+  int32 id = 0;
+
+  /* The name of the function. The UNI parser only uses the id and does not use
+     the reference, therefore it can be removed at building time to shrink module size */
+  /*parser-*/optional string name = 1;
+
+  /* The parameters this function takes, parameters are basically just variables */
+  repeated Variable parameters = 2;
+
+  /* If a Function has a parent Function, it can only be called from within that function.
+     Through that arguments of the parent function can be accessed,
+     effectively enabling what's called a Closure in other languages.
+
+     If it has no parent, it can be called from everywhere,
+     the Module."main" function has to have no parent.
+  */
+  // optional
+  // FunctionReference parent = 3;
+
+  /* When set to true, a return inside of this function will directly
+     unwind the callstack until the closest function "parent" is reached,
+     then that will return with the same value this function returns.
+  */
+  //optional
+  // bool innerReturn = 4;
+
+   /* The result's type when doing a FunctionCall, equals the last Expression.type of body */
+   TypeReference returns = 4;
+
+   /* The variables can only be accessed inside this function and its children */
+   repeated Variable variables = 5;
+
+   /* The "code" executed when calling this function*/
+   repeated Expression body = 6;
+}
+
+/* A way to refer to functions, "function" has to be unique inside the modules functions */
+message FunctionReference {
+  int32 moduleID = 0;
+  int32 function = 1;
+}
+
+/* A variable reference resolves to a location in memory */
+message VariableReference {
+  int32 type = 0;
+  int32 moduleID = 1;
+}
+
+/* A variable represents a storage in memory.
+    It has a type, which defines what can be inside of it.
+    It holds a value at runtime.
+*/
+message Variable {
+  /* The id has to be unique inside of the function,
+     that includes nested blocks and parameters.
+  */
+
+  /*unique*/ int32 id = 0;
+
+  /*optional*/ string name = 1;
+  TypeReference type = 2;
+}
+
+/*
+  An expression that evaluates to whatever is stored at "get".
+*/
+message Get {
+  VariableReference get = 0;
+}
+
+/* Overrides the memory location "set" is pointing to by whatever "value" evaluates to, evaluates to that "value" */
+message Set {
+  VariableReference set = 0;
+  Expression value = 1;
+
+  /* Wether this is the first time the variable gets Set, can't call Get before on it */
+  /*parser-*/optional bool initialization = 2;
+
+  /* Wether Set can be called on this reference later on. The parser does it nevertheless. */
+  /*parser-*/optional bool constant = 3;
+}
+
+
+
+/* An Expression evaluates to a value at runtime. Anything inside of a function is an expression.
+*/
+message Expression {
+ required TypeReference type = 0;
+ oneof expressionType {
+   Get get = 1;
+   Set set = 2;
+   Call call = 3;
+   // Access access = 4;
+
+   FunctionReference function = 5;
+   VariableReference reference = 6;
+
+   Literal literal = 7;
+
+   Return return = 8;
+ }
+}
+
+
+/* If the Function that FunctionReference points to has a "parent",
+    the "parent" has to be function the call is done in,
+    or one of it's parents.
+
+    Evaluates to the function's return type
+*/
+message Call {
+  FunctionReference function = 0;
+  /* The arguments */
+  repeated Argument arguments = 1;
+}
+
+message Argument {
+  /* matches a parameter of the called function */
+  int32 id = 0;
+  /* The parameter will be initialized to whatever value evaluates to */
+  Expression value = 1;
+}
+
+/* evaluates to a VariableReference by accessing a ComplexType property */
+// optional
+/*message Access {
+  Expression object = 0;
+  int32 property = 1;
+}*/
+
+/*Values in the code*/
+message Literal {
+  oneof type {
+    int32 integer = 0;
+    float floating = 1;
+    bool bool = 2;
+    string str = 3;
+    bool void = 4;
+  }
+}
+
+/* Stops executing the function and returns its value */
+message Return {
+  required Expression value = 0;
+}
+
+
+
+// MODULE.PROTO
+
+message Module {
+  /* The unique identifier of this module */
+  ModuleReference id = 0;
+
+  /* A list of modules this module depends on,
+     that will be loaded by the UNI runtime before executing this program.
+
+     if the modules got main functions, they will be executed before
+     this module's main gets executed.
+
+     These modules can then be referenced by their moduleID inside of
+     functions and types of this module.
+
+     If a Dependency can't be loaded, this module can't be loaded too
+  */
+  repeated ModuleReference dependencies = 1;
+
+  repeated Function functions = 2;
+  repeated Type types = 3;
+
+  /* The main function that directly gets executed when loading this module.
+     The Function may have no parameters and no parent function.
+  */
+  optional Function main = 4;
+}
+
+message ModuleReference {
+  /*
+    The domain is an unique identifier for a module across the UNI ecosystem
+    By example:
+    "uni" -> the global module containing all basic language features
+    "uni" "crypto" -> The crypto module
+    "local" "test" -> Your test module
+
+    Domains may only contain lowercase alphabetic letters,
+    the first domain must be "uni" or "local"
+  */
+  repeated string domain = 0;
+
+  /* The moduleID is unique to the Module,
+      inside of its parent module.
+      The parent references itself as 0, function/types of this module,
+      are referenced with a moduleID of 0.
+      References to other modules inside of this module use the moduleID
+      defined in Module.dependencies, not the one in the loaded module's id (which is 0).
+   */
+  int32 moduleID = 1;
+
+  /* The version should be increased on every breaking change to notify users */
+  int32 version = 2;
+}
+
+// TYPE.PROTO
+
+
+/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" point32s to */
+message TypeReference {
+  int32 type = 0;
+  int32 moduleID = 1;
+}
+
+/* */
+message Type {
+  oneof typeType {
+    // ComplexType complex = 0;
+    PrimitiveType type = 1;
+    // FunctionType function = 2;
+  }
+}
+
+/* A Type that composes other Types, known as its properties.
+   Example: "User" is a ComplexType that has the property "name" which is of type PrimitiveType.String
+*/
+// OPTIONAL
+// message ComplexType {
+//  /*unique*/ int32 id = 0;
+//  /*parser-*/optional string name = 1;
+//
+//  repeated Property properties = 2;
+// }
+
+// message Property {
+//  /* unique inside of the type */
+//  int32 id = 0;
+//  TypeReference type = 1;
+//  /*parser-*/optional string name = 2;
+// }
+
+/* A Type that represents the most low-level types that can't be split up */
+enum PrimitiveType {
+  String = 0; /* A bunch of UTF-16 characters, characters of a String are itself Strings */
+  Integer = 1; /* A number that is a multiple of 1 ranging from 2 power 32 to 1 - 2 power 32 */
+  Float = 2; /* A 64bit FLoating point number defined according to "Some cool spec" */
+  Boolean = 3; /* True / False */
+  Void = 4; /* Nothing, really nothing */
+}
+
+/*A Type that represents a Function.
+  A FunctionReference fullfills this type if returns & arguments are equal
+*/
+// optional
+
+//message FunctionType {
+//  repeated FunctionTypeArgument arguments = 0;
+//  TypeReference returns = 1;
+// }
+
+// message FunctionTypeArgument {
+//  int id = 0;
+//  TypeReference type = 1;
+// }
