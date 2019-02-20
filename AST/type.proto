@@ -1,38 +1,41 @@
+syntax = "proto3";
+
 import "./module.proto";
 import "./function.proto";
 
 
-/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" points to */
+/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" point32s to */
 message TypeReference {
-  int type = 0;
-  int moduleID = 1;
+  int32 type = 0;
+  int32 moduleID = 1;
 }
 
 /* */
 message Type {
-  oneof type {
-    ComplexType complex = 0;
+  oneof typeType {
+    // ComplexType complex = 0;
     PrimitiveType type = 1;
-    FunctionType function = 2;
+    // FunctionType function = 2;
   }
 }
 
 /* A Type that composes other Types, known as its properties.
    Example: "User" is a ComplexType that has the property "name" which is of type PrimitiveType.String
 */
-message ComplexType {
-  /*unique*/ int id = 0;
-  /*parser-*/optional string name = 1;
-
-  repeated Property properties = 2;
-}
+// OPTIONAL
+//message ComplexType {
+//  /*unique*/ int32 id = 0;
+//  /*parser-*/optional string name = 1;
+//
+//  repeated Property properties = 2;
+//}
 
 message Property {
   /* unique inside of the type */
-  int id = 0;
+  int32 id = 0;
   TypeReference type = 1;
   /*parser-*/optional string name = 2;
-}
+}*/
 
 /* A Type that represents the most low-level types that can't be split up */
 enum PrimitiveType {
@@ -46,12 +49,13 @@ enum PrimitiveType {
 /*A Type that represents a Function.
   A FunctionReference fullfills this type if returns & arguments are equal
 */
-message FunctionType {
-  repeated FunctionTypeArgument arguments = 0;
-  TypeReference returns = 1;
-}
+// OPTIONAL
+// message FunctionType {
+//  repeated FunctionTypeArgument arguments = 0;
+//  TypeReference returns = 1;
+// }
 
-message FunctionTypeArgument {
-  int id = 0;
-  TypeReference type = 1;
-}
+// message FunctionTypeArgument {
+//   int id = 0;
+//   TypeReference type = 1;
+// }

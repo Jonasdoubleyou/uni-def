@@ -1,3 +1,5 @@
+syntax = "proto3";
+
 import "./type.proto";
 import "./function.proto";
 
@@ -47,8 +49,8 @@ message ModuleReference {
       References to other modules inside of this module use the moduleID
       defined in Module.dependencies, not the one in the loaded module's id (which is 0).
    */
-  int moduleID = 1;
+  int32 moduleID = 1;
 
   /* The version should be increased on every breaking change to notify users */
-  int version = 2;
+  int32 version = 2;
 }

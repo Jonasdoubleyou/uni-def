@@ -1,3 +1,5 @@
+syntax = "proto3";
+
 import "./module.proto";
 import "./type.proto";
 
@@ -19,13 +21,15 @@ message Function {
      If it has no parent, it can be called from everywhere,
      the Module."main" function has to have no parent.
   */
-  optional FunctionReference parent = 3;
+  // optional
+  // FunctionReference parent = 3;
 
   /* When set to true, a return inside of this function will directly
      unwind the callstack until the closest function "parent" is reached,
      then that will return with the same value this function returns.
   */
-  bool innerReturn = 4;
+  //optional
+  // bool innerReturn = 4;
 
    /* The result's type when doing a FunctionCall, equals the last Expression.type of body */
    TypeReference returns = 4;
@@ -39,14 +43,14 @@ message Function {
 
 /* A way to refer to functions, "function" has to be unique inside the modules functions */
 message FunctionReference {
-  int moduleID = 0;
-  int function = 1;
+  int32 moduleID = 0;
+  int32 function = 1;
 }
 
 /* A variable reference resolves to a location in memory */
 message VariableReference {
-  int type = 0;
-  int moduleID = 1;
+  int32 type = 0;
+  int32 moduleID = 1;
 }
 
 /* A variable represents a storage in memory.
@@ -58,9 +62,9 @@ message Variable {
      that includes nested blocks and parameters.
   */
 
-  /*unique*/ int id = 0;
+  /*unique*/ int32 id = 0;
 
-  optional string name = 1;
+  /*optional*/ string name = 1;
   TypeReference type = 2;
 }
 
@@ -74,13 +78,13 @@ message Get {
 /* Overrides the memory location "set" is pointing to by whatever "value" evaluates to, evaluates to that "value" */
 message Set {
   VariableReference set = 0;
-  Expresssion value = 1;
+  Expression value = 1;
 
   /* Wether this is the first time the variable gets Set, can't call Get before on it */
-  /*parser-*/optional boolean initialization = 2;
+  /*parser-*/optional bool initialization = 2;
 
   /* Wether Set can be called on this reference later on. The parser does it nevertheless. */
-  /*parser-*/optional boolean constant = 3;
+  /*parser-*/optional bool constant = 3;
 }
 
 
@@ -89,11 +93,11 @@ message Set {
 */
 message Expression {
  required TypeReference type = 0;
- oneof type {
+ oneof expressionType {
    Get get = 1;
    Set set = 2;
    Call call = 3;
-   Access access = 4;
+   // Access access = 4;
 
    FunctionReference function = 5;
    VariableReference reference = 6;
@@ -119,25 +123,26 @@ message Call {
 
 message Argument {
   /* matches a parameter of the called function */
-  int id = 0;
+  int32 id = 0;
   /* The parameter will be initialized to whatever value evaluates to */
   Expression value = 1;
 }
 
 /* evaluates to a VariableReference by accessing a ComplexType property */
-message Access {
+// optional
+/*message Access {
   Expression object = 0;
-  int property = 1;
-}
+  int32 property = 1;
+}*/
 
 /*Values in the code*/
 message Literal {
   oneof type {
-    int integer = 0;
+    int32 integer = 0;
     float floating = 1;
-    boolean bool = 2;
+    bool bool = 2;
     string str = 3;
-    boolean void = 4;
+    bool void = 4;
   }
 }
 
