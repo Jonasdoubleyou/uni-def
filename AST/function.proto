@@ -47,10 +47,11 @@ message FunctionReference {
   int32 function = 2;
 }
 
-/* A variable reference resolves to a location in memory */
+/* A variable reference resolves to a Variable (holding a value) inside a function (that has to be in the callstack) inside a module */
 message VariableReference {
-  int32 type = 1;
-  int32 moduleID = 2;
+  int32 id = 1;
+  int32 functionID = 2;
+  int32 moduleID = 3;
 }
 
 /* A variable represents a storage in memory.
@@ -59,7 +60,7 @@ message VariableReference {
 */
 message Variable {
   /* The id has to be unique inside of the function,
-     that includes nested blocks and parameters.
+     that includes parameters.
   */
 
   /*unique*/ int32 id = 1;
