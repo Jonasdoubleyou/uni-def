@@ -100,8 +100,6 @@ message Expression {
    Call call = 4;
    // Access access = 4;
 
-   FunctionReference function = 5;
-   VariableReference reference = 6;
 
    Literal literal = 7;
 
