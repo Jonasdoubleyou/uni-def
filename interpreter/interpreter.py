@@ -1,9 +1,9 @@
 import sys
 from enum import Enum
 
-from cli import error, stub
+from cli import error, stub, warn
 
-from all_pb2 import Function, Variable, Module
+from all_pb2 import Function, Variable, Module, Argument
 
 class CallstackEntry:
     def __init__(self, function, instruction_index):
@@ -38,7 +38,7 @@ class Interpreter:
         self.function_call_hooks = {
             -1: self.print_callstack, # print_callstack
             -2: self.print_variables, # print_variables
-            1: print
+            2: self.stdlib_println
         }
 
         # Append custom hooks (Useful for testing)
@@ -93,10 +93,26 @@ class Interpreter:
             if not var_map:
                 print("{} has no variables".format(fid))
                 continue
-            
+
             for key, value in var_map.items():
-                print("[{}] {}: {}".format(fid, key, value))
-            
+                print("[{}] {}: {}".format(fid, key, self.literal_extract_value(value)))
+
+    def stdlib_println(self, args):
+        """
+        Prints all arguments passsed to this function
+        """
+        # for arg in args:
+        #     if not arg is Argument:
+        #         warn("stdlib_println:: Value of arg is None. Skipping...")
+        #         continue
+
+        #     value = self.execute_instruction(arg.value)
+        #     print(self.literal_extract_value(value))
+        # TODO: If we try to print all arguments then something that just prints
+        #       "id: 1" pops up. No clue where it comes from...
+        value = self.execute_instruction(args[0].value)
+        print(self.literal_extract_value(value))
+
     def run_module(self):
         """
         Try to execute the module by finding a main function and executing
@@ -112,7 +128,9 @@ class Interpreter:
                 raise Exception("Unknown signature of main function: Too many arguments! Got {}, expected 0".format(len(main_function.arguments)))
 
             ret = self.execute_function(main_function)
-            self.dump_all_vars()
+
+            if self.print_debug:
+                self.dump_all_vars()
             return ret
 
         raise Exception("Trying to execute a module with no main function")
@@ -244,6 +262,16 @@ class Interpreter:
         # TOOD: Read the fid of expr.set
         self.variables[self.curr_function.id][expr.set.id] = value
 
+    def literal_extract_value(self, literal):
+        if literal.HasField("integer"):
+            return literal.integer
+        elif literal.HasField("floating"):
+            return literal.floating
+        elif literal.HasField("bool"):
+            return literal.bool
+        elif literal.HasField("str"):
+            return literal.str
+        
     def execute_get(self, expr):
         """
         Tries to execute a get instruction
@@ -260,7 +288,7 @@ class Interpreter:
             return self.variables[self.curr_function.id][expr.get.id]
 
         raise Exception("Variable {} not found".format(expr.get))
-            
+
     def execute_instruction(self, instruction):
         """
         Try and execute a single instruction
@@ -277,11 +305,14 @@ class Interpreter:
         elif instruction.HasField("set"):
             self.execute_set(instruction.set)
             self.debug("Set instruction: Done")
-        elif instruction.call != None:
+        elif instruction.HasField("literal"):
+            return instruction.literal
+        elif instruction.HasField("call"):
             # NOTE: Stub
             stub("OPCODE call")
-            if instruction.call.function.function == 1:
-                # Do println
-                print(instruction.call.arguments[0].value)
-            
+            fId = instruction.call.function.function
+            if fId in self.function_call_hooks.keys():
+                fn = self.function_call_hooks[fId]
+                fn(instruction.call.arguments)
+
         return None
