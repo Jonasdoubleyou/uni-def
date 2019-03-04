@@ -1,5 +1,8 @@
 import sys
-from .interpreter import Interpreter
+import os
+from interpreter import Interpreter
+import all_pb2
+
 
 def print_usage():
     """
@@ -32,10 +35,21 @@ def main():
 
     # TODO: Move this inside the Interpreter?
     debug_mode = "-d" in sys.argv or "--debug" in sys.argv
+    file_name = sys.argv[-1]
 
-    # intr = Interpreter(test_module, debug=debug_mode)
-    # intr.run_module()
-    print("Nothing here yet!")
+    if not os.path.exists(file_name):
+        print("UNI definition not found!")
+        sys.exit(1)
+
+    # NOTE: We need to use rb, as Python will otherwise try to decode the
+    #   characters. That's a no no
+    mod = all_pb2.Module()
+    mod.ParseFromString(open(file_name, "rb").read())
+
+    #print("Module ID: {}".format(mod.id))
+    intr = Interpreter(mod, debug=debug_mode)
+    intr.run_module()
+    #print("Nothing here yet!")
 
 if __name__ == "__main__":
     main()
