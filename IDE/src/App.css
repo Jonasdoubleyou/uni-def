@@ -1,0 +1,135 @@
+body {
+  font-family: Arial;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+input {
+  color: orange;
+  border: thin solid orange;
+  background-color: black;
+}
+
+#toolbar {
+  color: white;
+  background-color: black;
+  padding: 10px;
+}
+
+#code {
+  margin: 20px;
+  padding: 20px;
+  border: thick solid black;
+}
+
+#notification-area {
+  position: fixed;
+  right: 40px;
+  top: 40px;
+  width: 50%;
+}
+
+.function {
+  color: white;
+  background-color: black;
+  padding: 20px;
+  margin: 10px;
+}
+
+.notification {
+  padding: 20px;
+  margin: 10px;
+  font-weight: 400;
+}
+
+.notification-title {
+  font-weight: 700;
+}
+
+.notification-error {
+  background-color: red;
+  color: white;
+}
+
+.notification-info {
+  background-color: green;
+  color: white;
+}
+
+.notification-warning {
+  background-color: orange;
+  color: white;
+}
+
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px;
+}
+
+.row {
+  padding: 2px;
+}
+
+.row-number {
+  padding: 2px;
+  background-color: black;
+  color: white;
+}
+
+.keyword {
+  color: orange;
+}
+
+.literal.str {
+  color: lightblue;
+}
+
+.literal.bool {
+  color: lightblue;
+}
+
+.literal.integer {
+  color: lightblue;
+}
+
+.literal.void {
+  color: lightblue;
+}
+
+.literal.floating {
+  color: lightblue;
+}
+
+.typereference {
+  color: red;
+}
+
+.call {
+  color: aqua;
+}
+
+.get, .set {
+  color: white;
+}
+
+.argument-name {
+  color: white;
+}
+
+.variable-id {
+  font-size: 6px;
+}
+
+.editable-error {
+  position: fixed;
+  right: 50%;
+  background-color: orange;
+  color: black;
+  padding: 10px;
+}
