@@ -8,42 +8,45 @@ import "function.proto";
 message TypeReference {
   oneof primitiveOrComplex {
     PrimitiveType primitive = 1;
-    // ComplexTypeReference complex = 2;
+    ComplexTypeReference complex = 2;
   }
 }
 
-/* Used to refer to a Type, "type" has to be unique inside the module "moduleID" point32s to */
-//message ComplexTypeReference {
-//  int32 type = 1;
-//  int32 moduleID = 2;
-//}
+/* Used to refer to a Type declared inside a Module, "type" has to be unique inside the module "moduleID" point32s to */
+message ComplexTypeReference {
+  int32 type = 1;
+  int32 moduleID = 2;
+}
 
 /* Describes a Type defined in the module */
-message Type {
+message ComplexType {
   int32 id = 1;
-  // oneof typeType {
-    // ComplexType complex = 2;
-    // FunctionType function = 3;
-  // }
+  oneof typeType {
+    ObjectType object = 2;
+    FunctionType function = 3;
+    UnionType union = 4;
+  }
 }
 
 /* A Type that composes other Types, known as its properties.
-   Example: "User" is a ComplexType that has the property "name" which is of type PrimitiveType.String
+   Example: "User" is an ObjectType that has the property "name" which is of type PrimitiveType.String
 */
-// OPTIONAL
-//message ComplexType {
-//  /*unique*/ int32 id = 0;
-//  /*parser-*/optional string name = 1;
-//
-//  repeated Property properties = 2;
-//}
 
-// message Property {
-//  /* unique inside of the type */
-//  int32 id = 0;
-//  TypeReference type = 1;
-//  /*parser-*/optional string name = 2;
-// }
+message ObjecType {
+  /*unique*/ int32 id = 0;
+  /*interpreter-*/optional string name = 1;
+  /*interpreter-*/optional string description = 2;
+
+  repeated Property properties = 2;
+}
+
+message Property {
+  /* unique inside of the type */
+  int32 id = 0;
+  TypeReference type = 1;
+ /*interpreter-*/optional string name = 2;
+ /*interpreter-*/optional string description = 3;
+}
 
 /* A Type that represents the most low-level types that can't be split up */
 enum PrimitiveType {
@@ -55,15 +58,27 @@ enum PrimitiveType {
 }
 
 /*A Type that represents a Function.
-  A FunctionReference fullfills this type if returns & arguments are equal
+  A FunctionReference fullfills this type if returns & parameters are equal
 */
-// OPTIONAL
-// message FunctionType {
-//  repeated FunctionTypeArgument arguments = 0;
-//  TypeReference returns = 1;
-// }
+message FunctionType {
+  repeated FunctionTypeParameter parameters = 0;
+  repeated FunctionGenericParameter typeParameters = 1;
+  TypeReference returns = 2;
+}
 
-// message FunctionTypeArgument {
-//   int id = 0;
-//   TypeReference type = 1;
-// }
+message FunctionTypeParameter {
+   int32 id = 0; // the position inside the arguments, array, zero-based, unique 
+   TypeReference type = 1;
+}
+
+message FunctionGenericParameter {
+  int32 id = 0;
+  TypeReference typeBoundary = 1; // All specific types must be a subtype of this
+}
+
+message UnionType {
+  repeated TypeReference members = 1;
+  /*interpreter-*/optional string name = 2;
+  /*interpreter-*/optional string description = 3; 
+}
+

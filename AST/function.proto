@@ -5,34 +5,32 @@ import "type.proto";
 
 message Function {
   /* The id of this function, must be unique inside the modules functions. "main" functions got the id 0 */
-  int32 id = 1;
+  int32 id = 0;
+  /* The type this function has, defining the parameters and the return type. Must be a Function type */
+  TypeReference type = 1;
 
-  /* The name of the function. The UNI parser only uses the id and does not use
+  /* The name of the function. The UNI interpreter only uses the id and does not use
      the reference, therefore it can be removed at building time to shrink module size */
-  /*parser-optional*/ string name = 2;
+  /*interpreter-optional*/ string name = 2;
+  /*interpreter-optional*/ string description = 3;
 
-  /* The parameters this function takes, parameters are basically just variables */
-  repeated Variable parameters = 3;
+  /* If a function has a lexicalParent, the function reference can only be resolved in the parent.
+     When it gets resolved, a reference to the parents function context gets stored.
+     Thus, a function can access all variables in it's parent, and in it's parent's parent and so on
+     
+     This is called "inner function" in other languages, "closures" are a related concept (but asynchrony does not yet exist in UNI)
 
-  /* If a Function has a parent Function, it can only be called from within that function.
-     Through that arguments of the parent function can be accessed,
-     effectively enabling what's called a Closure in other languages.
-
-     If it has no parent, it can be called from everywhere,
-     the Module."main" function has to have no parent.
+     If a function has no lexicalParent, it can be referenced everywhere
   */
-  // optional
-  // FunctionReference parent = 4;
+  /*optional*/ FunctionReference lexicalParent = 4;
 
-  /* When set to true, a return inside of this function will directly
-     unwind the callstack until the closest function "parent" is reached,
-     then that will return with the same value this function returns.
-  */
-  //optional
-  // bool innerReturn = 5;
+  /* A Function is considered pure, if only functions are called inside of it, that are itself pure, and that only accesses variables of pure functions.
+     Functions, whose functionality is implemented by the UNI engine, are pure if the function when called with the saem arguments, always returns the same value.
+     A UNI engine might decide to replace a function call to a pure function with the result of a previous call. 
+     Replacing the call with the resulting value at a compilation step is not considered a change of the UNI sourcecode.
+   */
+  boolean pure = 5;
 
-   /* The result's type when doing a FunctionCall, equals the last Expression.type of body */
-   TypeReference returns = 6;
 
    /* The variables can only be accessed inside this function and its children */
    repeated Variable variables = 7;
@@ -64,8 +62,7 @@ message Variable {
   */
 
   /*unique*/ int32 id = 1;
-
-  /*optional*/ string name = 2;
+  /*interpreter-optional*/ string name = 2;
   TypeReference type = 3;
 }
 
@@ -82,14 +79,31 @@ message Set {
   Expression value = 2;
 
   /* Wether this is the first time the variable gets Set, can't call Get before on it */
-  /*parser-optional*/ bool initialization = 3;
+  bool initialization = 3;
 
-  /* Wether Set can be called on this reference later on. The parser does it nevertheless. */
-  /*parser-optional*/ bool constant = 4;
+  /* Wether Set can be called on this reference later on.*/
+  bool constant = 4;
 }
 
+// The interpreter shall ignore these, and they can safely replaced by their "expression" property, effectively removing the Comment. If the expression is empty, the Comment can be removed
+// A Comment that is directly inside the functions body, shall not contain a postExpression. The preExpression is shown in the line before the expression.
+// If a comment is not directly inside a functions body, the IDE may show preExpression and postExpression the way the user wants it
+// IDEs may render Comments as Markdown or plain text depending on user preference.  
+message Comment {
+  // The actual content of the comment
+  string preExpression = 0;
+  /*optional*/ Expression expression = 1;
+  /*optional*/ string postExpression = 2;
+}
 
-
+// "Raw" represents plain text code, that was not parsed yet.
+// It is meant to represent code *while typing* - to support storing temporary changes and copy & paste. It is not meant to support dynamically parsed code.
+// The interpreter must not accept Modules that contain Raws. Raw is supposed to be parsed from the IDE.
+// The UNI hosts may restrict the usage of "Raw" to allow collaboration, they may not serve modules containing Raw Expressions to UNI interpreters.
+// 
+message Raw {
+  string content = 0;
+}
 /* An Expression evaluates to a value at runtime. Anything inside of a function is an expression.
 */
 message Expression {
@@ -98,41 +112,42 @@ message Expression {
    Get get = 2;
    Set set = 3;
    Call call = 4;
-   // Access access = 4;
-
-
+   Access access = 4;
+   FunctionReference fun = 5;
    Literal literal = 7;
 
    Return return = 8;
+   Comment comment = 9;
+   Raw raw = 10;
  }
 }
 
 
-/* If the Function that FunctionReference points to has a "parent",
-    the "parent" has to be function the call is done in,
-    or one of it's parents.
 
-    Evaluates to the function's return type
-*/
 message Call {
-  FunctionReference function = 1;
+  Expression function = 1;
   /* The arguments */
   repeated Argument arguments = 2;
 }
 
 message Argument {
   /* matches a parameter of the called function */
-  int32 id = 1;
+  int32 id = 0;
   /* The parameter will be initialized to whatever value evaluates to */
-  Expression value = 2;
+  Expression value = 1; // The type of the value has to match the Parameter's type
+}
+
+message GenericArgument {
+  int32 id = 0;
+  TypeReference value = 1;
 }
 
 /* evaluates to a VariableReference by accessing a ComplexType property */
 // optional
-// message Access {
-//  Expression object = 1;
-//  int32 property = 2;
-// }
+message Access {
+  Expression object = 1;
+  int32 property = 2;
+}
 
 /*Values in the code*/
 message Literal {
@@ -147,5 +162,6 @@ message Literal {
 
 /* Stops executing the function and returns its value */
 message Return {
+  int32 up = 0; // The Call to return to. Goes up the Function.lexicalParent chain 
   Expression value = 1;
 }
