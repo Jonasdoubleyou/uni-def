@@ -13,6 +13,14 @@ It is able to associate a Variable with a certain Value in memory.
 It is able to remember the current Expression executed in a UNI program.
 It is able to store all Values that a tree of Expressions uses.  
 
+## ID
+
+All Variables, Types, Functions, Modules and Object Properties have a unique (a Function id is unique among all functions in a module) ID.
+By using these IDs, names can be removed from the code prior to execution, thus reducing the file size, increasing execution speed and 
+providing obfuscation. All UNI interpreters must therefore ignore names and only work with IDs.
+
+It is also possible for various Variables, Types and Functions to have the same name but different IDs.
+For now, the usage of that is not specified and should be avoided.
 
 ## Modules
 
@@ -32,50 +40,58 @@ Modules also contain information about the edits made to them and by whom (-> Ve
 
 ## Types
 
-A Type defines the Shape of a Value. There are four categories of Types:
+A Type defines the Shape of a Value. 
 
-- PrimitiveTypes:
-  - Void
-  - Boolean
-  - String
-  - Int
-  - Float
-  - Symbol
+Primitive Types are provided by the UNI engine itself. 
 
-- ObjectTypes:
-  An ObjectType has properties, which are pairs of Identifiers (keys) and Types (value types).
-  A User for example would be a complex type, and would have the property "name" of type PrimitiveType.String.
-  An "Administrator" could then have "User" as prototype.
-  
-- Union Type
-  A UnionType combines two Types. A value can then be of one of the two types.
+Complex Types are defined in a Module. There are three Complex Types:
+- Object Types
+- Function Types
+- Union Types
 
-- FunctionType:
-  The FunctionType
+## Primitive Types
   
 ### Void
 
 The Void Type returns a non existent value. If a Function contains no "return" Expression, the functions return Type is Void. Certain Expressions also evaluate to Void.
 
+All Values of Type Void are considered the same.
+
 ### Boolean
 
 The Boolean Type represents either the Value "true" or the Value "false". 
 
+All Booleans with the Value "true" are considered the same. All with the Value "false" are considered the same.
+
 ### String
 
-Strings are an array of UTF-16 characters.
+Strings are an array of UTF-8 characters. 
+
+Values of Type String are considered the same, if both represent the same array of characters.
 
 ### Int
 
-Int(eger)s are 32bit.
+Int(eger)s are 32bit signed. 
+
+Two Values of Type Integer are the same, if they represent the same bits.
 
 ### Float
 
-Floating point numbers according to IETF...
+Floating point numbers according to IEEE 754.
+
 
 ### Symbol
 
 Symbols are very special Primitives. Symbols represent a unique, non readable Value. 
+
+## Function Type
+
+A Function Type describes a Function with it's parameters and return value.
+
+## Union Type
+
+A Union Type represents a Type, whose value can fullfill one of the types to union. 
+THey allow for polymorphic programming.
 
 ## Variables
 
@@ -84,7 +100,9 @@ Variables associate an Identifier (name) with a certain Type.
 If no piece of code is able to access a Value stored under a Variable with [[Get]], the Value might be removed from memory (commonly known as Garbage Collection).
 
 Two variables might store the same Value (`copy = object`).
-(Note: This basically allows for References, two Variables might "reference" the same Object).
+(Note: This basically allows for References, two Variables might "reference" the same Object.
+But, as an observer cannot detect wether two variables point to the same immutable Value (all Primitives, some Objects) or two different immutable Values if they are *the same*, it is a possible optimization a UNI engine could take to copy primitives or immutable objects by value. 
+).
 
 Variables are either part of a Function or of a Module. Two variables inside the same Function or Module may not have the same Identifier.
 At runtime, Values are associated with each Variable inside of Records at runtime.
@@ -116,12 +134,23 @@ It'll then evaluate to that value (`a = b = c`).
 ### Call
 
 The Call Expression evaluates all [[arguments]] in order from first to last.
-It then creates
+It then creates a new Record for the function to call, initializes the Record variables, and sets(similar to [[SET]]) the parameters to their matching argument values. Then the function gets executed with the record. 
+
+### Return
+
+If a [[Return]] gets reached, the return expression gets evaluated, the function's execution stops, pops all Records in the callstack till it reaches the Record that matches the function to return to. Then it continues execution of that function, with the expression being the return expression evaluation result. If the [[Return]].to value is 0, just one record is popped of the Stack. 
+
+The Return expressions type must match to the expected expression type of the Call expression returned to.
+
+### Function Reference
+
+A Function Reference looks up the function in the module, and *binds* the current function record to the reference, creating a BoundFunctionReference. A FunctionReference that points to a a function having a lexicalParent, the current function record must be of that function, otherwise the function reference is illegal.
+
+That reference can then be called using [[Call]].
 
 ## Functions
 
 Functions got Variables (some of them are Parameters) and a body, which is a List of Expressions.
-[TODO]
 
 ## ServiceHook
 
@@ -166,8 +195,8 @@ service fun Assert(fn: (a: A, other:B, c: C) => I, arguments: Tuple<A, B, C>, ex
 
 ## (Runtime) Values
 
-Values can either be created using a Literal, or they can be retrieved from a Variable with [[Get]] (which was previously stored there with [[GET]]),
-nested Values inside of ComplexTypes can be accessed using [[Access]].
+Values can either be created using a Literal, or they can be retrieved from a Variable with [[Get]] (which was previously stored there with [[SET]]),
+nested Values inside of ObjectTypes can be accessed using [[Access]].
 
 Values of a PrimitiveType type are called Primitives.
 Primitives are immutable, the Primitive can't be changed, new Primitives can be created using Primitive Literals (and `uni.*` methods).
@@ -178,7 +207,7 @@ whereas the Type of the Value under a certain Identifier matches the Type of the
 An Object must have the same Identifier keys as it's Type (and it's Types prototype).
 If the Objects type has a "prototype", the Object also has to match these Types as described above.
 
-Objects are mutable, which means that a Value under a certain Identifier can be exchanged (`copy = object; object.property = value; copy.property == value`).
+Objects properties can be either mutable or immutable. 
 
 ## (Runtime) Records
 
