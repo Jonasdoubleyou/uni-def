@@ -47,18 +47,25 @@ export default class Channel {
     });
   }
 
-  implement<T, R>(name: string, handler: (data: T) => R) {
-    this.listen<T>(name, (data) => {
-      this.trigger(name + "-return", handler(data));
+  implement<T, R>(name: string, handler: (data: T) => R | Promise<R>) {
+    this.listen<T>(name, async (data) => {
+      try { 
+        this.trigger(name + "-return", { result: await handler(data) });
+      } catch(e) {
+        this.trigger(name + "-return", { error :e });
+      }
     });
   }
 
-  call<T, R>(name: string, data: T): Promise<R> {
-    const result = this.once<R>(name + "-return");
+  call<T, R>(name: string, data: T): Promise<R | never> {
+    const result = this.once<{ result: R, error: Error }>(name + "-return");
 
     this.trigger(name, data);
 
-    return result;
+    return result.then(({ result, error}) => {
+      if(error) throw error;
+      return result;
+    });
   }
 
 }

@@ -1,43 +1,6 @@
 syntax = "proto3";
 
-import "module.proto";
 import "type.proto";
-
-message Function {
-  /* The id of this function, must be unique inside the modules functions. "main" functions got the id 0 */
-  int32 id = 0;
-  /* The type this function has, defining the parameters and the return type. Must be a Function type */
-  TypeReference type = 1;
-
-  /* The name of the function. The UNI interpreter only uses the id and does not use
-     the reference, therefore it can be removed at building time to shrink module size */
-  /*interpreter-optional*/ string name = 2;
-  /*interpreter-optional*/ string description = 3;
-
-  /* If a function has a lexicalParent, the function reference can only be resolved in the parent.
-     When it gets resolved, a reference to the parents function context gets stored.
-     Thus, a function can access all variables in it's parent, and in it's parent's parent and so on
-     
-     This is called "inner function" in other languages, "closures" are a related concept (but asynchrony does not yet exist in UNI)
-
-     If a function has no lexicalParent, it can be referenced everywhere
-  */
-  /*optional*/ FunctionReference lexicalParent = 4;
-
-  /* A Function is considered pure, if only functions are called inside of it, that are itself pure, and that only accesses variables of pure functions.
-     Functions, whose functionality is implemented by the UNI engine, are pure if the function when called with the saem arguments, always returns the same value.
-     A UNI engine might decide to replace a function call to a pure function with the result of a previous call. 
-     Replacing the call with the resulting value at a compilation step is not considered a change of the UNI sourcecode.
-   */
-  boolean pure = 5;
-
-
-   /* The variables can only be accessed inside this function and its children */
-   repeated Variable variables = 7;
-
-   /* The "code" executed when calling this function*/
-   repeated Expression body = 8;
-}
 
 /* A way to refer to functions, "function" has to be unique inside the modules functions */
 message FunctionReference {
@@ -63,7 +26,9 @@ message Variable {
 
   /*unique*/ int32 id = 1;
   /*interpreter-optional*/ string name = 2;
-  TypeReference type = 3;
+   /*optional*/string description = 3;
+
+  TypeReference type = 4;
 }
 
 /*
@@ -112,8 +77,8 @@ message Expression {
    Get get = 2;
    Set set = 3;
    Call call = 4;
-   Access access = 4;
-   FunctionReference fun = 5;
+   Access access = 5;
+   FunctionReference fun = 6;
    Literal literal = 7;
 
    Return return = 8;
@@ -131,7 +96,7 @@ message Call {
 }
 
 message Argument {
-  /* matches a parameter of the called function */
+  /* matches a variable (parameter) of the called function */
   int32 id = 0;
   /* The parameter will be initialized to whatever value evaluates to */
   Expression value = 1; // The type of the value has to match the Parameter's type
@@ -164,4 +129,41 @@ message Literal {
 message Return {
   int32 up = 0; // The Call to return to. Goes up the Function.lexicalParent chain 
   Expression value = 1;
+}
+
+message Function {
+  /* The id of this function, must be unique inside the modules functions. "main" functions got the id 0 */
+  int32 id = 0;
+  /* The type this function has, defining the parameters and the return type. Must be a Function type */
+  ComplexTypeReference type = 1;
+
+  /* The name of the function. The UNI interpreter only uses the id and does not use
+     the reference, therefore it can be removed at building time to shrink module size */
+  /*interpreter-optional*/ string name = 2;
+  /*interpreter-optional*/ string description = 3;
+
+  /* If a function has a lexicalParent, the function reference can only be resolved in the parent.
+     When it gets resolved, a reference to the parents function context gets stored.
+     Thus, a function can access all variables in it's parent, and in it's parent's parent and so on
+     
+     This is called "inner function" in other languages, "closures" are a related concept (but asynchrony does not yet exist in UNI)
+
+     If a function has no lexicalParent, it can be referenced everywhere
+  */
+  /*optional*/ FunctionReference lexicalParent = 4;
+
+  /* A Function is considered pure, if only functions are called inside of it, that are itself pure, and that only accesses variables of pure functions.
+     Functions, whose functionality is implemented by the UNI engine, are pure if the function when called with the saem arguments, always returns the same value.
+     A UNI engine might decide to replace a function call to a pure function with the result of a previous call. 
+     Replacing the call with the resulting value at a compilation step is not considered a change of the UNI sourcecode.
+   */
+  bool pure = 5;
+
+
+   /* The variables can only be accessed inside this function and its children */
+   repeated Variable parameters = 6;
+   repeated Variable variables = 7;
+  
+   /* The "code" executed when calling this function*/
+   repeated Expression body = 8;
 }

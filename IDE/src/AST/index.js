@@ -9,6 +9,238 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
+/**
+ * PrimitiveType enum.
+ * @exports PrimitiveType
+ * @enum {string}
+ * @property {number} String=0 String value
+ * @property {number} Integer=1 Integer value
+ * @property {number} Float=2 Float value
+ * @property {number} Boolean=3 Boolean value
+ * @property {number} Void=4 Void value
+ * @property {number} Any=5 Any value
+ */
+$root.PrimitiveType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "String"] = 0;
+    values[valuesById[1] = "Integer"] = 1;
+    values[valuesById[2] = "Float"] = 2;
+    values[valuesById[3] = "Boolean"] = 3;
+    values[valuesById[4] = "Void"] = 4;
+    values[valuesById[5] = "Any"] = 5;
+    return values;
+})();
+
+$root.ComplexTypeReference = (function() {
+
+    /**
+     * Properties of a ComplexTypeReference.
+     * @exports IComplexTypeReference
+     * @interface IComplexTypeReference
+     * @property {number|null} [type] ComplexTypeReference type
+     * @property {number|null} [moduleID] ComplexTypeReference moduleID
+     */
+
+    /**
+     * Constructs a new ComplexTypeReference.
+     * @exports ComplexTypeReference
+     * @classdesc Represents a ComplexTypeReference.
+     * @implements IComplexTypeReference
+     * @constructor
+     * @param {IComplexTypeReference=} [properties] Properties to set
+     */
+    function ComplexTypeReference(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ComplexTypeReference type.
+     * @member {number} type
+     * @memberof ComplexTypeReference
+     * @instance
+     */
+    ComplexTypeReference.prototype.type = 0;
+
+    /**
+     * ComplexTypeReference moduleID.
+     * @member {number} moduleID
+     * @memberof ComplexTypeReference
+     * @instance
+     */
+    ComplexTypeReference.prototype.moduleID = 0;
+
+    /**
+     * Creates a new ComplexTypeReference instance using the specified properties.
+     * @function create
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {IComplexTypeReference=} [properties] Properties to set
+     * @returns {ComplexTypeReference} ComplexTypeReference instance
+     */
+    ComplexTypeReference.create = function create(properties) {
+        return new ComplexTypeReference(properties);
+    };
+
+    /**
+     * Encodes the specified ComplexTypeReference message. Does not implicitly {@link ComplexTypeReference.verify|verify} messages.
+     * @function encode
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {IComplexTypeReference} message ComplexTypeReference message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ComplexTypeReference.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.type != null && message.hasOwnProperty("type"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.type);
+        if (message.moduleID != null && message.hasOwnProperty("moduleID"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.moduleID);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ComplexTypeReference message, length delimited. Does not implicitly {@link ComplexTypeReference.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {IComplexTypeReference} message ComplexTypeReference message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ComplexTypeReference.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ComplexTypeReference message from the specified reader or buffer.
+     * @function decode
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ComplexTypeReference} ComplexTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ComplexTypeReference.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ComplexTypeReference();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.type = reader.int32();
+                break;
+            case 2:
+                message.moduleID = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ComplexTypeReference message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ComplexTypeReference} ComplexTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ComplexTypeReference.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ComplexTypeReference message.
+     * @function verify
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ComplexTypeReference.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.type != null && message.hasOwnProperty("type"))
+            if (!$util.isInteger(message.type))
+                return "type: integer expected";
+        if (message.moduleID != null && message.hasOwnProperty("moduleID"))
+            if (!$util.isInteger(message.moduleID))
+                return "moduleID: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a ComplexTypeReference message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ComplexTypeReference} ComplexTypeReference
+     */
+    ComplexTypeReference.fromObject = function fromObject(object) {
+        if (object instanceof $root.ComplexTypeReference)
+            return object;
+        var message = new $root.ComplexTypeReference();
+        if (object.type != null)
+            message.type = object.type | 0;
+        if (object.moduleID != null)
+            message.moduleID = object.moduleID | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ComplexTypeReference message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ComplexTypeReference
+     * @static
+     * @param {ComplexTypeReference} message ComplexTypeReference
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ComplexTypeReference.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.type = 0;
+            object.moduleID = 0;
+        }
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = message.type;
+        if (message.moduleID != null && message.hasOwnProperty("moduleID"))
+            object.moduleID = message.moduleID;
+        return object;
+    };
+
+    /**
+     * Converts this ComplexTypeReference to JSON.
+     * @function toJSON
+     * @memberof ComplexTypeReference
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ComplexTypeReference.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ComplexTypeReference;
+})();
+
 $root.TypeReference = (function() {
 
     /**
@@ -16,6 +248,7 @@ $root.TypeReference = (function() {
      * @exports ITypeReference
      * @interface ITypeReference
      * @property {PrimitiveType|null} [primitive] TypeReference primitive
+     * @property {IComplexTypeReference|null} [complex] TypeReference complex
      */
 
     /**
@@ -41,17 +274,25 @@ $root.TypeReference = (function() {
      */
     TypeReference.prototype.primitive = 0;
 
+    /**
+     * TypeReference complex.
+     * @member {IComplexTypeReference|null|undefined} complex
+     * @memberof TypeReference
+     * @instance
+     */
+    TypeReference.prototype.complex = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * TypeReference primitiveOrComplex.
-     * @member {"primitive"|undefined} primitiveOrComplex
+     * @member {"primitive"|"complex"|undefined} primitiveOrComplex
      * @memberof TypeReference
      * @instance
      */
     Object.defineProperty(TypeReference.prototype, "primitiveOrComplex", {
-        get: $util.oneOfGetter($oneOfFields = ["primitive"]),
+        get: $util.oneOfGetter($oneOfFields = ["primitive", "complex"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -81,6 +322,8 @@ $root.TypeReference = (function() {
             writer = $Writer.create();
         if (message.primitive != null && message.hasOwnProperty("primitive"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.primitive);
+        if (message.complex != null && message.hasOwnProperty("complex"))
+            $root.ComplexTypeReference.encode(message.complex, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -117,6 +360,9 @@ $root.TypeReference = (function() {
             switch (tag >>> 3) {
             case 1:
                 message.primitive = reader.int32();
+                break;
+            case 2:
+                message.complex = $root.ComplexTypeReference.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -164,7 +410,18 @@ $root.TypeReference = (function() {
             case 2:
             case 3:
             case 4:
+            case 5:
                 break;
+            }
+        }
+        if (message.complex != null && message.hasOwnProperty("complex")) {
+            if (properties.primitiveOrComplex === 1)
+                return "primitiveOrComplex: multiple values";
+            properties.primitiveOrComplex = 1;
+            {
+                var error = $root.ComplexTypeReference.verify(message.complex);
+                if (error)
+                    return "complex." + error;
             }
         }
         return null;
@@ -203,6 +460,15 @@ $root.TypeReference = (function() {
         case 4:
             message.primitive = 4;
             break;
+        case "Any":
+        case 5:
+            message.primitive = 5;
+            break;
+        }
+        if (object.complex != null) {
+            if (typeof object.complex !== "object")
+                throw TypeError(".TypeReference.complex: object expected");
+            message.complex = $root.ComplexTypeReference.fromObject(object.complex);
         }
         return message;
     };
@@ -225,6 +491,11 @@ $root.TypeReference = (function() {
             if (options.oneofs)
                 object.primitiveOrComplex = "primitive";
         }
+        if (message.complex != null && message.hasOwnProperty("complex")) {
+            object.complex = $root.ComplexTypeReference.toObject(message.complex, options);
+            if (options.oneofs)
+                object.primitiveOrComplex = "complex";
+        }
         return object;
     };
 
@@ -242,24 +513,27 @@ $root.TypeReference = (function() {
     return TypeReference;
 })();
 
-$root.Type = (function() {
+$root.Property = (function() {
 
     /**
-     * Properties of a Type.
-     * @exports IType
-     * @interface IType
-     * @property {number|null} [id] Type id
+     * Properties of a Property.
+     * @exports IProperty
+     * @interface IProperty
+     * @property {number|null} [id] Property id
+     * @property {ITypeReference|null} [type] Property type
+     * @property {string|null} [name] Property name
+     * @property {string|null} [description] Property description
      */
 
     /**
-     * Constructs a new Type.
-     * @exports Type
-     * @classdesc Represents a Type.
-     * @implements IType
+     * Constructs a new Property.
+     * @exports Property
+     * @classdesc Represents a Property.
+     * @implements IProperty
      * @constructor
-     * @param {IType=} [properties] Properties to set
+     * @param {IProperty=} [properties] Properties to set
      */
-    function Type(properties) {
+    function Property(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -267,364 +541,114 @@ $root.Type = (function() {
     }
 
     /**
-     * Type id.
+     * Property id.
      * @member {number} id
-     * @memberof Type
+     * @memberof Property
      * @instance
      */
-    Type.prototype.id = 0;
+    Property.prototype.id = 0;
 
     /**
-     * Creates a new Type instance using the specified properties.
-     * @function create
-     * @memberof Type
-     * @static
-     * @param {IType=} [properties] Properties to set
-     * @returns {Type} Type instance
-     */
-    Type.create = function create(properties) {
-        return new Type(properties);
-    };
-
-    /**
-     * Encodes the specified Type message. Does not implicitly {@link Type.verify|verify} messages.
-     * @function encode
-     * @memberof Type
-     * @static
-     * @param {IType} message Type message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Type.encode = function encode(message, writer) {
-        if (!writer)
-            writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
-        return writer;
-    };
-
-    /**
-     * Encodes the specified Type message, length delimited. Does not implicitly {@link Type.verify|verify} messages.
-     * @function encodeDelimited
-     * @memberof Type
-     * @static
-     * @param {IType} message Type message or plain object to encode
-     * @param {$protobuf.Writer} [writer] Writer to encode to
-     * @returns {$protobuf.Writer} Writer
-     */
-    Type.encodeDelimited = function encodeDelimited(message, writer) {
-        return this.encode(message, writer).ldelim();
-    };
-
-    /**
-     * Decodes a Type message from the specified reader or buffer.
-     * @function decode
-     * @memberof Type
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @param {number} [length] Message length if known beforehand
-     * @returns {Type} Type
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Type.decode = function decode(reader, length) {
-        if (!(reader instanceof $Reader))
-            reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Type();
-        while (reader.pos < end) {
-            var tag = reader.uint32();
-            switch (tag >>> 3) {
-            case 1:
-                message.id = reader.int32();
-                break;
-            default:
-                reader.skipType(tag & 7);
-                break;
-            }
-        }
-        return message;
-    };
-
-    /**
-     * Decodes a Type message from the specified reader or buffer, length delimited.
-     * @function decodeDelimited
-     * @memberof Type
-     * @static
-     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Type} Type
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    Type.decodeDelimited = function decodeDelimited(reader) {
-        if (!(reader instanceof $Reader))
-            reader = new $Reader(reader);
-        return this.decode(reader, reader.uint32());
-    };
-
-    /**
-     * Verifies a Type message.
-     * @function verify
-     * @memberof Type
-     * @static
-     * @param {Object.<string,*>} message Plain object to verify
-     * @returns {string|null} `null` if valid, otherwise the reason why it is not
-     */
-    Type.verify = function verify(message) {
-        if (typeof message !== "object" || message === null)
-            return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isInteger(message.id))
-                return "id: integer expected";
-        return null;
-    };
-
-    /**
-     * Creates a Type message from a plain object. Also converts values to their respective internal types.
-     * @function fromObject
-     * @memberof Type
-     * @static
-     * @param {Object.<string,*>} object Plain object
-     * @returns {Type} Type
-     */
-    Type.fromObject = function fromObject(object) {
-        if (object instanceof $root.Type)
-            return object;
-        var message = new $root.Type();
-        if (object.id != null)
-            message.id = object.id | 0;
-        return message;
-    };
-
-    /**
-     * Creates a plain object from a Type message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Type
-     * @static
-     * @param {Type} message Type
-     * @param {$protobuf.IConversionOptions} [options] Conversion options
-     * @returns {Object.<string,*>} Plain object
-     */
-    Type.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.id = 0;
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        return object;
-    };
-
-    /**
-     * Converts this Type to JSON.
-     * @function toJSON
-     * @memberof Type
-     * @instance
-     * @returns {Object.<string,*>} JSON object
-     */
-    Type.prototype.toJSON = function toJSON() {
-        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-    };
-
-    return Type;
-})();
-
-/**
- * PrimitiveType enum.
- * @exports PrimitiveType
- * @enum {string}
- * @property {number} String=0 String value
- * @property {number} Integer=1 Integer value
- * @property {number} Float=2 Float value
- * @property {number} Boolean=3 Boolean value
- * @property {number} Void=4 Void value
- */
-$root.PrimitiveType = (function() {
-    var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "String"] = 0;
-    values[valuesById[1] = "Integer"] = 1;
-    values[valuesById[2] = "Float"] = 2;
-    values[valuesById[3] = "Boolean"] = 3;
-    values[valuesById[4] = "Void"] = 4;
-    return values;
-})();
-
-$root.Function = (function() {
-
-    /**
-     * Properties of a Function.
-     * @exports IFunction
-     * @interface IFunction
-     * @property {number|null} [id] Function id
-     * @property {string|null} [name] Function name
-     * @property {Array.<IVariable>|null} [parameters] Function parameters
-     * @property {ITypeReference|null} [returns] Function returns
-     * @property {Array.<IVariable>|null} [variables] Function variables
-     * @property {Array.<IExpression>|null} [body] Function body
-     */
-
-    /**
-     * Constructs a new Function.
-     * @exports Function
-     * @classdesc Represents a Function.
-     * @implements IFunction
-     * @constructor
-     * @param {IFunction=} [properties] Properties to set
-     */
-    function Function(properties) {
-        this.parameters = [];
-        this.variables = [];
-        this.body = [];
-        if (properties)
-            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                if (properties[keys[i]] != null)
-                    this[keys[i]] = properties[keys[i]];
-    }
-
-    /**
-     * Function id.
-     * @member {number} id
-     * @memberof Function
+     * Property type.
+     * @member {ITypeReference|null|undefined} type
+     * @memberof Property
      * @instance
      */
-    Function.prototype.id = 0;
+    Property.prototype.type = null;
 
     /**
-     * Function name.
+     * Property name.
      * @member {string} name
-     * @memberof Function
+     * @memberof Property
      * @instance
      */
-    Function.prototype.name = "";
+    Property.prototype.name = "";
 
     /**
-     * Function parameters.
-     * @member {Array.<IVariable>} parameters
-     * @memberof Function
+     * Property description.
+     * @member {string} description
+     * @memberof Property
      * @instance
      */
-    Function.prototype.parameters = $util.emptyArray;
+    Property.prototype.description = "";
 
     /**
-     * Function returns.
-     * @member {ITypeReference|null|undefined} returns
-     * @memberof Function
-     * @instance
-     */
-    Function.prototype.returns = null;
-
-    /**
-     * Function variables.
-     * @member {Array.<IVariable>} variables
-     * @memberof Function
-     * @instance
-     */
-    Function.prototype.variables = $util.emptyArray;
-
-    /**
-     * Function body.
-     * @member {Array.<IExpression>} body
-     * @memberof Function
-     * @instance
-     */
-    Function.prototype.body = $util.emptyArray;
-
-    /**
-     * Creates a new Function instance using the specified properties.
+     * Creates a new Property instance using the specified properties.
      * @function create
-     * @memberof Function
+     * @memberof Property
      * @static
-     * @param {IFunction=} [properties] Properties to set
-     * @returns {Function} Function instance
+     * @param {IProperty=} [properties] Properties to set
+     * @returns {Property} Property instance
      */
-    Function.create = function create(properties) {
-        return new Function(properties);
+    Property.create = function create(properties) {
+        return new Property(properties);
     };
 
     /**
-     * Encodes the specified Function message. Does not implicitly {@link Function.verify|verify} messages.
+     * Encodes the specified Property message. Does not implicitly {@link Property.verify|verify} messages.
      * @function encode
-     * @memberof Function
+     * @memberof Property
      * @static
-     * @param {IFunction} message Function message or plain object to encode
+     * @param {IProperty} message Property message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Function.encode = function encode(message, writer) {
+    Property.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.type != null && message.hasOwnProperty("type"))
+            $root.TypeReference.encode(message.type, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.name != null && message.hasOwnProperty("name"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
-        if (message.parameters != null && message.parameters.length)
-            for (var i = 0; i < message.parameters.length; ++i)
-                $root.Variable.encode(message.parameters[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-        if (message.returns != null && message.hasOwnProperty("returns"))
-            $root.TypeReference.encode(message.returns, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-        if (message.variables != null && message.variables.length)
-            for (var i = 0; i < message.variables.length; ++i)
-                $root.Variable.encode(message.variables[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.body != null && message.body.length)
-            for (var i = 0; i < message.body.length; ++i)
-                $root.Expression.encode(message.body[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
         return writer;
     };
 
     /**
-     * Encodes the specified Function message, length delimited. Does not implicitly {@link Function.verify|verify} messages.
+     * Encodes the specified Property message, length delimited. Does not implicitly {@link Property.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof Function
+     * @memberof Property
      * @static
-     * @param {IFunction} message Function message or plain object to encode
+     * @param {IProperty} message Property message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    Function.encodeDelimited = function encodeDelimited(message, writer) {
+    Property.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a Function message from the specified reader or buffer.
+     * Decodes a Property message from the specified reader or buffer.
      * @function decode
-     * @memberof Function
+     * @memberof Property
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {Function} Function
+     * @returns {Property} Property
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Function.decode = function decode(reader, length) {
+    Property.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Function();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Property();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
+            case 0:
                 message.id = reader.int32();
+                break;
+            case 1:
+                message.type = $root.TypeReference.decode(reader, reader.uint32());
                 break;
             case 2:
                 message.name = reader.string();
                 break;
             case 3:
-                if (!(message.parameters && message.parameters.length))
-                    message.parameters = [];
-                message.parameters.push($root.Variable.decode(reader, reader.uint32()));
-                break;
-            case 6:
-                message.returns = $root.TypeReference.decode(reader, reader.uint32());
-                break;
-            case 7:
-                if (!(message.variables && message.variables.length))
-                    message.variables = [];
-                message.variables.push($root.Variable.decode(reader, reader.uint32()));
-                break;
-            case 8:
-                if (!(message.body && message.body.length))
-                    message.body = [];
-                message.body.push($root.Expression.decode(reader, reader.uint32()));
+                message.description = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -635,30 +659,293 @@ $root.Function = (function() {
     };
 
     /**
-     * Decodes a Function message from the specified reader or buffer, length delimited.
+     * Decodes a Property message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof Function
+     * @memberof Property
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {Function} Function
+     * @returns {Property} Property
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    Function.decodeDelimited = function decodeDelimited(reader) {
+    Property.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a Function message.
+     * Verifies a Property message.
      * @function verify
-     * @memberof Function
+     * @memberof Property
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    Function.verify = function verify(message) {
+    Property.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.type != null && message.hasOwnProperty("type")) {
+            var error = $root.TypeReference.verify(message.type);
+            if (error)
+                return "type." + error;
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a Property message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Property
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Property} Property
+     */
+    Property.fromObject = function fromObject(object) {
+        if (object instanceof $root.Property)
+            return object;
+        var message = new $root.Property();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.type != null) {
+            if (typeof object.type !== "object")
+                throw TypeError(".Property.type: object expected");
+            message.type = $root.TypeReference.fromObject(object.type);
+        }
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Property message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Property
+     * @static
+     * @param {Property} message Property
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Property.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = 0;
+            object.type = null;
+            object.name = "";
+            object.description = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = $root.TypeReference.toObject(message.type, options);
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        return object;
+    };
+
+    /**
+     * Converts this Property to JSON.
+     * @function toJSON
+     * @memberof Property
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Property.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Property;
+})();
+
+$root.ObjectType = (function() {
+
+    /**
+     * Properties of an ObjectType.
+     * @exports IObjectType
+     * @interface IObjectType
+     * @property {number|null} [id] ObjectType id
+     * @property {string|null} [name] ObjectType name
+     * @property {string|null} [description] ObjectType description
+     * @property {Array.<IProperty>|null} [properties] ObjectType properties
+     */
+
+    /**
+     * Constructs a new ObjectType.
+     * @exports ObjectType
+     * @classdesc Represents an ObjectType.
+     * @implements IObjectType
+     * @constructor
+     * @param {IObjectType=} [properties] Properties to set
+     */
+    function ObjectType(properties) {
+        this.properties = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ObjectType id.
+     * @member {number} id
+     * @memberof ObjectType
+     * @instance
+     */
+    ObjectType.prototype.id = 0;
+
+    /**
+     * ObjectType name.
+     * @member {string} name
+     * @memberof ObjectType
+     * @instance
+     */
+    ObjectType.prototype.name = "";
+
+    /**
+     * ObjectType description.
+     * @member {string} description
+     * @memberof ObjectType
+     * @instance
+     */
+    ObjectType.prototype.description = "";
+
+    /**
+     * ObjectType properties.
+     * @member {Array.<IProperty>} properties
+     * @memberof ObjectType
+     * @instance
+     */
+    ObjectType.prototype.properties = $util.emptyArray;
+
+    /**
+     * Creates a new ObjectType instance using the specified properties.
+     * @function create
+     * @memberof ObjectType
+     * @static
+     * @param {IObjectType=} [properties] Properties to set
+     * @returns {ObjectType} ObjectType instance
+     */
+    ObjectType.create = function create(properties) {
+        return new ObjectType(properties);
+    };
+
+    /**
+     * Encodes the specified ObjectType message. Does not implicitly {@link ObjectType.verify|verify} messages.
+     * @function encode
+     * @memberof ObjectType
+     * @static
+     * @param {IObjectType} message ObjectType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ObjectType.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.description);
+        if (message.properties != null && message.properties.length)
+            for (var i = 0; i < message.properties.length; ++i)
+                $root.Property.encode(message.properties[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ObjectType message, length delimited. Does not implicitly {@link ObjectType.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ObjectType
+     * @static
+     * @param {IObjectType} message ObjectType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ObjectType.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an ObjectType message from the specified reader or buffer.
+     * @function decode
+     * @memberof ObjectType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ObjectType} ObjectType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ObjectType.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ObjectType();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.int32();
+                break;
+            case 1:
+                message.name = reader.string();
+                break;
+            case 2:
+                message.description = reader.string();
+                break;
+            case 3:
+                if (!(message.properties && message.properties.length))
+                    message.properties = [];
+                message.properties.push($root.Property.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an ObjectType message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ObjectType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ObjectType} ObjectType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ObjectType.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an ObjectType message.
+     * @function verify
+     * @memberof ObjectType
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ObjectType.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.id != null && message.hasOwnProperty("id"))
@@ -667,13 +954,282 @@ $root.Function = (function() {
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        if (message.properties != null && message.hasOwnProperty("properties")) {
+            if (!Array.isArray(message.properties))
+                return "properties: array expected";
+            for (var i = 0; i < message.properties.length; ++i) {
+                var error = $root.Property.verify(message.properties[i]);
+                if (error)
+                    return "properties." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates an ObjectType message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ObjectType
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ObjectType} ObjectType
+     */
+    ObjectType.fromObject = function fromObject(object) {
+        if (object instanceof $root.ObjectType)
+            return object;
+        var message = new $root.ObjectType();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        if (object.properties) {
+            if (!Array.isArray(object.properties))
+                throw TypeError(".ObjectType.properties: array expected");
+            message.properties = [];
+            for (var i = 0; i < object.properties.length; ++i) {
+                if (typeof object.properties[i] !== "object")
+                    throw TypeError(".ObjectType.properties: object expected");
+                message.properties[i] = $root.Property.fromObject(object.properties[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an ObjectType message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ObjectType
+     * @static
+     * @param {ObjectType} message ObjectType
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ObjectType.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.properties = [];
+        if (options.defaults) {
+            object.id = 0;
+            object.name = "";
+            object.description = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        if (message.properties && message.properties.length) {
+            object.properties = [];
+            for (var j = 0; j < message.properties.length; ++j)
+                object.properties[j] = $root.Property.toObject(message.properties[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this ObjectType to JSON.
+     * @function toJSON
+     * @memberof ObjectType
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    ObjectType.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return ObjectType;
+})();
+
+$root.FunctionType = (function() {
+
+    /**
+     * Properties of a FunctionType.
+     * @exports IFunctionType
+     * @interface IFunctionType
+     * @property {Array.<IFunctionTypeParameter>|null} [parameters] FunctionType parameters
+     * @property {Array.<IFunctionGenericParameter>|null} [typeParameters] FunctionType typeParameters
+     * @property {ITypeReference|null} [returns] FunctionType returns
+     */
+
+    /**
+     * Constructs a new FunctionType.
+     * @exports FunctionType
+     * @classdesc Represents a FunctionType.
+     * @implements IFunctionType
+     * @constructor
+     * @param {IFunctionType=} [properties] Properties to set
+     */
+    function FunctionType(properties) {
+        this.parameters = [];
+        this.typeParameters = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * FunctionType parameters.
+     * @member {Array.<IFunctionTypeParameter>} parameters
+     * @memberof FunctionType
+     * @instance
+     */
+    FunctionType.prototype.parameters = $util.emptyArray;
+
+    /**
+     * FunctionType typeParameters.
+     * @member {Array.<IFunctionGenericParameter>} typeParameters
+     * @memberof FunctionType
+     * @instance
+     */
+    FunctionType.prototype.typeParameters = $util.emptyArray;
+
+    /**
+     * FunctionType returns.
+     * @member {ITypeReference|null|undefined} returns
+     * @memberof FunctionType
+     * @instance
+     */
+    FunctionType.prototype.returns = null;
+
+    /**
+     * Creates a new FunctionType instance using the specified properties.
+     * @function create
+     * @memberof FunctionType
+     * @static
+     * @param {IFunctionType=} [properties] Properties to set
+     * @returns {FunctionType} FunctionType instance
+     */
+    FunctionType.create = function create(properties) {
+        return new FunctionType(properties);
+    };
+
+    /**
+     * Encodes the specified FunctionType message. Does not implicitly {@link FunctionType.verify|verify} messages.
+     * @function encode
+     * @memberof FunctionType
+     * @static
+     * @param {IFunctionType} message FunctionType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionType.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.parameters != null && message.parameters.length)
+            for (var i = 0; i < message.parameters.length; ++i)
+                $root.FunctionTypeParameter.encode(message.parameters[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+        if (message.typeParameters != null && message.typeParameters.length)
+            for (var i = 0; i < message.typeParameters.length; ++i)
+                $root.FunctionGenericParameter.encode(message.typeParameters[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.returns != null && message.hasOwnProperty("returns"))
+            $root.TypeReference.encode(message.returns, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified FunctionType message, length delimited. Does not implicitly {@link FunctionType.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof FunctionType
+     * @static
+     * @param {IFunctionType} message FunctionType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionType.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a FunctionType message from the specified reader or buffer.
+     * @function decode
+     * @memberof FunctionType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {FunctionType} FunctionType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionType.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.FunctionType();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                if (!(message.parameters && message.parameters.length))
+                    message.parameters = [];
+                message.parameters.push($root.FunctionTypeParameter.decode(reader, reader.uint32()));
+                break;
+            case 1:
+                if (!(message.typeParameters && message.typeParameters.length))
+                    message.typeParameters = [];
+                message.typeParameters.push($root.FunctionGenericParameter.decode(reader, reader.uint32()));
+                break;
+            case 2:
+                message.returns = $root.TypeReference.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a FunctionType message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof FunctionType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {FunctionType} FunctionType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionType.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a FunctionType message.
+     * @function verify
+     * @memberof FunctionType
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    FunctionType.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
         if (message.parameters != null && message.hasOwnProperty("parameters")) {
             if (!Array.isArray(message.parameters))
                 return "parameters: array expected";
             for (var i = 0; i < message.parameters.length; ++i) {
-                var error = $root.Variable.verify(message.parameters[i]);
+                var error = $root.FunctionTypeParameter.verify(message.parameters[i]);
                 if (error)
                     return "parameters." + error;
+            }
+        }
+        if (message.typeParameters != null && message.hasOwnProperty("typeParameters")) {
+            if (!Array.isArray(message.typeParameters))
+                return "typeParameters: array expected";
+            for (var i = 0; i < message.typeParameters.length; ++i) {
+                var error = $root.FunctionGenericParameter.verify(message.typeParameters[i]);
+                if (error)
+                    return "typeParameters." + error;
             }
         }
         if (message.returns != null && message.hasOwnProperty("returns")) {
@@ -681,140 +1237,1169 @@ $root.Function = (function() {
             if (error)
                 return "returns." + error;
         }
-        if (message.variables != null && message.hasOwnProperty("variables")) {
-            if (!Array.isArray(message.variables))
-                return "variables: array expected";
-            for (var i = 0; i < message.variables.length; ++i) {
-                var error = $root.Variable.verify(message.variables[i]);
-                if (error)
-                    return "variables." + error;
-            }
-        }
-        if (message.body != null && message.hasOwnProperty("body")) {
-            if (!Array.isArray(message.body))
-                return "body: array expected";
-            for (var i = 0; i < message.body.length; ++i) {
-                var error = $root.Expression.verify(message.body[i]);
-                if (error)
-                    return "body." + error;
-            }
-        }
         return null;
     };
 
     /**
-     * Creates a Function message from a plain object. Also converts values to their respective internal types.
+     * Creates a FunctionType message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof Function
+     * @memberof FunctionType
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {Function} Function
+     * @returns {FunctionType} FunctionType
      */
-    Function.fromObject = function fromObject(object) {
-        if (object instanceof $root.Function)
+    FunctionType.fromObject = function fromObject(object) {
+        if (object instanceof $root.FunctionType)
             return object;
-        var message = new $root.Function();
-        if (object.id != null)
-            message.id = object.id | 0;
-        if (object.name != null)
-            message.name = String(object.name);
+        var message = new $root.FunctionType();
         if (object.parameters) {
             if (!Array.isArray(object.parameters))
-                throw TypeError(".Function.parameters: array expected");
+                throw TypeError(".FunctionType.parameters: array expected");
             message.parameters = [];
             for (var i = 0; i < object.parameters.length; ++i) {
                 if (typeof object.parameters[i] !== "object")
-                    throw TypeError(".Function.parameters: object expected");
-                message.parameters[i] = $root.Variable.fromObject(object.parameters[i]);
+                    throw TypeError(".FunctionType.parameters: object expected");
+                message.parameters[i] = $root.FunctionTypeParameter.fromObject(object.parameters[i]);
+            }
+        }
+        if (object.typeParameters) {
+            if (!Array.isArray(object.typeParameters))
+                throw TypeError(".FunctionType.typeParameters: array expected");
+            message.typeParameters = [];
+            for (var i = 0; i < object.typeParameters.length; ++i) {
+                if (typeof object.typeParameters[i] !== "object")
+                    throw TypeError(".FunctionType.typeParameters: object expected");
+                message.typeParameters[i] = $root.FunctionGenericParameter.fromObject(object.typeParameters[i]);
             }
         }
         if (object.returns != null) {
             if (typeof object.returns !== "object")
-                throw TypeError(".Function.returns: object expected");
+                throw TypeError(".FunctionType.returns: object expected");
             message.returns = $root.TypeReference.fromObject(object.returns);
         }
-        if (object.variables) {
-            if (!Array.isArray(object.variables))
-                throw TypeError(".Function.variables: array expected");
-            message.variables = [];
-            for (var i = 0; i < object.variables.length; ++i) {
-                if (typeof object.variables[i] !== "object")
-                    throw TypeError(".Function.variables: object expected");
-                message.variables[i] = $root.Variable.fromObject(object.variables[i]);
-            }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a FunctionType message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof FunctionType
+     * @static
+     * @param {FunctionType} message FunctionType
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    FunctionType.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults) {
+            object.parameters = [];
+            object.typeParameters = [];
         }
-        if (object.body) {
-            if (!Array.isArray(object.body))
-                throw TypeError(".Function.body: array expected");
-            message.body = [];
-            for (var i = 0; i < object.body.length; ++i) {
-                if (typeof object.body[i] !== "object")
-                    throw TypeError(".Function.body: object expected");
-                message.body[i] = $root.Expression.fromObject(object.body[i]);
+        if (options.defaults)
+            object.returns = null;
+        if (message.parameters && message.parameters.length) {
+            object.parameters = [];
+            for (var j = 0; j < message.parameters.length; ++j)
+                object.parameters[j] = $root.FunctionTypeParameter.toObject(message.parameters[j], options);
+        }
+        if (message.typeParameters && message.typeParameters.length) {
+            object.typeParameters = [];
+            for (var j = 0; j < message.typeParameters.length; ++j)
+                object.typeParameters[j] = $root.FunctionGenericParameter.toObject(message.typeParameters[j], options);
+        }
+        if (message.returns != null && message.hasOwnProperty("returns"))
+            object.returns = $root.TypeReference.toObject(message.returns, options);
+        return object;
+    };
+
+    /**
+     * Converts this FunctionType to JSON.
+     * @function toJSON
+     * @memberof FunctionType
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    FunctionType.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return FunctionType;
+})();
+
+$root.FunctionTypeParameter = (function() {
+
+    /**
+     * Properties of a FunctionTypeParameter.
+     * @exports IFunctionTypeParameter
+     * @interface IFunctionTypeParameter
+     * @property {number|null} [id] FunctionTypeParameter id
+     * @property {ITypeReference|null} [type] FunctionTypeParameter type
+     * @property {string|null} [name] FunctionTypeParameter name
+     * @property {string|null} [description] FunctionTypeParameter description
+     */
+
+    /**
+     * Constructs a new FunctionTypeParameter.
+     * @exports FunctionTypeParameter
+     * @classdesc Represents a FunctionTypeParameter.
+     * @implements IFunctionTypeParameter
+     * @constructor
+     * @param {IFunctionTypeParameter=} [properties] Properties to set
+     */
+    function FunctionTypeParameter(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * FunctionTypeParameter id.
+     * @member {number} id
+     * @memberof FunctionTypeParameter
+     * @instance
+     */
+    FunctionTypeParameter.prototype.id = 0;
+
+    /**
+     * FunctionTypeParameter type.
+     * @member {ITypeReference|null|undefined} type
+     * @memberof FunctionTypeParameter
+     * @instance
+     */
+    FunctionTypeParameter.prototype.type = null;
+
+    /**
+     * FunctionTypeParameter name.
+     * @member {string} name
+     * @memberof FunctionTypeParameter
+     * @instance
+     */
+    FunctionTypeParameter.prototype.name = "";
+
+    /**
+     * FunctionTypeParameter description.
+     * @member {string} description
+     * @memberof FunctionTypeParameter
+     * @instance
+     */
+    FunctionTypeParameter.prototype.description = "";
+
+    /**
+     * Creates a new FunctionTypeParameter instance using the specified properties.
+     * @function create
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {IFunctionTypeParameter=} [properties] Properties to set
+     * @returns {FunctionTypeParameter} FunctionTypeParameter instance
+     */
+    FunctionTypeParameter.create = function create(properties) {
+        return new FunctionTypeParameter(properties);
+    };
+
+    /**
+     * Encodes the specified FunctionTypeParameter message. Does not implicitly {@link FunctionTypeParameter.verify|verify} messages.
+     * @function encode
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {IFunctionTypeParameter} message FunctionTypeParameter message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionTypeParameter.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.type != null && message.hasOwnProperty("type"))
+            $root.TypeReference.encode(message.type, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified FunctionTypeParameter message, length delimited. Does not implicitly {@link FunctionTypeParameter.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {IFunctionTypeParameter} message FunctionTypeParameter message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionTypeParameter.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a FunctionTypeParameter message from the specified reader or buffer.
+     * @function decode
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {FunctionTypeParameter} FunctionTypeParameter
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionTypeParameter.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.FunctionTypeParameter();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.int32();
+                break;
+            case 1:
+                message.type = $root.TypeReference.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.name = reader.string();
+                break;
+            case 3:
+                message.description = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
             }
         }
         return message;
     };
 
     /**
-     * Creates a plain object from a Function message. Also converts values to other types if specified.
-     * @function toObject
-     * @memberof Function
+     * Decodes a FunctionTypeParameter message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof FunctionTypeParameter
      * @static
-     * @param {Function} message Function
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {FunctionTypeParameter} FunctionTypeParameter
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionTypeParameter.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a FunctionTypeParameter message.
+     * @function verify
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    FunctionTypeParameter.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.type != null && message.hasOwnProperty("type")) {
+            var error = $root.TypeReference.verify(message.type);
+            if (error)
+                return "type." + error;
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a FunctionTypeParameter message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {FunctionTypeParameter} FunctionTypeParameter
+     */
+    FunctionTypeParameter.fromObject = function fromObject(object) {
+        if (object instanceof $root.FunctionTypeParameter)
+            return object;
+        var message = new $root.FunctionTypeParameter();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.type != null) {
+            if (typeof object.type !== "object")
+                throw TypeError(".FunctionTypeParameter.type: object expected");
+            message.type = $root.TypeReference.fromObject(object.type);
+        }
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a FunctionTypeParameter message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof FunctionTypeParameter
+     * @static
+     * @param {FunctionTypeParameter} message FunctionTypeParameter
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    Function.toObject = function toObject(message, options) {
+    FunctionTypeParameter.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults) {
-            object.parameters = [];
-            object.variables = [];
-            object.body = [];
-        }
         if (options.defaults) {
             object.id = 0;
+            object.type = null;
             object.name = "";
-            object.returns = null;
+            object.description = "";
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = $root.TypeReference.toObject(message.type, options);
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
-        if (message.parameters && message.parameters.length) {
-            object.parameters = [];
-            for (var j = 0; j < message.parameters.length; ++j)
-                object.parameters[j] = $root.Variable.toObject(message.parameters[j], options);
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        return object;
+    };
+
+    /**
+     * Converts this FunctionTypeParameter to JSON.
+     * @function toJSON
+     * @memberof FunctionTypeParameter
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    FunctionTypeParameter.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return FunctionTypeParameter;
+})();
+
+$root.FunctionGenericParameter = (function() {
+
+    /**
+     * Properties of a FunctionGenericParameter.
+     * @exports IFunctionGenericParameter
+     * @interface IFunctionGenericParameter
+     * @property {number|null} [id] FunctionGenericParameter id
+     * @property {ITypeReference|null} [typeBoundary] FunctionGenericParameter typeBoundary
+     * @property {string|null} [name] FunctionGenericParameter name
+     * @property {string|null} [description] FunctionGenericParameter description
+     */
+
+    /**
+     * Constructs a new FunctionGenericParameter.
+     * @exports FunctionGenericParameter
+     * @classdesc Represents a FunctionGenericParameter.
+     * @implements IFunctionGenericParameter
+     * @constructor
+     * @param {IFunctionGenericParameter=} [properties] Properties to set
+     */
+    function FunctionGenericParameter(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * FunctionGenericParameter id.
+     * @member {number} id
+     * @memberof FunctionGenericParameter
+     * @instance
+     */
+    FunctionGenericParameter.prototype.id = 0;
+
+    /**
+     * FunctionGenericParameter typeBoundary.
+     * @member {ITypeReference|null|undefined} typeBoundary
+     * @memberof FunctionGenericParameter
+     * @instance
+     */
+    FunctionGenericParameter.prototype.typeBoundary = null;
+
+    /**
+     * FunctionGenericParameter name.
+     * @member {string} name
+     * @memberof FunctionGenericParameter
+     * @instance
+     */
+    FunctionGenericParameter.prototype.name = "";
+
+    /**
+     * FunctionGenericParameter description.
+     * @member {string} description
+     * @memberof FunctionGenericParameter
+     * @instance
+     */
+    FunctionGenericParameter.prototype.description = "";
+
+    /**
+     * Creates a new FunctionGenericParameter instance using the specified properties.
+     * @function create
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {IFunctionGenericParameter=} [properties] Properties to set
+     * @returns {FunctionGenericParameter} FunctionGenericParameter instance
+     */
+    FunctionGenericParameter.create = function create(properties) {
+        return new FunctionGenericParameter(properties);
+    };
+
+    /**
+     * Encodes the specified FunctionGenericParameter message. Does not implicitly {@link FunctionGenericParameter.verify|verify} messages.
+     * @function encode
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {IFunctionGenericParameter} message FunctionGenericParameter message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionGenericParameter.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.typeBoundary != null && message.hasOwnProperty("typeBoundary"))
+            $root.TypeReference.encode(message.typeBoundary, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified FunctionGenericParameter message, length delimited. Does not implicitly {@link FunctionGenericParameter.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {IFunctionGenericParameter} message FunctionGenericParameter message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    FunctionGenericParameter.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a FunctionGenericParameter message from the specified reader or buffer.
+     * @function decode
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {FunctionGenericParameter} FunctionGenericParameter
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionGenericParameter.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.FunctionGenericParameter();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.int32();
+                break;
+            case 1:
+                message.typeBoundary = $root.TypeReference.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.name = reader.string();
+                break;
+            case 3:
+                message.description = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
         }
-        if (message.returns != null && message.hasOwnProperty("returns"))
-            object.returns = $root.TypeReference.toObject(message.returns, options);
-        if (message.variables && message.variables.length) {
-            object.variables = [];
-            for (var j = 0; j < message.variables.length; ++j)
-                object.variables[j] = $root.Variable.toObject(message.variables[j], options);
+        return message;
+    };
+
+    /**
+     * Decodes a FunctionGenericParameter message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {FunctionGenericParameter} FunctionGenericParameter
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    FunctionGenericParameter.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a FunctionGenericParameter message.
+     * @function verify
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    FunctionGenericParameter.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.typeBoundary != null && message.hasOwnProperty("typeBoundary")) {
+            var error = $root.TypeReference.verify(message.typeBoundary);
+            if (error)
+                return "typeBoundary." + error;
         }
-        if (message.body && message.body.length) {
-            object.body = [];
-            for (var j = 0; j < message.body.length; ++j)
-                object.body[j] = $root.Expression.toObject(message.body[j], options);
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a FunctionGenericParameter message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {FunctionGenericParameter} FunctionGenericParameter
+     */
+    FunctionGenericParameter.fromObject = function fromObject(object) {
+        if (object instanceof $root.FunctionGenericParameter)
+            return object;
+        var message = new $root.FunctionGenericParameter();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.typeBoundary != null) {
+            if (typeof object.typeBoundary !== "object")
+                throw TypeError(".FunctionGenericParameter.typeBoundary: object expected");
+            message.typeBoundary = $root.TypeReference.fromObject(object.typeBoundary);
+        }
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a FunctionGenericParameter message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof FunctionGenericParameter
+     * @static
+     * @param {FunctionGenericParameter} message FunctionGenericParameter
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    FunctionGenericParameter.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = 0;
+            object.typeBoundary = null;
+            object.name = "";
+            object.description = "";
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.typeBoundary != null && message.hasOwnProperty("typeBoundary"))
+            object.typeBoundary = $root.TypeReference.toObject(message.typeBoundary, options);
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        return object;
+    };
+
+    /**
+     * Converts this FunctionGenericParameter to JSON.
+     * @function toJSON
+     * @memberof FunctionGenericParameter
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    FunctionGenericParameter.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return FunctionGenericParameter;
+})();
+
+$root.UnionType = (function() {
+
+    /**
+     * Properties of an UnionType.
+     * @exports IUnionType
+     * @interface IUnionType
+     * @property {Array.<ITypeReference>|null} [members] UnionType members
+     * @property {string|null} [name] UnionType name
+     * @property {string|null} [description] UnionType description
+     */
+
+    /**
+     * Constructs a new UnionType.
+     * @exports UnionType
+     * @classdesc Represents an UnionType.
+     * @implements IUnionType
+     * @constructor
+     * @param {IUnionType=} [properties] Properties to set
+     */
+    function UnionType(properties) {
+        this.members = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * UnionType members.
+     * @member {Array.<ITypeReference>} members
+     * @memberof UnionType
+     * @instance
+     */
+    UnionType.prototype.members = $util.emptyArray;
+
+    /**
+     * UnionType name.
+     * @member {string} name
+     * @memberof UnionType
+     * @instance
+     */
+    UnionType.prototype.name = "";
+
+    /**
+     * UnionType description.
+     * @member {string} description
+     * @memberof UnionType
+     * @instance
+     */
+    UnionType.prototype.description = "";
+
+    /**
+     * Creates a new UnionType instance using the specified properties.
+     * @function create
+     * @memberof UnionType
+     * @static
+     * @param {IUnionType=} [properties] Properties to set
+     * @returns {UnionType} UnionType instance
+     */
+    UnionType.create = function create(properties) {
+        return new UnionType(properties);
+    };
+
+    /**
+     * Encodes the specified UnionType message. Does not implicitly {@link UnionType.verify|verify} messages.
+     * @function encode
+     * @memberof UnionType
+     * @static
+     * @param {IUnionType} message UnionType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    UnionType.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.members != null && message.members.length)
+            for (var i = 0; i < message.members.length; ++i)
+                $root.TypeReference.encode(message.members[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified UnionType message, length delimited. Does not implicitly {@link UnionType.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof UnionType
+     * @static
+     * @param {IUnionType} message UnionType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    UnionType.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an UnionType message from the specified reader or buffer.
+     * @function decode
+     * @memberof UnionType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {UnionType} UnionType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UnionType.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UnionType();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                if (!(message.members && message.members.length))
+                    message.members = [];
+                message.members.push($root.TypeReference.decode(reader, reader.uint32()));
+                break;
+            case 2:
+                message.name = reader.string();
+                break;
+            case 3:
+                message.description = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an UnionType message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof UnionType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {UnionType} UnionType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    UnionType.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an UnionType message.
+     * @function verify
+     * @memberof UnionType
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    UnionType.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.members != null && message.hasOwnProperty("members")) {
+            if (!Array.isArray(message.members))
+                return "members: array expected";
+            for (var i = 0; i < message.members.length; ++i) {
+                var error = $root.TypeReference.verify(message.members[i]);
+                if (error)
+                    return "members." + error;
+            }
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        return null;
+    };
+
+    /**
+     * Creates an UnionType message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof UnionType
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {UnionType} UnionType
+     */
+    UnionType.fromObject = function fromObject(object) {
+        if (object instanceof $root.UnionType)
+            return object;
+        var message = new $root.UnionType();
+        if (object.members) {
+            if (!Array.isArray(object.members))
+                throw TypeError(".UnionType.members: array expected");
+            message.members = [];
+            for (var i = 0; i < object.members.length; ++i) {
+                if (typeof object.members[i] !== "object")
+                    throw TypeError(".UnionType.members: object expected");
+                message.members[i] = $root.TypeReference.fromObject(object.members[i]);
+            }
+        }
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an UnionType message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof UnionType
+     * @static
+     * @param {UnionType} message UnionType
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    UnionType.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.members = [];
+        if (options.defaults) {
+            object.name = "";
+            object.description = "";
+        }
+        if (message.members && message.members.length) {
+            object.members = [];
+            for (var j = 0; j < message.members.length; ++j)
+                object.members[j] = $root.TypeReference.toObject(message.members[j], options);
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        return object;
+    };
+
+    /**
+     * Converts this UnionType to JSON.
+     * @function toJSON
+     * @memberof UnionType
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    UnionType.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return UnionType;
+})();
+
+$root.ComplexType = (function() {
+
+    /**
+     * Properties of a ComplexType.
+     * @exports IComplexType
+     * @interface IComplexType
+     * @property {number|null} [id] ComplexType id
+     * @property {IObjectType|null} [object] ComplexType object
+     * @property {IFunctionType|null} ["function"] ComplexType function
+     * @property {IUnionType|null} [union] ComplexType union
+     */
+
+    /**
+     * Constructs a new ComplexType.
+     * @exports ComplexType
+     * @classdesc Represents a ComplexType.
+     * @implements IComplexType
+     * @constructor
+     * @param {IComplexType=} [properties] Properties to set
+     */
+    function ComplexType(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * ComplexType id.
+     * @member {number} id
+     * @memberof ComplexType
+     * @instance
+     */
+    ComplexType.prototype.id = 0;
+
+    /**
+     * ComplexType object.
+     * @member {IObjectType|null|undefined} object
+     * @memberof ComplexType
+     * @instance
+     */
+    ComplexType.prototype.object = null;
+
+    /**
+     * ComplexType function.
+     * @member {IFunctionType|null|undefined} function
+     * @memberof ComplexType
+     * @instance
+     */
+    ComplexType.prototype["function"] = null;
+
+    /**
+     * ComplexType union.
+     * @member {IUnionType|null|undefined} union
+     * @memberof ComplexType
+     * @instance
+     */
+    ComplexType.prototype.union = null;
+
+    // OneOf field names bound to virtual getters and setters
+    var $oneOfFields;
+
+    /**
+     * ComplexType typeType.
+     * @member {"object"|"function"|"union"|undefined} typeType
+     * @memberof ComplexType
+     * @instance
+     */
+    Object.defineProperty(ComplexType.prototype, "typeType", {
+        get: $util.oneOfGetter($oneOfFields = ["object", "function", "union"]),
+        set: $util.oneOfSetter($oneOfFields)
+    });
+
+    /**
+     * Creates a new ComplexType instance using the specified properties.
+     * @function create
+     * @memberof ComplexType
+     * @static
+     * @param {IComplexType=} [properties] Properties to set
+     * @returns {ComplexType} ComplexType instance
+     */
+    ComplexType.create = function create(properties) {
+        return new ComplexType(properties);
+    };
+
+    /**
+     * Encodes the specified ComplexType message. Does not implicitly {@link ComplexType.verify|verify} messages.
+     * @function encode
+     * @memberof ComplexType
+     * @static
+     * @param {IComplexType} message ComplexType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ComplexType.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+        if (message.object != null && message.hasOwnProperty("object"))
+            $root.ObjectType.encode(message.object, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message["function"] != null && message.hasOwnProperty("function"))
+            $root.FunctionType.encode(message["function"], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.union != null && message.hasOwnProperty("union"))
+            $root.UnionType.encode(message.union, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified ComplexType message, length delimited. Does not implicitly {@link ComplexType.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof ComplexType
+     * @static
+     * @param {IComplexType} message ComplexType message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    ComplexType.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a ComplexType message from the specified reader or buffer.
+     * @function decode
+     * @memberof ComplexType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {ComplexType} ComplexType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ComplexType.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.ComplexType();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.id = reader.int32();
+                break;
+            case 2:
+                message.object = $root.ObjectType.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message["function"] = $root.FunctionType.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.union = $root.UnionType.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a ComplexType message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof ComplexType
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {ComplexType} ComplexType
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    ComplexType.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a ComplexType message.
+     * @function verify
+     * @memberof ComplexType
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    ComplexType.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        var properties = {};
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.object != null && message.hasOwnProperty("object")) {
+            properties.typeType = 1;
+            {
+                var error = $root.ObjectType.verify(message.object);
+                if (error)
+                    return "object." + error;
+            }
+        }
+        if (message["function"] != null && message.hasOwnProperty("function")) {
+            if (properties.typeType === 1)
+                return "typeType: multiple values";
+            properties.typeType = 1;
+            {
+                var error = $root.FunctionType.verify(message["function"]);
+                if (error)
+                    return "function." + error;
+            }
+        }
+        if (message.union != null && message.hasOwnProperty("union")) {
+            if (properties.typeType === 1)
+                return "typeType: multiple values";
+            properties.typeType = 1;
+            {
+                var error = $root.UnionType.verify(message.union);
+                if (error)
+                    return "union." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a ComplexType message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof ComplexType
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {ComplexType} ComplexType
+     */
+    ComplexType.fromObject = function fromObject(object) {
+        if (object instanceof $root.ComplexType)
+            return object;
+        var message = new $root.ComplexType();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.object != null) {
+            if (typeof object.object !== "object")
+                throw TypeError(".ComplexType.object: object expected");
+            message.object = $root.ObjectType.fromObject(object.object);
+        }
+        if (object["function"] != null) {
+            if (typeof object["function"] !== "object")
+                throw TypeError(".ComplexType.function: object expected");
+            message["function"] = $root.FunctionType.fromObject(object["function"]);
+        }
+        if (object.union != null) {
+            if (typeof object.union !== "object")
+                throw TypeError(".ComplexType.union: object expected");
+            message.union = $root.UnionType.fromObject(object.union);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a ComplexType message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof ComplexType
+     * @static
+     * @param {ComplexType} message ComplexType
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    ComplexType.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.id = 0;
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.object != null && message.hasOwnProperty("object")) {
+            object.object = $root.ObjectType.toObject(message.object, options);
+            if (options.oneofs)
+                object.typeType = "object";
+        }
+        if (message["function"] != null && message.hasOwnProperty("function")) {
+            object["function"] = $root.FunctionType.toObject(message["function"], options);
+            if (options.oneofs)
+                object.typeType = "function";
+        }
+        if (message.union != null && message.hasOwnProperty("union")) {
+            object.union = $root.UnionType.toObject(message.union, options);
+            if (options.oneofs)
+                object.typeType = "union";
         }
         return object;
     };
 
     /**
-     * Converts this Function to JSON.
+     * Converts this ComplexType to JSON.
      * @function toJSON
-     * @memberof Function
+     * @memberof ComplexType
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    Function.prototype.toJSON = function toJSON() {
+    ComplexType.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
-    return Function;
+    return ComplexType;
 })();
 
 $root.FunctionReference = (function() {
@@ -1267,6 +2852,7 @@ $root.Variable = (function() {
      * @interface IVariable
      * @property {number|null} [id] Variable id
      * @property {string|null} [name] Variable name
+     * @property {string|null} [description] Variable description
      * @property {ITypeReference|null} [type] Variable type
      */
 
@@ -1300,6 +2886,14 @@ $root.Variable = (function() {
      * @instance
      */
     Variable.prototype.name = "";
+
+    /**
+     * Variable description.
+     * @member {string} description
+     * @memberof Variable
+     * @instance
+     */
+    Variable.prototype.description = "";
 
     /**
      * Variable type.
@@ -1337,8 +2931,10 @@ $root.Variable = (function() {
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
         if (message.name != null && message.hasOwnProperty("name"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
         if (message.type != null && message.hasOwnProperty("type"))
-            $root.TypeReference.encode(message.type, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+            $root.TypeReference.encode(message.type, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         return writer;
     };
 
@@ -1380,6 +2976,9 @@ $root.Variable = (function() {
                 message.name = reader.string();
                 break;
             case 3:
+                message.description = reader.string();
+                break;
+            case 4:
                 message.type = $root.TypeReference.decode(reader, reader.uint32());
                 break;
             default:
@@ -1423,6 +3022,9 @@ $root.Variable = (function() {
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
         if (message.type != null && message.hasOwnProperty("type")) {
             var error = $root.TypeReference.verify(message.type);
             if (error)
@@ -1447,6 +3049,8 @@ $root.Variable = (function() {
             message.id = object.id | 0;
         if (object.name != null)
             message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
         if (object.type != null) {
             if (typeof object.type !== "object")
                 throw TypeError(".Variable.type: object expected");
@@ -1471,12 +3075,15 @@ $root.Variable = (function() {
         if (options.defaults) {
             object.id = 0;
             object.name = "";
+            object.description = "";
             object.type = null;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
         if (message.type != null && message.hasOwnProperty("type"))
             object.type = $root.TypeReference.toObject(message.type, options);
         return object;
@@ -1952,6 +3559,430 @@ $root.Set = (function() {
     return Set;
 })();
 
+$root.Comment = (function() {
+
+    /**
+     * Properties of a Comment.
+     * @exports IComment
+     * @interface IComment
+     * @property {string|null} [preExpression] Comment preExpression
+     * @property {IExpression|null} [expression] Comment expression
+     * @property {string|null} [postExpression] Comment postExpression
+     */
+
+    /**
+     * Constructs a new Comment.
+     * @exports Comment
+     * @classdesc Represents a Comment.
+     * @implements IComment
+     * @constructor
+     * @param {IComment=} [properties] Properties to set
+     */
+    function Comment(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Comment preExpression.
+     * @member {string} preExpression
+     * @memberof Comment
+     * @instance
+     */
+    Comment.prototype.preExpression = "";
+
+    /**
+     * Comment expression.
+     * @member {IExpression|null|undefined} expression
+     * @memberof Comment
+     * @instance
+     */
+    Comment.prototype.expression = null;
+
+    /**
+     * Comment postExpression.
+     * @member {string} postExpression
+     * @memberof Comment
+     * @instance
+     */
+    Comment.prototype.postExpression = "";
+
+    /**
+     * Creates a new Comment instance using the specified properties.
+     * @function create
+     * @memberof Comment
+     * @static
+     * @param {IComment=} [properties] Properties to set
+     * @returns {Comment} Comment instance
+     */
+    Comment.create = function create(properties) {
+        return new Comment(properties);
+    };
+
+    /**
+     * Encodes the specified Comment message. Does not implicitly {@link Comment.verify|verify} messages.
+     * @function encode
+     * @memberof Comment
+     * @static
+     * @param {IComment} message Comment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Comment.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.preExpression != null && message.hasOwnProperty("preExpression"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.preExpression);
+        if (message.expression != null && message.hasOwnProperty("expression"))
+            $root.Expression.encode(message.expression, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.postExpression != null && message.hasOwnProperty("postExpression"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.postExpression);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Comment message, length delimited. Does not implicitly {@link Comment.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Comment
+     * @static
+     * @param {IComment} message Comment message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Comment.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Comment message from the specified reader or buffer.
+     * @function decode
+     * @memberof Comment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Comment} Comment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Comment.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Comment();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.preExpression = reader.string();
+                break;
+            case 1:
+                message.expression = $root.Expression.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.postExpression = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Comment message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Comment
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Comment} Comment
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Comment.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Comment message.
+     * @function verify
+     * @memberof Comment
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Comment.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.preExpression != null && message.hasOwnProperty("preExpression"))
+            if (!$util.isString(message.preExpression))
+                return "preExpression: string expected";
+        if (message.expression != null && message.hasOwnProperty("expression")) {
+            var error = $root.Expression.verify(message.expression);
+            if (error)
+                return "expression." + error;
+        }
+        if (message.postExpression != null && message.hasOwnProperty("postExpression"))
+            if (!$util.isString(message.postExpression))
+                return "postExpression: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a Comment message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Comment
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Comment} Comment
+     */
+    Comment.fromObject = function fromObject(object) {
+        if (object instanceof $root.Comment)
+            return object;
+        var message = new $root.Comment();
+        if (object.preExpression != null)
+            message.preExpression = String(object.preExpression);
+        if (object.expression != null) {
+            if (typeof object.expression !== "object")
+                throw TypeError(".Comment.expression: object expected");
+            message.expression = $root.Expression.fromObject(object.expression);
+        }
+        if (object.postExpression != null)
+            message.postExpression = String(object.postExpression);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Comment message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Comment
+     * @static
+     * @param {Comment} message Comment
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Comment.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.preExpression = "";
+            object.expression = null;
+            object.postExpression = "";
+        }
+        if (message.preExpression != null && message.hasOwnProperty("preExpression"))
+            object.preExpression = message.preExpression;
+        if (message.expression != null && message.hasOwnProperty("expression"))
+            object.expression = $root.Expression.toObject(message.expression, options);
+        if (message.postExpression != null && message.hasOwnProperty("postExpression"))
+            object.postExpression = message.postExpression;
+        return object;
+    };
+
+    /**
+     * Converts this Comment to JSON.
+     * @function toJSON
+     * @memberof Comment
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Comment.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Comment;
+})();
+
+$root.Raw = (function() {
+
+    /**
+     * Properties of a Raw.
+     * @exports IRaw
+     * @interface IRaw
+     * @property {string|null} [content] Raw content
+     */
+
+    /**
+     * Constructs a new Raw.
+     * @exports Raw
+     * @classdesc Represents a Raw.
+     * @implements IRaw
+     * @constructor
+     * @param {IRaw=} [properties] Properties to set
+     */
+    function Raw(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Raw content.
+     * @member {string} content
+     * @memberof Raw
+     * @instance
+     */
+    Raw.prototype.content = "";
+
+    /**
+     * Creates a new Raw instance using the specified properties.
+     * @function create
+     * @memberof Raw
+     * @static
+     * @param {IRaw=} [properties] Properties to set
+     * @returns {Raw} Raw instance
+     */
+    Raw.create = function create(properties) {
+        return new Raw(properties);
+    };
+
+    /**
+     * Encodes the specified Raw message. Does not implicitly {@link Raw.verify|verify} messages.
+     * @function encode
+     * @memberof Raw
+     * @static
+     * @param {IRaw} message Raw message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Raw.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.content != null && message.hasOwnProperty("content"))
+            writer.uint32(/* id 0, wireType 2 =*/2).string(message.content);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Raw message, length delimited. Does not implicitly {@link Raw.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Raw
+     * @static
+     * @param {IRaw} message Raw message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Raw.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Raw message from the specified reader or buffer.
+     * @function decode
+     * @memberof Raw
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Raw} Raw
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Raw.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Raw();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.content = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Raw message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Raw
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Raw} Raw
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Raw.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Raw message.
+     * @function verify
+     * @memberof Raw
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Raw.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.content != null && message.hasOwnProperty("content"))
+            if (!$util.isString(message.content))
+                return "content: string expected";
+        return null;
+    };
+
+    /**
+     * Creates a Raw message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Raw
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Raw} Raw
+     */
+    Raw.fromObject = function fromObject(object) {
+        if (object instanceof $root.Raw)
+            return object;
+        var message = new $root.Raw();
+        if (object.content != null)
+            message.content = String(object.content);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Raw message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Raw
+     * @static
+     * @param {Raw} message Raw
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Raw.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.content = "";
+        if (message.content != null && message.hasOwnProperty("content"))
+            object.content = message.content;
+        return object;
+    };
+
+    /**
+     * Converts this Raw to JSON.
+     * @function toJSON
+     * @memberof Raw
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Raw.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Raw;
+})();
+
 $root.Expression = (function() {
 
     /**
@@ -1962,8 +3993,12 @@ $root.Expression = (function() {
      * @property {IGet|null} [get] Expression get
      * @property {ISet|null} [set] Expression set
      * @property {ICall|null} [call] Expression call
+     * @property {IAccess|null} [access] Expression access
+     * @property {IFunctionReference|null} [fun] Expression fun
      * @property {ILiteral|null} [literal] Expression literal
      * @property {IReturn|null} ["return"] Expression return
+     * @property {IComment|null} [comment] Expression comment
+     * @property {IRaw|null} [raw] Expression raw
      */
 
     /**
@@ -2014,6 +4049,22 @@ $root.Expression = (function() {
     Expression.prototype.call = null;
 
     /**
+     * Expression access.
+     * @member {IAccess|null|undefined} access
+     * @memberof Expression
+     * @instance
+     */
+    Expression.prototype.access = null;
+
+    /**
+     * Expression fun.
+     * @member {IFunctionReference|null|undefined} fun
+     * @memberof Expression
+     * @instance
+     */
+    Expression.prototype.fun = null;
+
+    /**
      * Expression literal.
      * @member {ILiteral|null|undefined} literal
      * @memberof Expression
@@ -2029,17 +4080,33 @@ $root.Expression = (function() {
      */
     Expression.prototype["return"] = null;
 
+    /**
+     * Expression comment.
+     * @member {IComment|null|undefined} comment
+     * @memberof Expression
+     * @instance
+     */
+    Expression.prototype.comment = null;
+
+    /**
+     * Expression raw.
+     * @member {IRaw|null|undefined} raw
+     * @memberof Expression
+     * @instance
+     */
+    Expression.prototype.raw = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * Expression expressionType.
-     * @member {"get"|"set"|"call"|"literal"|"return"|undefined} expressionType
+     * @member {"get"|"set"|"call"|"access"|"fun"|"literal"|"return"|"comment"|"raw"|undefined} expressionType
      * @memberof Expression
      * @instance
      */
     Object.defineProperty(Expression.prototype, "expressionType", {
-        get: $util.oneOfGetter($oneOfFields = ["get", "set", "call", "literal", "return"]),
+        get: $util.oneOfGetter($oneOfFields = ["get", "set", "call", "access", "fun", "literal", "return", "comment", "raw"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -2075,10 +4142,18 @@ $root.Expression = (function() {
             $root.Set.encode(message.set, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.call != null && message.hasOwnProperty("call"))
             $root.Call.encode(message.call, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.access != null && message.hasOwnProperty("access"))
+            $root.Access.encode(message.access, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.fun != null && message.hasOwnProperty("fun"))
+            $root.FunctionReference.encode(message.fun, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.literal != null && message.hasOwnProperty("literal"))
             $root.Literal.encode(message.literal, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
         if (message["return"] != null && message.hasOwnProperty("return"))
             $root.Return.encode(message["return"], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.comment != null && message.hasOwnProperty("comment"))
+            $root.Comment.encode(message.comment, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+        if (message.raw != null && message.hasOwnProperty("raw"))
+            $root.Raw.encode(message.raw, writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
         return writer;
     };
 
@@ -2125,11 +4200,23 @@ $root.Expression = (function() {
             case 4:
                 message.call = $root.Call.decode(reader, reader.uint32());
                 break;
+            case 5:
+                message.access = $root.Access.decode(reader, reader.uint32());
+                break;
+            case 6:
+                message.fun = $root.FunctionReference.decode(reader, reader.uint32());
+                break;
             case 7:
                 message.literal = $root.Literal.decode(reader, reader.uint32());
                 break;
             case 8:
                 message["return"] = $root.Return.decode(reader, reader.uint32());
+                break;
+            case 9:
+                message.comment = $root.Comment.decode(reader, reader.uint32());
+                break;
+            case 10:
+                message.raw = $root.Raw.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -2200,6 +4287,26 @@ $root.Expression = (function() {
                     return "call." + error;
             }
         }
+        if (message.access != null && message.hasOwnProperty("access")) {
+            if (properties.expressionType === 1)
+                return "expressionType: multiple values";
+            properties.expressionType = 1;
+            {
+                var error = $root.Access.verify(message.access);
+                if (error)
+                    return "access." + error;
+            }
+        }
+        if (message.fun != null && message.hasOwnProperty("fun")) {
+            if (properties.expressionType === 1)
+                return "expressionType: multiple values";
+            properties.expressionType = 1;
+            {
+                var error = $root.FunctionReference.verify(message.fun);
+                if (error)
+                    return "fun." + error;
+            }
+        }
         if (message.literal != null && message.hasOwnProperty("literal")) {
             if (properties.expressionType === 1)
                 return "expressionType: multiple values";
@@ -2218,6 +4325,26 @@ $root.Expression = (function() {
                 var error = $root.Return.verify(message["return"]);
                 if (error)
                     return "return." + error;
+            }
+        }
+        if (message.comment != null && message.hasOwnProperty("comment")) {
+            if (properties.expressionType === 1)
+                return "expressionType: multiple values";
+            properties.expressionType = 1;
+            {
+                var error = $root.Comment.verify(message.comment);
+                if (error)
+                    return "comment." + error;
+            }
+        }
+        if (message.raw != null && message.hasOwnProperty("raw")) {
+            if (properties.expressionType === 1)
+                return "expressionType: multiple values";
+            properties.expressionType = 1;
+            {
+                var error = $root.Raw.verify(message.raw);
+                if (error)
+                    return "raw." + error;
             }
         }
         return null;
@@ -2255,6 +4382,16 @@ $root.Expression = (function() {
                 throw TypeError(".Expression.call: object expected");
             message.call = $root.Call.fromObject(object.call);
         }
+        if (object.access != null) {
+            if (typeof object.access !== "object")
+                throw TypeError(".Expression.access: object expected");
+            message.access = $root.Access.fromObject(object.access);
+        }
+        if (object.fun != null) {
+            if (typeof object.fun !== "object")
+                throw TypeError(".Expression.fun: object expected");
+            message.fun = $root.FunctionReference.fromObject(object.fun);
+        }
         if (object.literal != null) {
             if (typeof object.literal !== "object")
                 throw TypeError(".Expression.literal: object expected");
@@ -2264,6 +4401,16 @@ $root.Expression = (function() {
             if (typeof object["return"] !== "object")
                 throw TypeError(".Expression.return: object expected");
             message["return"] = $root.Return.fromObject(object["return"]);
+        }
+        if (object.comment != null) {
+            if (typeof object.comment !== "object")
+                throw TypeError(".Expression.comment: object expected");
+            message.comment = $root.Comment.fromObject(object.comment);
+        }
+        if (object.raw != null) {
+            if (typeof object.raw !== "object")
+                throw TypeError(".Expression.raw: object expected");
+            message.raw = $root.Raw.fromObject(object.raw);
         }
         return message;
     };
@@ -2300,6 +4447,16 @@ $root.Expression = (function() {
             if (options.oneofs)
                 object.expressionType = "call";
         }
+        if (message.access != null && message.hasOwnProperty("access")) {
+            object.access = $root.Access.toObject(message.access, options);
+            if (options.oneofs)
+                object.expressionType = "access";
+        }
+        if (message.fun != null && message.hasOwnProperty("fun")) {
+            object.fun = $root.FunctionReference.toObject(message.fun, options);
+            if (options.oneofs)
+                object.expressionType = "fun";
+        }
         if (message.literal != null && message.hasOwnProperty("literal")) {
             object.literal = $root.Literal.toObject(message.literal, options);
             if (options.oneofs)
@@ -2309,6 +4466,16 @@ $root.Expression = (function() {
             object["return"] = $root.Return.toObject(message["return"], options);
             if (options.oneofs)
                 object.expressionType = "return";
+        }
+        if (message.comment != null && message.hasOwnProperty("comment")) {
+            object.comment = $root.Comment.toObject(message.comment, options);
+            if (options.oneofs)
+                object.expressionType = "comment";
+        }
+        if (message.raw != null && message.hasOwnProperty("raw")) {
+            object.raw = $root.Raw.toObject(message.raw, options);
+            if (options.oneofs)
+                object.expressionType = "raw";
         }
         return object;
     };
@@ -2333,7 +4500,7 @@ $root.Call = (function() {
      * Properties of a Call.
      * @exports ICall
      * @interface ICall
-     * @property {IFunctionReference|null} ["function"] Call function
+     * @property {IExpression|null} ["function"] Call function
      * @property {Array.<IArgument>|null} ["arguments"] Call arguments
      */
 
@@ -2355,7 +4522,7 @@ $root.Call = (function() {
 
     /**
      * Call function.
-     * @member {IFunctionReference|null|undefined} function
+     * @member {IExpression|null|undefined} function
      * @memberof Call
      * @instance
      */
@@ -2394,7 +4561,7 @@ $root.Call = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message["function"] != null && message.hasOwnProperty("function"))
-            $root.FunctionReference.encode(message["function"], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            $root.Expression.encode(message["function"], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message["arguments"] != null && message["arguments"].length)
             for (var i = 0; i < message["arguments"].length; ++i)
                 $root.Argument.encode(message["arguments"][i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
@@ -2433,7 +4600,7 @@ $root.Call = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1:
-                message["function"] = $root.FunctionReference.decode(reader, reader.uint32());
+                message["function"] = $root.Expression.decode(reader, reader.uint32());
                 break;
             case 2:
                 if (!(message["arguments"] && message["arguments"].length))
@@ -2476,7 +4643,7 @@ $root.Call = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message["function"] != null && message.hasOwnProperty("function")) {
-            var error = $root.FunctionReference.verify(message["function"]);
+            var error = $root.Expression.verify(message["function"]);
             if (error)
                 return "function." + error;
         }
@@ -2507,7 +4674,7 @@ $root.Call = (function() {
         if (object["function"] != null) {
             if (typeof object["function"] !== "object")
                 throw TypeError(".Call.function: object expected");
-            message["function"] = $root.FunctionReference.fromObject(object["function"]);
+            message["function"] = $root.Expression.fromObject(object["function"]);
         }
         if (object["arguments"]) {
             if (!Array.isArray(object["arguments"]))
@@ -2540,7 +4707,7 @@ $root.Call = (function() {
         if (options.defaults)
             object["function"] = null;
         if (message["function"] != null && message.hasOwnProperty("function"))
-            object["function"] = $root.FunctionReference.toObject(message["function"], options);
+            object["function"] = $root.Expression.toObject(message["function"], options);
         if (message["arguments"] && message["arguments"].length) {
             object["arguments"] = [];
             for (var j = 0; j < message["arguments"].length; ++j)
@@ -2629,9 +4796,9 @@ $root.Argument = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
         if (message.value != null && message.hasOwnProperty("value"))
-            $root.Expression.encode(message.value, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            $root.Expression.encode(message.value, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
 
@@ -2666,10 +4833,10 @@ $root.Argument = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
+            case 0:
                 message.id = reader.int32();
                 break;
-            case 2:
+            case 1:
                 message.value = $root.Expression.decode(reader, reader.uint32());
                 break;
             default:
@@ -2776,6 +4943,436 @@ $root.Argument = (function() {
     };
 
     return Argument;
+})();
+
+$root.GenericArgument = (function() {
+
+    /**
+     * Properties of a GenericArgument.
+     * @exports IGenericArgument
+     * @interface IGenericArgument
+     * @property {number|null} [id] GenericArgument id
+     * @property {ITypeReference|null} [value] GenericArgument value
+     */
+
+    /**
+     * Constructs a new GenericArgument.
+     * @exports GenericArgument
+     * @classdesc Represents a GenericArgument.
+     * @implements IGenericArgument
+     * @constructor
+     * @param {IGenericArgument=} [properties] Properties to set
+     */
+    function GenericArgument(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * GenericArgument id.
+     * @member {number} id
+     * @memberof GenericArgument
+     * @instance
+     */
+    GenericArgument.prototype.id = 0;
+
+    /**
+     * GenericArgument value.
+     * @member {ITypeReference|null|undefined} value
+     * @memberof GenericArgument
+     * @instance
+     */
+    GenericArgument.prototype.value = null;
+
+    /**
+     * Creates a new GenericArgument instance using the specified properties.
+     * @function create
+     * @memberof GenericArgument
+     * @static
+     * @param {IGenericArgument=} [properties] Properties to set
+     * @returns {GenericArgument} GenericArgument instance
+     */
+    GenericArgument.create = function create(properties) {
+        return new GenericArgument(properties);
+    };
+
+    /**
+     * Encodes the specified GenericArgument message. Does not implicitly {@link GenericArgument.verify|verify} messages.
+     * @function encode
+     * @memberof GenericArgument
+     * @static
+     * @param {IGenericArgument} message GenericArgument message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GenericArgument.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.value != null && message.hasOwnProperty("value"))
+            $root.TypeReference.encode(message.value, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified GenericArgument message, length delimited. Does not implicitly {@link GenericArgument.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof GenericArgument
+     * @static
+     * @param {IGenericArgument} message GenericArgument message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GenericArgument.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a GenericArgument message from the specified reader or buffer.
+     * @function decode
+     * @memberof GenericArgument
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {GenericArgument} GenericArgument
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GenericArgument.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GenericArgument();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.int32();
+                break;
+            case 1:
+                message.value = $root.TypeReference.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a GenericArgument message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof GenericArgument
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {GenericArgument} GenericArgument
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GenericArgument.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a GenericArgument message.
+     * @function verify
+     * @memberof GenericArgument
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    GenericArgument.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.value != null && message.hasOwnProperty("value")) {
+            var error = $root.TypeReference.verify(message.value);
+            if (error)
+                return "value." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a GenericArgument message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof GenericArgument
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GenericArgument} GenericArgument
+     */
+    GenericArgument.fromObject = function fromObject(object) {
+        if (object instanceof $root.GenericArgument)
+            return object;
+        var message = new $root.GenericArgument();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.value != null) {
+            if (typeof object.value !== "object")
+                throw TypeError(".GenericArgument.value: object expected");
+            message.value = $root.TypeReference.fromObject(object.value);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a GenericArgument message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof GenericArgument
+     * @static
+     * @param {GenericArgument} message GenericArgument
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    GenericArgument.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.id = 0;
+            object.value = null;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.value != null && message.hasOwnProperty("value"))
+            object.value = $root.TypeReference.toObject(message.value, options);
+        return object;
+    };
+
+    /**
+     * Converts this GenericArgument to JSON.
+     * @function toJSON
+     * @memberof GenericArgument
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    GenericArgument.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return GenericArgument;
+})();
+
+$root.Access = (function() {
+
+    /**
+     * Properties of an Access.
+     * @exports IAccess
+     * @interface IAccess
+     * @property {IExpression|null} [object] Access object
+     * @property {number|null} [property] Access property
+     */
+
+    /**
+     * Constructs a new Access.
+     * @exports Access
+     * @classdesc Represents an Access.
+     * @implements IAccess
+     * @constructor
+     * @param {IAccess=} [properties] Properties to set
+     */
+    function Access(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Access object.
+     * @member {IExpression|null|undefined} object
+     * @memberof Access
+     * @instance
+     */
+    Access.prototype.object = null;
+
+    /**
+     * Access property.
+     * @member {number} property
+     * @memberof Access
+     * @instance
+     */
+    Access.prototype.property = 0;
+
+    /**
+     * Creates a new Access instance using the specified properties.
+     * @function create
+     * @memberof Access
+     * @static
+     * @param {IAccess=} [properties] Properties to set
+     * @returns {Access} Access instance
+     */
+    Access.create = function create(properties) {
+        return new Access(properties);
+    };
+
+    /**
+     * Encodes the specified Access message. Does not implicitly {@link Access.verify|verify} messages.
+     * @function encode
+     * @memberof Access
+     * @static
+     * @param {IAccess} message Access message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Access.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.object != null && message.hasOwnProperty("object"))
+            $root.Expression.encode(message.object, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.property != null && message.hasOwnProperty("property"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.property);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Access message, length delimited. Does not implicitly {@link Access.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Access
+     * @static
+     * @param {IAccess} message Access message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Access.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an Access message from the specified reader or buffer.
+     * @function decode
+     * @memberof Access
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Access} Access
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Access.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Access();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.object = $root.Expression.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.property = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes an Access message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Access
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Access} Access
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Access.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an Access message.
+     * @function verify
+     * @memberof Access
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Access.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.object != null && message.hasOwnProperty("object")) {
+            var error = $root.Expression.verify(message.object);
+            if (error)
+                return "object." + error;
+        }
+        if (message.property != null && message.hasOwnProperty("property"))
+            if (!$util.isInteger(message.property))
+                return "property: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates an Access message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Access
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Access} Access
+     */
+    Access.fromObject = function fromObject(object) {
+        if (object instanceof $root.Access)
+            return object;
+        var message = new $root.Access();
+        if (object.object != null) {
+            if (typeof object.object !== "object")
+                throw TypeError(".Access.object: object expected");
+            message.object = $root.Expression.fromObject(object.object);
+        }
+        if (object.property != null)
+            message.property = object.property | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an Access message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Access
+     * @static
+     * @param {Access} message Access
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Access.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.object = null;
+            object.property = 0;
+        }
+        if (message.object != null && message.hasOwnProperty("object"))
+            object.object = $root.Expression.toObject(message.object, options);
+        if (message.property != null && message.hasOwnProperty("property"))
+            object.property = message.property;
+        return object;
+    };
+
+    /**
+     * Converts this Access to JSON.
+     * @function toJSON
+     * @memberof Access
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Access.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Access;
 })();
 
 $root.Literal = (function() {
@@ -3101,6 +5698,7 @@ $root.Return = (function() {
      * Properties of a Return.
      * @exports IReturn
      * @interface IReturn
+     * @property {number|null} [up] Return up
      * @property {IExpression|null} [value] Return value
      */
 
@@ -3118,6 +5716,14 @@ $root.Return = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * Return up.
+     * @member {number} up
+     * @memberof Return
+     * @instance
+     */
+    Return.prototype.up = 0;
 
     /**
      * Return value.
@@ -3151,6 +5757,8 @@ $root.Return = (function() {
     Return.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.up != null && message.hasOwnProperty("up"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.up);
         if (message.value != null && message.hasOwnProperty("value"))
             $root.Expression.encode(message.value, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
@@ -3187,6 +5795,9 @@ $root.Return = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
+            case 0:
+                message.up = reader.int32();
+                break;
             case 1:
                 message.value = $root.Expression.decode(reader, reader.uint32());
                 break;
@@ -3225,6 +5836,9 @@ $root.Return = (function() {
     Return.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.up != null && message.hasOwnProperty("up"))
+            if (!$util.isInteger(message.up))
+                return "up: integer expected";
         if (message.value != null && message.hasOwnProperty("value")) {
             var error = $root.Expression.verify(message.value);
             if (error)
@@ -3245,6 +5859,8 @@ $root.Return = (function() {
         if (object instanceof $root.Return)
             return object;
         var message = new $root.Return();
+        if (object.up != null)
+            message.up = object.up | 0;
         if (object.value != null) {
             if (typeof object.value !== "object")
                 throw TypeError(".Return.value: object expected");
@@ -3266,8 +5882,12 @@ $root.Return = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults)
+        if (options.defaults) {
+            object.up = 0;
             object.value = null;
+        }
+        if (message.up != null && message.hasOwnProperty("up"))
+            object.up = message.up;
         if (message.value != null && message.hasOwnProperty("value"))
             object.value = $root.Expression.toObject(message.value, options);
         return object;
@@ -3287,6 +5907,445 @@ $root.Return = (function() {
     return Return;
 })();
 
+$root.Function = (function() {
+
+    /**
+     * Properties of a Function.
+     * @exports IFunction
+     * @interface IFunction
+     * @property {number|null} [id] Function id
+     * @property {IComplexTypeReference|null} [type] Function type
+     * @property {string|null} [name] Function name
+     * @property {string|null} [description] Function description
+     * @property {IFunctionReference|null} [lexicalParent] Function lexicalParent
+     * @property {boolean|null} [pure] Function pure
+     * @property {Array.<IVariable>|null} [parameters] Function parameters
+     * @property {Array.<IVariable>|null} [variables] Function variables
+     * @property {Array.<IExpression>|null} [body] Function body
+     */
+
+    /**
+     * Constructs a new Function.
+     * @exports Function
+     * @classdesc Represents a Function.
+     * @implements IFunction
+     * @constructor
+     * @param {IFunction=} [properties] Properties to set
+     */
+    function Function(properties) {
+        this.parameters = [];
+        this.variables = [];
+        this.body = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Function id.
+     * @member {number} id
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.id = 0;
+
+    /**
+     * Function type.
+     * @member {IComplexTypeReference|null|undefined} type
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.type = null;
+
+    /**
+     * Function name.
+     * @member {string} name
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.name = "";
+
+    /**
+     * Function description.
+     * @member {string} description
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.description = "";
+
+    /**
+     * Function lexicalParent.
+     * @member {IFunctionReference|null|undefined} lexicalParent
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.lexicalParent = null;
+
+    /**
+     * Function pure.
+     * @member {boolean} pure
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.pure = false;
+
+    /**
+     * Function parameters.
+     * @member {Array.<IVariable>} parameters
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.parameters = $util.emptyArray;
+
+    /**
+     * Function variables.
+     * @member {Array.<IVariable>} variables
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.variables = $util.emptyArray;
+
+    /**
+     * Function body.
+     * @member {Array.<IExpression>} body
+     * @memberof Function
+     * @instance
+     */
+    Function.prototype.body = $util.emptyArray;
+
+    /**
+     * Creates a new Function instance using the specified properties.
+     * @function create
+     * @memberof Function
+     * @static
+     * @param {IFunction=} [properties] Properties to set
+     * @returns {Function} Function instance
+     */
+    Function.create = function create(properties) {
+        return new Function(properties);
+    };
+
+    /**
+     * Encodes the specified Function message. Does not implicitly {@link Function.verify|verify} messages.
+     * @function encode
+     * @memberof Function
+     * @static
+     * @param {IFunction} message Function message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Function.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.id != null && message.hasOwnProperty("id"))
+            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
+        if (message.type != null && message.hasOwnProperty("type"))
+            $root.ComplexTypeReference.encode(message.type, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.name != null && message.hasOwnProperty("name"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.name);
+        if (message.description != null && message.hasOwnProperty("description"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.description);
+        if (message.lexicalParent != null && message.hasOwnProperty("lexicalParent"))
+            $root.FunctionReference.encode(message.lexicalParent, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.pure != null && message.hasOwnProperty("pure"))
+            writer.uint32(/* id 5, wireType 0 =*/40).bool(message.pure);
+        if (message.parameters != null && message.parameters.length)
+            for (var i = 0; i < message.parameters.length; ++i)
+                $root.Variable.encode(message.parameters[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        if (message.variables != null && message.variables.length)
+            for (var i = 0; i < message.variables.length; ++i)
+                $root.Variable.encode(message.variables[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+        if (message.body != null && message.body.length)
+            for (var i = 0; i < message.body.length; ++i)
+                $root.Expression.encode(message.body[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Function message, length delimited. Does not implicitly {@link Function.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Function
+     * @static
+     * @param {IFunction} message Function message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Function.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Function message from the specified reader or buffer.
+     * @function decode
+     * @memberof Function
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Function} Function
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Function.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Function();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 0:
+                message.id = reader.int32();
+                break;
+            case 1:
+                message.type = $root.ComplexTypeReference.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.name = reader.string();
+                break;
+            case 3:
+                message.description = reader.string();
+                break;
+            case 4:
+                message.lexicalParent = $root.FunctionReference.decode(reader, reader.uint32());
+                break;
+            case 5:
+                message.pure = reader.bool();
+                break;
+            case 6:
+                if (!(message.parameters && message.parameters.length))
+                    message.parameters = [];
+                message.parameters.push($root.Variable.decode(reader, reader.uint32()));
+                break;
+            case 7:
+                if (!(message.variables && message.variables.length))
+                    message.variables = [];
+                message.variables.push($root.Variable.decode(reader, reader.uint32()));
+                break;
+            case 8:
+                if (!(message.body && message.body.length))
+                    message.body = [];
+                message.body.push($root.Expression.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Function message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Function
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Function} Function
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Function.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Function message.
+     * @function verify
+     * @memberof Function
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Function.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isInteger(message.id))
+                return "id: integer expected";
+        if (message.type != null && message.hasOwnProperty("type")) {
+            var error = $root.ComplexTypeReference.verify(message.type);
+            if (error)
+                return "type." + error;
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            if (!$util.isString(message.name))
+                return "name: string expected";
+        if (message.description != null && message.hasOwnProperty("description"))
+            if (!$util.isString(message.description))
+                return "description: string expected";
+        if (message.lexicalParent != null && message.hasOwnProperty("lexicalParent")) {
+            var error = $root.FunctionReference.verify(message.lexicalParent);
+            if (error)
+                return "lexicalParent." + error;
+        }
+        if (message.pure != null && message.hasOwnProperty("pure"))
+            if (typeof message.pure !== "boolean")
+                return "pure: boolean expected";
+        if (message.parameters != null && message.hasOwnProperty("parameters")) {
+            if (!Array.isArray(message.parameters))
+                return "parameters: array expected";
+            for (var i = 0; i < message.parameters.length; ++i) {
+                var error = $root.Variable.verify(message.parameters[i]);
+                if (error)
+                    return "parameters." + error;
+            }
+        }
+        if (message.variables != null && message.hasOwnProperty("variables")) {
+            if (!Array.isArray(message.variables))
+                return "variables: array expected";
+            for (var i = 0; i < message.variables.length; ++i) {
+                var error = $root.Variable.verify(message.variables[i]);
+                if (error)
+                    return "variables." + error;
+            }
+        }
+        if (message.body != null && message.hasOwnProperty("body")) {
+            if (!Array.isArray(message.body))
+                return "body: array expected";
+            for (var i = 0; i < message.body.length; ++i) {
+                var error = $root.Expression.verify(message.body[i]);
+                if (error)
+                    return "body." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Function message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Function
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Function} Function
+     */
+    Function.fromObject = function fromObject(object) {
+        if (object instanceof $root.Function)
+            return object;
+        var message = new $root.Function();
+        if (object.id != null)
+            message.id = object.id | 0;
+        if (object.type != null) {
+            if (typeof object.type !== "object")
+                throw TypeError(".Function.type: object expected");
+            message.type = $root.ComplexTypeReference.fromObject(object.type);
+        }
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.description != null)
+            message.description = String(object.description);
+        if (object.lexicalParent != null) {
+            if (typeof object.lexicalParent !== "object")
+                throw TypeError(".Function.lexicalParent: object expected");
+            message.lexicalParent = $root.FunctionReference.fromObject(object.lexicalParent);
+        }
+        if (object.pure != null)
+            message.pure = Boolean(object.pure);
+        if (object.parameters) {
+            if (!Array.isArray(object.parameters))
+                throw TypeError(".Function.parameters: array expected");
+            message.parameters = [];
+            for (var i = 0; i < object.parameters.length; ++i) {
+                if (typeof object.parameters[i] !== "object")
+                    throw TypeError(".Function.parameters: object expected");
+                message.parameters[i] = $root.Variable.fromObject(object.parameters[i]);
+            }
+        }
+        if (object.variables) {
+            if (!Array.isArray(object.variables))
+                throw TypeError(".Function.variables: array expected");
+            message.variables = [];
+            for (var i = 0; i < object.variables.length; ++i) {
+                if (typeof object.variables[i] !== "object")
+                    throw TypeError(".Function.variables: object expected");
+                message.variables[i] = $root.Variable.fromObject(object.variables[i]);
+            }
+        }
+        if (object.body) {
+            if (!Array.isArray(object.body))
+                throw TypeError(".Function.body: array expected");
+            message.body = [];
+            for (var i = 0; i < object.body.length; ++i) {
+                if (typeof object.body[i] !== "object")
+                    throw TypeError(".Function.body: object expected");
+                message.body[i] = $root.Expression.fromObject(object.body[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Function message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Function
+     * @static
+     * @param {Function} message Function
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Function.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults) {
+            object.parameters = [];
+            object.variables = [];
+            object.body = [];
+        }
+        if (options.defaults) {
+            object.id = 0;
+            object.type = null;
+            object.name = "";
+            object.description = "";
+            object.lexicalParent = null;
+            object.pure = false;
+        }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
+        if (message.type != null && message.hasOwnProperty("type"))
+            object.type = $root.ComplexTypeReference.toObject(message.type, options);
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.description != null && message.hasOwnProperty("description"))
+            object.description = message.description;
+        if (message.lexicalParent != null && message.hasOwnProperty("lexicalParent"))
+            object.lexicalParent = $root.FunctionReference.toObject(message.lexicalParent, options);
+        if (message.pure != null && message.hasOwnProperty("pure"))
+            object.pure = message.pure;
+        if (message.parameters && message.parameters.length) {
+            object.parameters = [];
+            for (var j = 0; j < message.parameters.length; ++j)
+                object.parameters[j] = $root.Variable.toObject(message.parameters[j], options);
+        }
+        if (message.variables && message.variables.length) {
+            object.variables = [];
+            for (var j = 0; j < message.variables.length; ++j)
+                object.variables[j] = $root.Variable.toObject(message.variables[j], options);
+        }
+        if (message.body && message.body.length) {
+            object.body = [];
+            for (var j = 0; j < message.body.length; ++j)
+                object.body[j] = $root.Expression.toObject(message.body[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this Function to JSON.
+     * @function toJSON
+     * @memberof Function
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Function.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Function;
+})();
+
 $root.Module = (function() {
 
     /**
@@ -3296,7 +6355,7 @@ $root.Module = (function() {
      * @property {IModuleReference|null} [id] Module id
      * @property {Array.<IModuleReference>|null} [dependencies] Module dependencies
      * @property {Array.<IFunction>|null} [functions] Module functions
-     * @property {Array.<IType>|null} [types] Module types
+     * @property {Array.<IComplexType>|null} [types] Module types
      * @property {IFunction|null} [main] Module main
      */
 
@@ -3344,7 +6403,7 @@ $root.Module = (function() {
 
     /**
      * Module types.
-     * @member {Array.<IType>} types
+     * @member {Array.<IComplexType>} types
      * @memberof Module
      * @instance
      */
@@ -3392,7 +6451,7 @@ $root.Module = (function() {
                 $root.Function.encode(message.functions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         if (message.types != null && message.types.length)
             for (var i = 0; i < message.types.length; ++i)
-                $root.Type.encode(message.types[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+                $root.ComplexType.encode(message.types[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         if (message.main != null && message.hasOwnProperty("main"))
             $root.Function.encode(message.main, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
@@ -3445,7 +6504,7 @@ $root.Module = (function() {
             case 4:
                 if (!(message.types && message.types.length))
                     message.types = [];
-                message.types.push($root.Type.decode(reader, reader.uint32()));
+                message.types.push($root.ComplexType.decode(reader, reader.uint32()));
                 break;
             case 5:
                 message.main = $root.Function.decode(reader, reader.uint32());
@@ -3512,7 +6571,7 @@ $root.Module = (function() {
             if (!Array.isArray(message.types))
                 return "types: array expected";
             for (var i = 0; i < message.types.length; ++i) {
-                var error = $root.Type.verify(message.types[i]);
+                var error = $root.ComplexType.verify(message.types[i]);
                 if (error)
                     return "types." + error;
             }
@@ -3569,7 +6628,7 @@ $root.Module = (function() {
             for (var i = 0; i < object.types.length; ++i) {
                 if (typeof object.types[i] !== "object")
                     throw TypeError(".Module.types: object expected");
-                message.types[i] = $root.Type.fromObject(object.types[i]);
+                message.types[i] = $root.ComplexType.fromObject(object.types[i]);
             }
         }
         if (object.main != null) {
@@ -3617,7 +6676,7 @@ $root.Module = (function() {
         if (message.types && message.types.length) {
             object.types = [];
             for (var j = 0; j < message.types.length; ++j)
-                object.types[j] = $root.Type.toObject(message.types[j], options);
+                object.types[j] = $root.ComplexType.toObject(message.types[j], options);
         }
         if (message.main != null && message.hasOwnProperty("main"))
             object.main = $root.Function.toObject(message.main, options);

@@ -13,7 +13,6 @@
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "ts-loader": "5.3.3",
-    "css-loader": "2.1.0",
     "style-loader": "0.23.1",
     "typescript": "^3.1.0-dev.20180912",
     "webpack": "^4.0.0",
@@ -22,10 +21,11 @@
     "mocha": "5.2.0",
     "@types/mocha": "5.2.5",
     "express": "4.16.4",
-    "protobufjs": "6.8.8"
+    "protobufjs": "^6.8.8"
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack; node server.js"
-  } 
+    "start": "webpack; node server.js",
+    "build-types": "pbjs -t static-module -w commonjs --proto_path ../AST/ -o src/AST/index.js ../AST/type.proto ../AST/function.proto ../AST/module.proto   && pbts -o src/AST/index.d.ts src/AST/index.js"
+  }
 }

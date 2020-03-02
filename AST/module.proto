@@ -21,7 +21,7 @@ message Module {
   repeated ModuleReference dependencies = 2;
 
   repeated Function functions = 3;
-  repeated Type types = 4;
+  repeated ComplexType types = 4;
 
   /* The main function that directly gets executed when loading this module.
      The Function may have no parameters and no parent function.
