@@ -1,17 +1,5 @@
 syntax = "proto3";
 
-
-
-/* A Type that represents the most low-level types that can't be split up */
-enum PrimitiveType {
-  String = 0; /* A bunch of UTF-16 characters, characters of a String are itself Strings */
-  Integer = 1; /* A number that is a multiple of 1 ranging from 2 power 32 to 1 - 2 power 32 */
-  Float = 2; /* A 64bit FLoating point number defined according to "Some cool spec" */
-  Boolean = 3; /* True / False */
-  Void = 4; /* Nothing, really nothing */
-  Any = 5; // Behaves like a union type of all other types available in this UNI program
-}
-
 /* Used to refer to a Type declared inside a Module, "type" has to be unique inside the module "moduleID" point32s to */
 message ComplexTypeReference {
   int32 type = 1;
@@ -25,7 +13,6 @@ message ComplexTypeReference {
 /* Used to refer at a type */
 message TypeReference {
   oneof primitiveOrComplex {
-    PrimitiveType primitive = 1;
     ComplexTypeReference complex = 2;
     GenericTypeReference generic = 3;
   }
@@ -45,20 +32,29 @@ message Property {
 }
 
 message ObjectType {
-  /*unique*/ int32 id = 0;
   /*interpreter-*/optional string name = 1;
   /*interpreter-*/optional string description = 2;
 
   repeated Property properties = 3;
+
+  repeated ComplexTypeReference supertypes = 4;
 }
 
 /*A Type that represents a Function.
-  A FunctionReference fullfills this type if returns & parameters are equal
+  A FunctionReference fullfills this type if returns & parameters are either equal or a subtype of the generic parameter
+
+  If a function type is marked virtual, it is called a 'virtual function'
+  Another function type can then reference that virtual function as its virtual parent.
+  The child must have the same parameters as the virtualParent,
+    however the types may be subtypes.
 */
 message FunctionType {
-  repeated FunctionTypeParameter parameters = 0;
-  repeated FunctionGenericParameter typeParameters = 1;
-  TypeReference returns = 2;
+  repeated FunctionTypeParameter parameters = 1;
+  repeated FunctionGenericParameter typeParameters = 2;
+  TypeReference returns = 3;
+
+  bool virtual = 4;
+  /*optional*/ TypeReference virtualParent = 5;
 }
 
 message FunctionTypeParameter {

@@ -22,11 +22,6 @@ message Module {
 
   repeated Function functions = 3;
   repeated ComplexType types = 4;
-
-  /* The main function that directly gets executed when loading this module.
-     The Function may have no parameters and no parent function.
-  */
-  /*optional*/ Function main = 5;
 }
 
 message ModuleReference {
@@ -53,4 +48,12 @@ message ModuleReference {
 
   /* The version should be increased on every breaking change to notify users */
   int32 version = 3;
+
+    /* The environment indicates that this module can only be loaded inside a specific implementation of UNI engine.
+       Two modules might have the same domain and version but different environments.
+       If a module does not have an environment, it can be loaded on every engine.
+       If a module is loaded with no environment being set, the engine may load a module whose environment is the same as the engine's environment.
+       If a module is loaded with an environment being set, but only a module with no environment exists, then that module may be loaded instead.
+  */
+  /*optional*/ string environment = 4;
 }

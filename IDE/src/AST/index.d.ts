@@ -1,14 +1,4 @@
 import * as $protobuf from "protobufjs";
-/** PrimitiveType enum. */
-export enum PrimitiveType {
-    String = 0,
-    Integer = 1,
-    Float = 2,
-    Boolean = 3,
-    Void = 4,
-    Any = 5
-}
-
 /** Properties of a ComplexTypeReference. */
 export interface IComplexTypeReference {
 
@@ -81,14 +71,14 @@ export class ComplexTypeReference implements IComplexTypeReference {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a ComplexTypeReference message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns ComplexTypeReference
      */
-    public static fromObject(object: Record<string, any>): ComplexTypeReference;
+    public static fromObject(object: [ 'object' ].<string, any>): ComplexTypeReference;
 
     /**
      * Creates a plain object from a ComplexTypeReference message. Also converts values to other types if specified.
@@ -96,23 +86,23 @@ export class ComplexTypeReference implements IComplexTypeReference {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ComplexTypeReference, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: ComplexTypeReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this ComplexTypeReference to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a TypeReference. */
 export interface ITypeReference {
 
-    /** TypeReference primitive */
-    primitive?: (PrimitiveType|null);
-
     /** TypeReference complex */
     complex?: (IComplexTypeReference|null);
+
+    /** TypeReference generic */
+    generic?: (IGenericTypeReference|null);
 }
 
 /** Represents a TypeReference. */
@@ -124,14 +114,14 @@ export class TypeReference implements ITypeReference {
      */
     constructor(properties?: ITypeReference);
 
-    /** TypeReference primitive. */
-    public primitive: PrimitiveType;
-
     /** TypeReference complex. */
     public complex?: (IComplexTypeReference|null);
 
+    /** TypeReference generic. */
+    public generic?: (IGenericTypeReference|null);
+
     /** TypeReference primitiveOrComplex. */
-    public primitiveOrComplex?: ("primitive"|"complex");
+    public primitiveOrComplex?: ("complex"|"generic");
 
     /**
      * Creates a new TypeReference instance using the specified properties.
@@ -180,14 +170,14 @@ export class TypeReference implements ITypeReference {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a TypeReference message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns TypeReference
      */
-    public static fromObject(object: Record<string, any>): TypeReference;
+    public static fromObject(object: [ 'object' ].<string, any>): TypeReference;
 
     /**
      * Creates a plain object from a TypeReference message. Also converts values to other types if specified.
@@ -195,13 +185,109 @@ export class TypeReference implements ITypeReference {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: TypeReference, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: TypeReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this TypeReference to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
+}
+
+/** Properties of a GenericTypeReference. */
+export interface IGenericTypeReference {
+
+    /** GenericTypeReference function */
+    "function"?: (IFunctionReference|null);
+
+    /** GenericTypeReference generic */
+    generic?: (number|null);
+}
+
+/** Represents a GenericTypeReference. */
+export class GenericTypeReference implements IGenericTypeReference {
+
+    /**
+     * Constructs a new GenericTypeReference.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IGenericTypeReference);
+
+    /** GenericTypeReference function. */
+    public function?: (IFunctionReference|null);
+
+    /** GenericTypeReference generic. */
+    public generic: number;
+
+    /**
+     * Creates a new GenericTypeReference instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns GenericTypeReference instance
+     */
+    public static create(properties?: IGenericTypeReference): GenericTypeReference;
+
+    /**
+     * Encodes the specified GenericTypeReference message. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
+     * @param message GenericTypeReference message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IGenericTypeReference, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified GenericTypeReference message, length delimited. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
+     * @param message GenericTypeReference message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IGenericTypeReference, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a GenericTypeReference message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns GenericTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GenericTypeReference;
+
+    /**
+     * Decodes a GenericTypeReference message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns GenericTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GenericTypeReference;
+
+    /**
+     * Verifies a GenericTypeReference message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
+
+    /**
+     * Creates a GenericTypeReference message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns GenericTypeReference
+     */
+    public static fromObject(object: [ 'object' ].<string, any>): GenericTypeReference;
+
+    /**
+     * Creates a plain object from a GenericTypeReference message. Also converts values to other types if specified.
+     * @param message GenericTypeReference
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: GenericTypeReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
+
+    /**
+     * Converts this GenericTypeReference to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Property. */
@@ -288,14 +374,14 @@ export class Property implements IProperty {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Property message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Property
      */
-    public static fromObject(object: Record<string, any>): Property;
+    public static fromObject(object: [ 'object' ].<string, any>): Property;
 
     /**
      * Creates a plain object from a Property message. Also converts values to other types if specified.
@@ -303,20 +389,17 @@ export class Property implements IProperty {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Property, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Property, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Property to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of an ObjectType. */
 export interface IObjectType {
-
-    /** ObjectType id */
-    id?: (number|null);
 
     /** ObjectType name */
     name?: (string|null);
@@ -326,6 +409,9 @@ export interface IObjectType {
 
     /** ObjectType properties */
     properties?: (IProperty[]|null);
+
+    /** ObjectType supertypes */
+    supertypes?: (IComplexTypeReference[]|null);
 }
 
 /** Represents an ObjectType. */
@@ -337,9 +423,6 @@ export class ObjectType implements IObjectType {
      */
     constructor(properties?: IObjectType);
 
-    /** ObjectType id. */
-    public id: number;
-
     /** ObjectType name. */
     public name: string;
 
@@ -347,7 +430,10 @@ export class ObjectType implements IObjectType {
     public description: string;
 
     /** ObjectType properties. */
-    public properties: Array<IProperty>;
+    public properties: [ 'Array' ].<IProperty>;
+
+    /** ObjectType supertypes. */
+    public supertypes: [ 'Array' ].<IComplexTypeReference>;
 
     /**
      * Creates a new ObjectType instance using the specified properties.
@@ -396,14 +482,14 @@ export class ObjectType implements IObjectType {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates an ObjectType message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns ObjectType
      */
-    public static fromObject(object: Record<string, any>): ObjectType;
+    public static fromObject(object: [ 'object' ].<string, any>): ObjectType;
 
     /**
      * Creates a plain object from an ObjectType message. Also converts values to other types if specified.
@@ -411,13 +497,13 @@ export class ObjectType implements IObjectType {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ObjectType, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: ObjectType, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this ObjectType to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a FunctionType. */
@@ -431,6 +517,12 @@ export interface IFunctionType {
 
     /** FunctionType returns */
     returns?: (ITypeReference|null);
+
+    /** FunctionType virtual */
+    virtual?: (boolean|null);
+
+    /** FunctionType virtualParent */
+    virtualParent?: (ITypeReference|null);
 }
 
 /** Represents a FunctionType. */
@@ -443,13 +535,19 @@ export class FunctionType implements IFunctionType {
     constructor(properties?: IFunctionType);
 
     /** FunctionType parameters. */
-    public parameters: Array<IFunctionTypeParameter>;
+    public parameters: [ 'Array' ].<IFunctionTypeParameter>;
 
     /** FunctionType typeParameters. */
-    public typeParameters: Array<IFunctionGenericParameter>;
+    public typeParameters: [ 'Array' ].<IFunctionGenericParameter>;
 
     /** FunctionType returns. */
     public returns?: (ITypeReference|null);
+
+    /** FunctionType virtual. */
+    public virtual: boolean;
+
+    /** FunctionType virtualParent. */
+    public virtualParent?: (ITypeReference|null);
 
     /**
      * Creates a new FunctionType instance using the specified properties.
@@ -498,14 +596,14 @@ export class FunctionType implements IFunctionType {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a FunctionType message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns FunctionType
      */
-    public static fromObject(object: Record<string, any>): FunctionType;
+    public static fromObject(object: [ 'object' ].<string, any>): FunctionType;
 
     /**
      * Creates a plain object from a FunctionType message. Also converts values to other types if specified.
@@ -513,13 +611,13 @@ export class FunctionType implements IFunctionType {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: FunctionType, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: FunctionType, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this FunctionType to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a FunctionTypeParameter. */
@@ -606,14 +704,14 @@ export class FunctionTypeParameter implements IFunctionTypeParameter {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a FunctionTypeParameter message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns FunctionTypeParameter
      */
-    public static fromObject(object: Record<string, any>): FunctionTypeParameter;
+    public static fromObject(object: [ 'object' ].<string, any>): FunctionTypeParameter;
 
     /**
      * Creates a plain object from a FunctionTypeParameter message. Also converts values to other types if specified.
@@ -621,13 +719,13 @@ export class FunctionTypeParameter implements IFunctionTypeParameter {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: FunctionTypeParameter, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: FunctionTypeParameter, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this FunctionTypeParameter to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a FunctionGenericParameter. */
@@ -714,14 +812,14 @@ export class FunctionGenericParameter implements IFunctionGenericParameter {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a FunctionGenericParameter message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns FunctionGenericParameter
      */
-    public static fromObject(object: Record<string, any>): FunctionGenericParameter;
+    public static fromObject(object: [ 'object' ].<string, any>): FunctionGenericParameter;
 
     /**
      * Creates a plain object from a FunctionGenericParameter message. Also converts values to other types if specified.
@@ -729,13 +827,13 @@ export class FunctionGenericParameter implements IFunctionGenericParameter {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: FunctionGenericParameter, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: FunctionGenericParameter, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this FunctionGenericParameter to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of an UnionType. */
@@ -761,7 +859,7 @@ export class UnionType implements IUnionType {
     constructor(properties?: IUnionType);
 
     /** UnionType members. */
-    public members: Array<ITypeReference>;
+    public members: [ 'Array' ].<ITypeReference>;
 
     /** UnionType name. */
     public name: string;
@@ -816,14 +914,14 @@ export class UnionType implements IUnionType {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates an UnionType message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns UnionType
      */
-    public static fromObject(object: Record<string, any>): UnionType;
+    public static fromObject(object: [ 'object' ].<string, any>): UnionType;
 
     /**
      * Creates a plain object from an UnionType message. Also converts values to other types if specified.
@@ -831,13 +929,13 @@ export class UnionType implements IUnionType {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: UnionType, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: UnionType, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this UnionType to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a ComplexType. */
@@ -927,14 +1025,14 @@ export class ComplexType implements IComplexType {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a ComplexType message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns ComplexType
      */
-    public static fromObject(object: Record<string, any>): ComplexType;
+    public static fromObject(object: [ 'object' ].<string, any>): ComplexType;
 
     /**
      * Creates a plain object from a ComplexType message. Also converts values to other types if specified.
@@ -942,13 +1040,13 @@ export class ComplexType implements IComplexType {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ComplexType, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: ComplexType, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this ComplexType to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a FunctionReference. */
@@ -1023,14 +1121,14 @@ export class FunctionReference implements IFunctionReference {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a FunctionReference message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns FunctionReference
      */
-    public static fromObject(object: Record<string, any>): FunctionReference;
+    public static fromObject(object: [ 'object' ].<string, any>): FunctionReference;
 
     /**
      * Creates a plain object from a FunctionReference message. Also converts values to other types if specified.
@@ -1038,13 +1136,13 @@ export class FunctionReference implements IFunctionReference {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: FunctionReference, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: FunctionReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this FunctionReference to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a VariableReference. */
@@ -1125,14 +1223,14 @@ export class VariableReference implements IVariableReference {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a VariableReference message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns VariableReference
      */
-    public static fromObject(object: Record<string, any>): VariableReference;
+    public static fromObject(object: [ 'object' ].<string, any>): VariableReference;
 
     /**
      * Creates a plain object from a VariableReference message. Also converts values to other types if specified.
@@ -1140,13 +1238,13 @@ export class VariableReference implements IVariableReference {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: VariableReference, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: VariableReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this VariableReference to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Variable. */
@@ -1233,14 +1331,14 @@ export class Variable implements IVariable {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Variable message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Variable
      */
-    public static fromObject(object: Record<string, any>): Variable;
+    public static fromObject(object: [ 'object' ].<string, any>): Variable;
 
     /**
      * Creates a plain object from a Variable message. Also converts values to other types if specified.
@@ -1248,13 +1346,13 @@ export class Variable implements IVariable {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Variable, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Variable, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Variable to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Get. */
@@ -1323,14 +1421,14 @@ export class Get implements IGet {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Get message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Get
      */
-    public static fromObject(object: Record<string, any>): Get;
+    public static fromObject(object: [ 'object' ].<string, any>): Get;
 
     /**
      * Creates a plain object from a Get message. Also converts values to other types if specified.
@@ -1338,13 +1436,13 @@ export class Get implements IGet {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Get, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Get, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Get to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Set. */
@@ -1431,14 +1529,14 @@ export class Set implements ISet {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Set message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Set
      */
-    public static fromObject(object: Record<string, any>): Set;
+    public static fromObject(object: [ 'object' ].<string, any>): Set;
 
     /**
      * Creates a plain object from a Set message. Also converts values to other types if specified.
@@ -1446,13 +1544,13 @@ export class Set implements ISet {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Set, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Set, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Set to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Comment. */
@@ -1533,14 +1631,14 @@ export class Comment implements IComment {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Comment message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Comment
      */
-    public static fromObject(object: Record<string, any>): Comment;
+    public static fromObject(object: [ 'object' ].<string, any>): Comment;
 
     /**
      * Creates a plain object from a Comment message. Also converts values to other types if specified.
@@ -1548,13 +1646,13 @@ export class Comment implements IComment {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Comment, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Comment, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Comment to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Raw. */
@@ -1623,14 +1721,14 @@ export class Raw implements IRaw {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Raw message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Raw
      */
-    public static fromObject(object: Record<string, any>): Raw;
+    public static fromObject(object: [ 'object' ].<string, any>): Raw;
 
     /**
      * Creates a plain object from a Raw message. Also converts values to other types if specified.
@@ -1638,13 +1736,13 @@ export class Raw implements IRaw {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Raw, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Raw, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Raw to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of an Expression. */
@@ -1770,14 +1868,14 @@ export class Expression implements IExpression {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates an Expression message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Expression
      */
-    public static fromObject(object: Record<string, any>): Expression;
+    public static fromObject(object: [ 'object' ].<string, any>): Expression;
 
     /**
      * Creates a plain object from an Expression message. Also converts values to other types if specified.
@@ -1785,13 +1883,13 @@ export class Expression implements IExpression {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Expression, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Expression, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Expression to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Call. */
@@ -1817,7 +1915,7 @@ export class Call implements ICall {
     public function?: (IExpression|null);
 
     /** Call arguments. */
-    public arguments: Array<IArgument>;
+    public arguments: [ 'Array' ].<IArgument>;
 
     /**
      * Creates a new Call instance using the specified properties.
@@ -1866,14 +1964,14 @@ export class Call implements ICall {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Call message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Call
      */
-    public static fromObject(object: Record<string, any>): Call;
+    public static fromObject(object: [ 'object' ].<string, any>): Call;
 
     /**
      * Creates a plain object from a Call message. Also converts values to other types if specified.
@@ -1881,13 +1979,109 @@ export class Call implements ICall {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Call, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Call, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Call to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
+}
+
+/** Properties of a VirtualCall. */
+export interface IVirtualCall {
+
+    /** VirtualCall functionType */
+    functionType?: (IComplexTypeReference|null);
+
+    /** VirtualCall arguments */
+    "arguments"?: (IArgument[]|null);
+}
+
+/** Represents a VirtualCall. */
+export class VirtualCall implements IVirtualCall {
+
+    /**
+     * Constructs a new VirtualCall.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IVirtualCall);
+
+    /** VirtualCall functionType. */
+    public functionType?: (IComplexTypeReference|null);
+
+    /** VirtualCall arguments. */
+    public arguments: [ 'Array' ].<IArgument>;
+
+    /**
+     * Creates a new VirtualCall instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns VirtualCall instance
+     */
+    public static create(properties?: IVirtualCall): VirtualCall;
+
+    /**
+     * Encodes the specified VirtualCall message. Does not implicitly {@link VirtualCall.verify|verify} messages.
+     * @param message VirtualCall message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IVirtualCall, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified VirtualCall message, length delimited. Does not implicitly {@link VirtualCall.verify|verify} messages.
+     * @param message VirtualCall message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IVirtualCall, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a VirtualCall message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns VirtualCall
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): VirtualCall;
+
+    /**
+     * Decodes a VirtualCall message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns VirtualCall
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): VirtualCall;
+
+    /**
+     * Verifies a VirtualCall message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
+
+    /**
+     * Creates a VirtualCall message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns VirtualCall
+     */
+    public static fromObject(object: [ 'object' ].<string, any>): VirtualCall;
+
+    /**
+     * Creates a plain object from a VirtualCall message. Also converts values to other types if specified.
+     * @param message VirtualCall
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: VirtualCall, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
+
+    /**
+     * Converts this VirtualCall to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of an Argument. */
@@ -1962,14 +2156,14 @@ export class Argument implements IArgument {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates an Argument message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Argument
      */
-    public static fromObject(object: Record<string, any>): Argument;
+    public static fromObject(object: [ 'object' ].<string, any>): Argument;
 
     /**
      * Creates a plain object from an Argument message. Also converts values to other types if specified.
@@ -1977,13 +2171,13 @@ export class Argument implements IArgument {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Argument, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Argument, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Argument to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a GenericArgument. */
@@ -2058,14 +2252,14 @@ export class GenericArgument implements IGenericArgument {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a GenericArgument message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns GenericArgument
      */
-    public static fromObject(object: Record<string, any>): GenericArgument;
+    public static fromObject(object: [ 'object' ].<string, any>): GenericArgument;
 
     /**
      * Creates a plain object from a GenericArgument message. Also converts values to other types if specified.
@@ -2073,13 +2267,13 @@ export class GenericArgument implements IGenericArgument {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: GenericArgument, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: GenericArgument, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this GenericArgument to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of an Access. */
@@ -2154,14 +2348,14 @@ export class Access implements IAccess {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates an Access message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Access
      */
-    public static fromObject(object: Record<string, any>): Access;
+    public static fromObject(object: [ 'object' ].<string, any>): Access;
 
     /**
      * Creates a plain object from an Access message. Also converts values to other types if specified.
@@ -2169,13 +2363,13 @@ export class Access implements IAccess {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Access, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Access, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Access to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Literal. */
@@ -2271,14 +2465,14 @@ export class Literal implements ILiteral {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Literal message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Literal
      */
-    public static fromObject(object: Record<string, any>): Literal;
+    public static fromObject(object: [ 'object' ].<string, any>): Literal;
 
     /**
      * Creates a plain object from a Literal message. Also converts values to other types if specified.
@@ -2286,13 +2480,13 @@ export class Literal implements ILiteral {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Literal, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Literal, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Literal to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Return. */
@@ -2367,14 +2561,14 @@ export class Return implements IReturn {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Return message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Return
      */
-    public static fromObject(object: Record<string, any>): Return;
+    public static fromObject(object: [ 'object' ].<string, any>): Return;
 
     /**
      * Creates a plain object from a Return message. Also converts values to other types if specified.
@@ -2382,13 +2576,13 @@ export class Return implements IReturn {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Return, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Return, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Return to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Function. */
@@ -2450,13 +2644,13 @@ export class Function implements IFunction {
     public pure: boolean;
 
     /** Function parameters. */
-    public parameters: Array<IVariable>;
+    public parameters: [ 'Array' ].<IVariable>;
 
     /** Function variables. */
-    public variables: Array<IVariable>;
+    public variables: [ 'Array' ].<IVariable>;
 
     /** Function body. */
-    public body: Array<IExpression>;
+    public body: [ 'Array' ].<IExpression>;
 
     /**
      * Creates a new Function instance using the specified properties.
@@ -2505,14 +2699,14 @@ export class Function implements IFunction {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Function message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Function
      */
-    public static fromObject(object: Record<string, any>): Function;
+    public static fromObject(object: [ 'object' ].<string, any>): Function;
 
     /**
      * Creates a plain object from a Function message. Also converts values to other types if specified.
@@ -2520,13 +2714,13 @@ export class Function implements IFunction {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Function, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Function, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Function to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a Module. */
@@ -2543,9 +2737,6 @@ export interface IModule {
 
     /** Module types */
     types?: (IComplexType[]|null);
-
-    /** Module main */
-    main?: (IFunction|null);
 }
 
 /** Represents a Module. */
@@ -2561,16 +2752,13 @@ export class Module implements IModule {
     public id?: (IModuleReference|null);
 
     /** Module dependencies. */
-    public dependencies: Array<IModuleReference>;
+    public dependencies: [ 'Array' ].<IModuleReference>;
 
     /** Module functions. */
-    public functions: Array<IFunction>;
+    public functions: [ 'Array' ].<IFunction>;
 
     /** Module types. */
-    public types: Array<IComplexType>;
-
-    /** Module main. */
-    public main?: (IFunction|null);
+    public types: [ 'Array' ].<IComplexType>;
 
     /**
      * Creates a new Module instance using the specified properties.
@@ -2619,14 +2807,14 @@ export class Module implements IModule {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a Module message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns Module
      */
-    public static fromObject(object: Record<string, any>): Module;
+    public static fromObject(object: [ 'object' ].<string, any>): Module;
 
     /**
      * Creates a plain object from a Module message. Also converts values to other types if specified.
@@ -2634,13 +2822,13 @@ export class Module implements IModule {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: Module, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: Module, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this Module to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }
 
 /** Properties of a ModuleReference. */
@@ -2654,6 +2842,9 @@ export interface IModuleReference {
 
     /** ModuleReference version */
     version?: (number|null);
+
+    /** ModuleReference environment */
+    environment?: (string|null);
 }
 
 /** Represents a ModuleReference. */
@@ -2666,13 +2857,16 @@ export class ModuleReference implements IModuleReference {
     constructor(properties?: IModuleReference);
 
     /** ModuleReference domain. */
-    public domain: Array<string>;
+    public domain: [ 'Array' ].<string>;
 
     /** ModuleReference moduleID. */
     public moduleID: number;
 
     /** ModuleReference version. */
     public version: number;
+
+    /** ModuleReference environment. */
+    public environment: string;
 
     /**
      * Creates a new ModuleReference instance using the specified properties.
@@ -2721,14 +2915,14 @@ export class ModuleReference implements IModuleReference {
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
-    public static verify(message: Record<string, any>): (string|null);
+    public static verify(message: [ 'object' ].<string, any>): (string|null);
 
     /**
      * Creates a ModuleReference message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
      * @returns ModuleReference
      */
-    public static fromObject(object: Record<string, any>): ModuleReference;
+    public static fromObject(object: [ 'object' ].<string, any>): ModuleReference;
 
     /**
      * Creates a plain object from a ModuleReference message. Also converts values to other types if specified.
@@ -2736,11 +2930,11 @@ export class ModuleReference implements IModuleReference {
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: ModuleReference, options?: $protobuf.IConversionOptions): Record<string, any>;
+    public static toObject(message: ModuleReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
 
     /**
      * Converts this ModuleReference to JSON.
      * @returns JSON object
      */
-    public toJSON(): Record<string, any>;
+    public toJSON(): [ 'object' ].<string, any>;
 }

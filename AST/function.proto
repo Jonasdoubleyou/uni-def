@@ -95,6 +95,15 @@ message Call {
   repeated Argument arguments = 2;
 }
 
+/* A virtual call calls the function that implements a virtual function that implements the closest subtypes */
+   
+message VirtualCall {
+  /* Must refernece a FunctionType whose virtual property is true */
+  ComplexTypeReference functionType = 1;
+  repeated Argument arguments = 2;
+}
+
+
 message Argument {
   /* matches a variable (parameter) of the called function */
   int32 id = 0;
@@ -153,7 +162,7 @@ message Function {
   /*optional*/ FunctionReference lexicalParent = 4;
 
   /* A Function is considered pure, if only functions are called inside of it, that are itself pure, and that only accesses variables of pure functions.
-     Functions, whose functionality is implemented by the UNI engine, are pure if the function when called with the saem arguments, always returns the same value.
+     Functions, whose functionality is implemented by the UNI engine, are pure if the function when called with the same arguments, always returns the same value.
      A UNI engine might decide to replace a function call to a pure function with the result of a previous call. 
      Replacing the call with the resulting value at a compilation step is not considered a change of the UNI sourcecode.
    */

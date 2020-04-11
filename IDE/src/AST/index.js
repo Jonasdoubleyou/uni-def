@@ -9,28 +9,6 @@ var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.ut
 // Exported root namespace
 var $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
 
-/**
- * PrimitiveType enum.
- * @exports PrimitiveType
- * @enum {string}
- * @property {number} String=0 String value
- * @property {number} Integer=1 Integer value
- * @property {number} Float=2 Float value
- * @property {number} Boolean=3 Boolean value
- * @property {number} Void=4 Void value
- * @property {number} Any=5 Any value
- */
-$root.PrimitiveType = (function() {
-    var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "String"] = 0;
-    values[valuesById[1] = "Integer"] = 1;
-    values[valuesById[2] = "Float"] = 2;
-    values[valuesById[3] = "Boolean"] = 3;
-    values[valuesById[4] = "Void"] = 4;
-    values[valuesById[5] = "Any"] = 5;
-    return values;
-})();
-
 $root.ComplexTypeReference = (function() {
 
     /**
@@ -247,8 +225,8 @@ $root.TypeReference = (function() {
      * Properties of a TypeReference.
      * @exports ITypeReference
      * @interface ITypeReference
-     * @property {PrimitiveType|null} [primitive] TypeReference primitive
      * @property {IComplexTypeReference|null} [complex] TypeReference complex
+     * @property {IGenericTypeReference|null} [generic] TypeReference generic
      */
 
     /**
@@ -267,14 +245,6 @@ $root.TypeReference = (function() {
     }
 
     /**
-     * TypeReference primitive.
-     * @member {PrimitiveType} primitive
-     * @memberof TypeReference
-     * @instance
-     */
-    TypeReference.prototype.primitive = 0;
-
-    /**
      * TypeReference complex.
      * @member {IComplexTypeReference|null|undefined} complex
      * @memberof TypeReference
@@ -282,17 +252,25 @@ $root.TypeReference = (function() {
      */
     TypeReference.prototype.complex = null;
 
+    /**
+     * TypeReference generic.
+     * @member {IGenericTypeReference|null|undefined} generic
+     * @memberof TypeReference
+     * @instance
+     */
+    TypeReference.prototype.generic = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * TypeReference primitiveOrComplex.
-     * @member {"primitive"|"complex"|undefined} primitiveOrComplex
+     * @member {"complex"|"generic"|undefined} primitiveOrComplex
      * @memberof TypeReference
      * @instance
      */
     Object.defineProperty(TypeReference.prototype, "primitiveOrComplex", {
-        get: $util.oneOfGetter($oneOfFields = ["primitive", "complex"]),
+        get: $util.oneOfGetter($oneOfFields = ["complex", "generic"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -320,10 +298,10 @@ $root.TypeReference = (function() {
     TypeReference.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.primitive != null && message.hasOwnProperty("primitive"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.primitive);
         if (message.complex != null && message.hasOwnProperty("complex"))
             $root.ComplexTypeReference.encode(message.complex, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.generic != null && message.hasOwnProperty("generic"))
+            $root.GenericTypeReference.encode(message.generic, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -358,11 +336,11 @@ $root.TypeReference = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1:
-                message.primitive = reader.int32();
-                break;
             case 2:
                 message.complex = $root.ComplexTypeReference.decode(reader, reader.uint32());
+                break;
+            case 3:
+                message.generic = $root.GenericTypeReference.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -400,28 +378,22 @@ $root.TypeReference = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         var properties = {};
-        if (message.primitive != null && message.hasOwnProperty("primitive")) {
-            properties.primitiveOrComplex = 1;
-            switch (message.primitive) {
-            default:
-                return "primitive: enum value expected";
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-                break;
-            }
-        }
         if (message.complex != null && message.hasOwnProperty("complex")) {
-            if (properties.primitiveOrComplex === 1)
-                return "primitiveOrComplex: multiple values";
             properties.primitiveOrComplex = 1;
             {
                 var error = $root.ComplexTypeReference.verify(message.complex);
                 if (error)
                     return "complex." + error;
+            }
+        }
+        if (message.generic != null && message.hasOwnProperty("generic")) {
+            if (properties.primitiveOrComplex === 1)
+                return "primitiveOrComplex: multiple values";
+            properties.primitiveOrComplex = 1;
+            {
+                var error = $root.GenericTypeReference.verify(message.generic);
+                if (error)
+                    return "generic." + error;
             }
         }
         return null;
@@ -439,36 +411,15 @@ $root.TypeReference = (function() {
         if (object instanceof $root.TypeReference)
             return object;
         var message = new $root.TypeReference();
-        switch (object.primitive) {
-        case "String":
-        case 0:
-            message.primitive = 0;
-            break;
-        case "Integer":
-        case 1:
-            message.primitive = 1;
-            break;
-        case "Float":
-        case 2:
-            message.primitive = 2;
-            break;
-        case "Boolean":
-        case 3:
-            message.primitive = 3;
-            break;
-        case "Void":
-        case 4:
-            message.primitive = 4;
-            break;
-        case "Any":
-        case 5:
-            message.primitive = 5;
-            break;
-        }
         if (object.complex != null) {
             if (typeof object.complex !== "object")
                 throw TypeError(".TypeReference.complex: object expected");
             message.complex = $root.ComplexTypeReference.fromObject(object.complex);
+        }
+        if (object.generic != null) {
+            if (typeof object.generic !== "object")
+                throw TypeError(".TypeReference.generic: object expected");
+            message.generic = $root.GenericTypeReference.fromObject(object.generic);
         }
         return message;
     };
@@ -486,15 +437,15 @@ $root.TypeReference = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (message.primitive != null && message.hasOwnProperty("primitive")) {
-            object.primitive = options.enums === String ? $root.PrimitiveType[message.primitive] : message.primitive;
-            if (options.oneofs)
-                object.primitiveOrComplex = "primitive";
-        }
         if (message.complex != null && message.hasOwnProperty("complex")) {
             object.complex = $root.ComplexTypeReference.toObject(message.complex, options);
             if (options.oneofs)
                 object.primitiveOrComplex = "complex";
+        }
+        if (message.generic != null && message.hasOwnProperty("generic")) {
+            object.generic = $root.GenericTypeReference.toObject(message.generic, options);
+            if (options.oneofs)
+                object.primitiveOrComplex = "generic";
         }
         return object;
     };
@@ -511,6 +462,221 @@ $root.TypeReference = (function() {
     };
 
     return TypeReference;
+})();
+
+$root.GenericTypeReference = (function() {
+
+    /**
+     * Properties of a GenericTypeReference.
+     * @exports IGenericTypeReference
+     * @interface IGenericTypeReference
+     * @property {IFunctionReference|null} ["function"] GenericTypeReference function
+     * @property {number|null} [generic] GenericTypeReference generic
+     */
+
+    /**
+     * Constructs a new GenericTypeReference.
+     * @exports GenericTypeReference
+     * @classdesc Represents a GenericTypeReference.
+     * @implements IGenericTypeReference
+     * @constructor
+     * @param {IGenericTypeReference=} [properties] Properties to set
+     */
+    function GenericTypeReference(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * GenericTypeReference function.
+     * @member {IFunctionReference|null|undefined} function
+     * @memberof GenericTypeReference
+     * @instance
+     */
+    GenericTypeReference.prototype["function"] = null;
+
+    /**
+     * GenericTypeReference generic.
+     * @member {number} generic
+     * @memberof GenericTypeReference
+     * @instance
+     */
+    GenericTypeReference.prototype.generic = 0;
+
+    /**
+     * Creates a new GenericTypeReference instance using the specified properties.
+     * @function create
+     * @memberof GenericTypeReference
+     * @static
+     * @param {IGenericTypeReference=} [properties] Properties to set
+     * @returns {GenericTypeReference} GenericTypeReference instance
+     */
+    GenericTypeReference.create = function create(properties) {
+        return new GenericTypeReference(properties);
+    };
+
+    /**
+     * Encodes the specified GenericTypeReference message. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
+     * @function encode
+     * @memberof GenericTypeReference
+     * @static
+     * @param {IGenericTypeReference} message GenericTypeReference message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GenericTypeReference.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message["function"] != null && message.hasOwnProperty("function"))
+            $root.FunctionReference.encode(message["function"], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.generic != null && message.hasOwnProperty("generic"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.generic);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified GenericTypeReference message, length delimited. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof GenericTypeReference
+     * @static
+     * @param {IGenericTypeReference} message GenericTypeReference message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    GenericTypeReference.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a GenericTypeReference message from the specified reader or buffer.
+     * @function decode
+     * @memberof GenericTypeReference
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {GenericTypeReference} GenericTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GenericTypeReference.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.GenericTypeReference();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message["function"] = $root.FunctionReference.decode(reader, reader.uint32());
+                break;
+            case 2:
+                message.generic = reader.int32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a GenericTypeReference message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof GenericTypeReference
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {GenericTypeReference} GenericTypeReference
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    GenericTypeReference.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a GenericTypeReference message.
+     * @function verify
+     * @memberof GenericTypeReference
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    GenericTypeReference.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message["function"] != null && message.hasOwnProperty("function")) {
+            var error = $root.FunctionReference.verify(message["function"]);
+            if (error)
+                return "function." + error;
+        }
+        if (message.generic != null && message.hasOwnProperty("generic"))
+            if (!$util.isInteger(message.generic))
+                return "generic: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a GenericTypeReference message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof GenericTypeReference
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {GenericTypeReference} GenericTypeReference
+     */
+    GenericTypeReference.fromObject = function fromObject(object) {
+        if (object instanceof $root.GenericTypeReference)
+            return object;
+        var message = new $root.GenericTypeReference();
+        if (object["function"] != null) {
+            if (typeof object["function"] !== "object")
+                throw TypeError(".GenericTypeReference.function: object expected");
+            message["function"] = $root.FunctionReference.fromObject(object["function"]);
+        }
+        if (object.generic != null)
+            message.generic = object.generic | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a GenericTypeReference message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof GenericTypeReference
+     * @static
+     * @param {GenericTypeReference} message GenericTypeReference
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    GenericTypeReference.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object["function"] = null;
+            object.generic = 0;
+        }
+        if (message["function"] != null && message.hasOwnProperty("function"))
+            object["function"] = $root.FunctionReference.toObject(message["function"], options);
+        if (message.generic != null && message.hasOwnProperty("generic"))
+            object.generic = message.generic;
+        return object;
+    };
+
+    /**
+     * Converts this GenericTypeReference to JSON.
+     * @function toJSON
+     * @memberof GenericTypeReference
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    GenericTypeReference.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return GenericTypeReference;
 })();
 
 $root.Property = (function() {
@@ -778,10 +944,10 @@ $root.ObjectType = (function() {
      * Properties of an ObjectType.
      * @exports IObjectType
      * @interface IObjectType
-     * @property {number|null} [id] ObjectType id
      * @property {string|null} [name] ObjectType name
      * @property {string|null} [description] ObjectType description
      * @property {Array.<IProperty>|null} [properties] ObjectType properties
+     * @property {Array.<IComplexTypeReference>|null} [supertypes] ObjectType supertypes
      */
 
     /**
@@ -794,19 +960,12 @@ $root.ObjectType = (function() {
      */
     function ObjectType(properties) {
         this.properties = [];
+        this.supertypes = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * ObjectType id.
-     * @member {number} id
-     * @memberof ObjectType
-     * @instance
-     */
-    ObjectType.prototype.id = 0;
 
     /**
      * ObjectType name.
@@ -833,6 +992,14 @@ $root.ObjectType = (function() {
     ObjectType.prototype.properties = $util.emptyArray;
 
     /**
+     * ObjectType supertypes.
+     * @member {Array.<IComplexTypeReference>} supertypes
+     * @memberof ObjectType
+     * @instance
+     */
+    ObjectType.prototype.supertypes = $util.emptyArray;
+
+    /**
      * Creates a new ObjectType instance using the specified properties.
      * @function create
      * @memberof ObjectType
@@ -856,8 +1023,6 @@ $root.ObjectType = (function() {
     ObjectType.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && message.hasOwnProperty("id"))
-            writer.uint32(/* id 0, wireType 0 =*/0).int32(message.id);
         if (message.name != null && message.hasOwnProperty("name"))
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
         if (message.description != null && message.hasOwnProperty("description"))
@@ -865,6 +1030,9 @@ $root.ObjectType = (function() {
         if (message.properties != null && message.properties.length)
             for (var i = 0; i < message.properties.length; ++i)
                 $root.Property.encode(message.properties[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.supertypes != null && message.supertypes.length)
+            for (var i = 0; i < message.supertypes.length; ++i)
+                $root.ComplexTypeReference.encode(message.supertypes[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
         return writer;
     };
 
@@ -899,9 +1067,6 @@ $root.ObjectType = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 0:
-                message.id = reader.int32();
-                break;
             case 1:
                 message.name = reader.string();
                 break;
@@ -912,6 +1077,11 @@ $root.ObjectType = (function() {
                 if (!(message.properties && message.properties.length))
                     message.properties = [];
                 message.properties.push($root.Property.decode(reader, reader.uint32()));
+                break;
+            case 4:
+                if (!(message.supertypes && message.supertypes.length))
+                    message.supertypes = [];
+                message.supertypes.push($root.ComplexTypeReference.decode(reader, reader.uint32()));
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -948,9 +1118,6 @@ $root.ObjectType = (function() {
     ObjectType.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isInteger(message.id))
-                return "id: integer expected";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -964,6 +1131,15 @@ $root.ObjectType = (function() {
                 var error = $root.Property.verify(message.properties[i]);
                 if (error)
                     return "properties." + error;
+            }
+        }
+        if (message.supertypes != null && message.hasOwnProperty("supertypes")) {
+            if (!Array.isArray(message.supertypes))
+                return "supertypes: array expected";
+            for (var i = 0; i < message.supertypes.length; ++i) {
+                var error = $root.ComplexTypeReference.verify(message.supertypes[i]);
+                if (error)
+                    return "supertypes." + error;
             }
         }
         return null;
@@ -981,8 +1157,6 @@ $root.ObjectType = (function() {
         if (object instanceof $root.ObjectType)
             return object;
         var message = new $root.ObjectType();
-        if (object.id != null)
-            message.id = object.id | 0;
         if (object.name != null)
             message.name = String(object.name);
         if (object.description != null)
@@ -995,6 +1169,16 @@ $root.ObjectType = (function() {
                 if (typeof object.properties[i] !== "object")
                     throw TypeError(".ObjectType.properties: object expected");
                 message.properties[i] = $root.Property.fromObject(object.properties[i]);
+            }
+        }
+        if (object.supertypes) {
+            if (!Array.isArray(object.supertypes))
+                throw TypeError(".ObjectType.supertypes: array expected");
+            message.supertypes = [];
+            for (var i = 0; i < object.supertypes.length; ++i) {
+                if (typeof object.supertypes[i] !== "object")
+                    throw TypeError(".ObjectType.supertypes: object expected");
+                message.supertypes[i] = $root.ComplexTypeReference.fromObject(object.supertypes[i]);
             }
         }
         return message;
@@ -1013,15 +1197,14 @@ $root.ObjectType = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
+        if (options.arrays || options.defaults) {
             object.properties = [];
+            object.supertypes = [];
+        }
         if (options.defaults) {
-            object.id = 0;
             object.name = "";
             object.description = "";
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
         if (message.description != null && message.hasOwnProperty("description"))
@@ -1030,6 +1213,11 @@ $root.ObjectType = (function() {
             object.properties = [];
             for (var j = 0; j < message.properties.length; ++j)
                 object.properties[j] = $root.Property.toObject(message.properties[j], options);
+        }
+        if (message.supertypes && message.supertypes.length) {
+            object.supertypes = [];
+            for (var j = 0; j < message.supertypes.length; ++j)
+                object.supertypes[j] = $root.ComplexTypeReference.toObject(message.supertypes[j], options);
         }
         return object;
     };
@@ -1057,6 +1245,8 @@ $root.FunctionType = (function() {
      * @property {Array.<IFunctionTypeParameter>|null} [parameters] FunctionType parameters
      * @property {Array.<IFunctionGenericParameter>|null} [typeParameters] FunctionType typeParameters
      * @property {ITypeReference|null} [returns] FunctionType returns
+     * @property {boolean|null} [virtual] FunctionType virtual
+     * @property {ITypeReference|null} [virtualParent] FunctionType virtualParent
      */
 
     /**
@@ -1101,6 +1291,22 @@ $root.FunctionType = (function() {
     FunctionType.prototype.returns = null;
 
     /**
+     * FunctionType virtual.
+     * @member {boolean} virtual
+     * @memberof FunctionType
+     * @instance
+     */
+    FunctionType.prototype.virtual = false;
+
+    /**
+     * FunctionType virtualParent.
+     * @member {ITypeReference|null|undefined} virtualParent
+     * @memberof FunctionType
+     * @instance
+     */
+    FunctionType.prototype.virtualParent = null;
+
+    /**
      * Creates a new FunctionType instance using the specified properties.
      * @function create
      * @memberof FunctionType
@@ -1126,12 +1332,16 @@ $root.FunctionType = (function() {
             writer = $Writer.create();
         if (message.parameters != null && message.parameters.length)
             for (var i = 0; i < message.parameters.length; ++i)
-                $root.FunctionTypeParameter.encode(message.parameters[i], writer.uint32(/* id 0, wireType 2 =*/2).fork()).ldelim();
+                $root.FunctionTypeParameter.encode(message.parameters[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         if (message.typeParameters != null && message.typeParameters.length)
             for (var i = 0; i < message.typeParameters.length; ++i)
-                $root.FunctionGenericParameter.encode(message.typeParameters[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                $root.FunctionGenericParameter.encode(message.typeParameters[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         if (message.returns != null && message.hasOwnProperty("returns"))
-            $root.TypeReference.encode(message.returns, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            $root.TypeReference.encode(message.returns, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.virtual != null && message.hasOwnProperty("virtual"))
+            writer.uint32(/* id 4, wireType 0 =*/32).bool(message.virtual);
+        if (message.virtualParent != null && message.hasOwnProperty("virtualParent"))
+            $root.TypeReference.encode(message.virtualParent, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
     };
 
@@ -1166,18 +1376,24 @@ $root.FunctionType = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 0:
+            case 1:
                 if (!(message.parameters && message.parameters.length))
                     message.parameters = [];
                 message.parameters.push($root.FunctionTypeParameter.decode(reader, reader.uint32()));
                 break;
-            case 1:
+            case 2:
                 if (!(message.typeParameters && message.typeParameters.length))
                     message.typeParameters = [];
                 message.typeParameters.push($root.FunctionGenericParameter.decode(reader, reader.uint32()));
                 break;
-            case 2:
+            case 3:
                 message.returns = $root.TypeReference.decode(reader, reader.uint32());
+                break;
+            case 4:
+                message.virtual = reader.bool();
+                break;
+            case 5:
+                message.virtualParent = $root.TypeReference.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -1237,6 +1453,14 @@ $root.FunctionType = (function() {
             if (error)
                 return "returns." + error;
         }
+        if (message.virtual != null && message.hasOwnProperty("virtual"))
+            if (typeof message.virtual !== "boolean")
+                return "virtual: boolean expected";
+        if (message.virtualParent != null && message.hasOwnProperty("virtualParent")) {
+            var error = $root.TypeReference.verify(message.virtualParent);
+            if (error)
+                return "virtualParent." + error;
+        }
         return null;
     };
 
@@ -1277,6 +1501,13 @@ $root.FunctionType = (function() {
                 throw TypeError(".FunctionType.returns: object expected");
             message.returns = $root.TypeReference.fromObject(object.returns);
         }
+        if (object.virtual != null)
+            message.virtual = Boolean(object.virtual);
+        if (object.virtualParent != null) {
+            if (typeof object.virtualParent !== "object")
+                throw TypeError(".FunctionType.virtualParent: object expected");
+            message.virtualParent = $root.TypeReference.fromObject(object.virtualParent);
+        }
         return message;
     };
 
@@ -1297,8 +1528,11 @@ $root.FunctionType = (function() {
             object.parameters = [];
             object.typeParameters = [];
         }
-        if (options.defaults)
+        if (options.defaults) {
             object.returns = null;
+            object.virtual = false;
+            object.virtualParent = null;
+        }
         if (message.parameters && message.parameters.length) {
             object.parameters = [];
             for (var j = 0; j < message.parameters.length; ++j)
@@ -1311,6 +1545,10 @@ $root.FunctionType = (function() {
         }
         if (message.returns != null && message.hasOwnProperty("returns"))
             object.returns = $root.TypeReference.toObject(message.returns, options);
+        if (message.virtual != null && message.hasOwnProperty("virtual"))
+            object.virtual = message.virtual;
+        if (message.virtualParent != null && message.hasOwnProperty("virtualParent"))
+            object.virtualParent = $root.TypeReference.toObject(message.virtualParent, options);
         return object;
     };
 
@@ -4730,6 +4968,242 @@ $root.Call = (function() {
     return Call;
 })();
 
+$root.VirtualCall = (function() {
+
+    /**
+     * Properties of a VirtualCall.
+     * @exports IVirtualCall
+     * @interface IVirtualCall
+     * @property {IComplexTypeReference|null} [functionType] VirtualCall functionType
+     * @property {Array.<IArgument>|null} ["arguments"] VirtualCall arguments
+     */
+
+    /**
+     * Constructs a new VirtualCall.
+     * @exports VirtualCall
+     * @classdesc Represents a VirtualCall.
+     * @implements IVirtualCall
+     * @constructor
+     * @param {IVirtualCall=} [properties] Properties to set
+     */
+    function VirtualCall(properties) {
+        this["arguments"] = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * VirtualCall functionType.
+     * @member {IComplexTypeReference|null|undefined} functionType
+     * @memberof VirtualCall
+     * @instance
+     */
+    VirtualCall.prototype.functionType = null;
+
+    /**
+     * VirtualCall arguments.
+     * @member {Array.<IArgument>} arguments
+     * @memberof VirtualCall
+     * @instance
+     */
+    VirtualCall.prototype["arguments"] = $util.emptyArray;
+
+    /**
+     * Creates a new VirtualCall instance using the specified properties.
+     * @function create
+     * @memberof VirtualCall
+     * @static
+     * @param {IVirtualCall=} [properties] Properties to set
+     * @returns {VirtualCall} VirtualCall instance
+     */
+    VirtualCall.create = function create(properties) {
+        return new VirtualCall(properties);
+    };
+
+    /**
+     * Encodes the specified VirtualCall message. Does not implicitly {@link VirtualCall.verify|verify} messages.
+     * @function encode
+     * @memberof VirtualCall
+     * @static
+     * @param {IVirtualCall} message VirtualCall message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    VirtualCall.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.functionType != null && message.hasOwnProperty("functionType"))
+            $root.ComplexTypeReference.encode(message.functionType, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message["arguments"] != null && message["arguments"].length)
+            for (var i = 0; i < message["arguments"].length; ++i)
+                $root.Argument.encode(message["arguments"][i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified VirtualCall message, length delimited. Does not implicitly {@link VirtualCall.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof VirtualCall
+     * @static
+     * @param {IVirtualCall} message VirtualCall message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    VirtualCall.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a VirtualCall message from the specified reader or buffer.
+     * @function decode
+     * @memberof VirtualCall
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {VirtualCall} VirtualCall
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    VirtualCall.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.VirtualCall();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.functionType = $root.ComplexTypeReference.decode(reader, reader.uint32());
+                break;
+            case 2:
+                if (!(message["arguments"] && message["arguments"].length))
+                    message["arguments"] = [];
+                message["arguments"].push($root.Argument.decode(reader, reader.uint32()));
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a VirtualCall message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof VirtualCall
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {VirtualCall} VirtualCall
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    VirtualCall.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a VirtualCall message.
+     * @function verify
+     * @memberof VirtualCall
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    VirtualCall.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.functionType != null && message.hasOwnProperty("functionType")) {
+            var error = $root.ComplexTypeReference.verify(message.functionType);
+            if (error)
+                return "functionType." + error;
+        }
+        if (message["arguments"] != null && message.hasOwnProperty("arguments")) {
+            if (!Array.isArray(message["arguments"]))
+                return "arguments: array expected";
+            for (var i = 0; i < message["arguments"].length; ++i) {
+                var error = $root.Argument.verify(message["arguments"][i]);
+                if (error)
+                    return "arguments." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a VirtualCall message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof VirtualCall
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {VirtualCall} VirtualCall
+     */
+    VirtualCall.fromObject = function fromObject(object) {
+        if (object instanceof $root.VirtualCall)
+            return object;
+        var message = new $root.VirtualCall();
+        if (object.functionType != null) {
+            if (typeof object.functionType !== "object")
+                throw TypeError(".VirtualCall.functionType: object expected");
+            message.functionType = $root.ComplexTypeReference.fromObject(object.functionType);
+        }
+        if (object["arguments"]) {
+            if (!Array.isArray(object["arguments"]))
+                throw TypeError(".VirtualCall.arguments: array expected");
+            message["arguments"] = [];
+            for (var i = 0; i < object["arguments"].length; ++i) {
+                if (typeof object["arguments"][i] !== "object")
+                    throw TypeError(".VirtualCall.arguments: object expected");
+                message["arguments"][i] = $root.Argument.fromObject(object["arguments"][i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a VirtualCall message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof VirtualCall
+     * @static
+     * @param {VirtualCall} message VirtualCall
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    VirtualCall.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object["arguments"] = [];
+        if (options.defaults)
+            object.functionType = null;
+        if (message.functionType != null && message.hasOwnProperty("functionType"))
+            object.functionType = $root.ComplexTypeReference.toObject(message.functionType, options);
+        if (message["arguments"] && message["arguments"].length) {
+            object["arguments"] = [];
+            for (var j = 0; j < message["arguments"].length; ++j)
+                object["arguments"][j] = $root.Argument.toObject(message["arguments"][j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this VirtualCall to JSON.
+     * @function toJSON
+     * @memberof VirtualCall
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    VirtualCall.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return VirtualCall;
+})();
+
 $root.Argument = (function() {
 
     /**
@@ -6356,7 +6830,6 @@ $root.Module = (function() {
      * @property {Array.<IModuleReference>|null} [dependencies] Module dependencies
      * @property {Array.<IFunction>|null} [functions] Module functions
      * @property {Array.<IComplexType>|null} [types] Module types
-     * @property {IFunction|null} [main] Module main
      */
 
     /**
@@ -6410,14 +6883,6 @@ $root.Module = (function() {
     Module.prototype.types = $util.emptyArray;
 
     /**
-     * Module main.
-     * @member {IFunction|null|undefined} main
-     * @memberof Module
-     * @instance
-     */
-    Module.prototype.main = null;
-
-    /**
      * Creates a new Module instance using the specified properties.
      * @function create
      * @memberof Module
@@ -6452,8 +6917,6 @@ $root.Module = (function() {
         if (message.types != null && message.types.length)
             for (var i = 0; i < message.types.length; ++i)
                 $root.ComplexType.encode(message.types[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-        if (message.main != null && message.hasOwnProperty("main"))
-            $root.Function.encode(message.main, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
         return writer;
     };
 
@@ -6505,9 +6968,6 @@ $root.Module = (function() {
                 if (!(message.types && message.types.length))
                     message.types = [];
                 message.types.push($root.ComplexType.decode(reader, reader.uint32()));
-                break;
-            case 5:
-                message.main = $root.Function.decode(reader, reader.uint32());
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6576,11 +7036,6 @@ $root.Module = (function() {
                     return "types." + error;
             }
         }
-        if (message.main != null && message.hasOwnProperty("main")) {
-            var error = $root.Function.verify(message.main);
-            if (error)
-                return "main." + error;
-        }
         return null;
     };
 
@@ -6631,11 +7086,6 @@ $root.Module = (function() {
                 message.types[i] = $root.ComplexType.fromObject(object.types[i]);
             }
         }
-        if (object.main != null) {
-            if (typeof object.main !== "object")
-                throw TypeError(".Module.main: object expected");
-            message.main = $root.Function.fromObject(object.main);
-        }
         return message;
     };
 
@@ -6657,10 +7107,8 @@ $root.Module = (function() {
             object.functions = [];
             object.types = [];
         }
-        if (options.defaults) {
+        if (options.defaults)
             object.id = null;
-            object.main = null;
-        }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = $root.ModuleReference.toObject(message.id, options);
         if (message.dependencies && message.dependencies.length) {
@@ -6678,8 +7126,6 @@ $root.Module = (function() {
             for (var j = 0; j < message.types.length; ++j)
                 object.types[j] = $root.ComplexType.toObject(message.types[j], options);
         }
-        if (message.main != null && message.hasOwnProperty("main"))
-            object.main = $root.Function.toObject(message.main, options);
         return object;
     };
 
@@ -6706,6 +7152,7 @@ $root.ModuleReference = (function() {
      * @property {Array.<string>|null} [domain] ModuleReference domain
      * @property {number|null} [moduleID] ModuleReference moduleID
      * @property {number|null} [version] ModuleReference version
+     * @property {string|null} [environment] ModuleReference environment
      */
 
     /**
@@ -6749,6 +7196,14 @@ $root.ModuleReference = (function() {
     ModuleReference.prototype.version = 0;
 
     /**
+     * ModuleReference environment.
+     * @member {string} environment
+     * @memberof ModuleReference
+     * @instance
+     */
+    ModuleReference.prototype.environment = "";
+
+    /**
      * Creates a new ModuleReference instance using the specified properties.
      * @function create
      * @memberof ModuleReference
@@ -6779,6 +7234,8 @@ $root.ModuleReference = (function() {
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.moduleID);
         if (message.version != null && message.hasOwnProperty("version"))
             writer.uint32(/* id 3, wireType 0 =*/24).int32(message.version);
+        if (message.environment != null && message.hasOwnProperty("environment"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.environment);
         return writer;
     };
 
@@ -6823,6 +7280,9 @@ $root.ModuleReference = (function() {
                 break;
             case 3:
                 message.version = reader.int32();
+                break;
+            case 4:
+                message.environment = reader.string();
                 break;
             default:
                 reader.skipType(tag & 7);
@@ -6872,6 +7332,9 @@ $root.ModuleReference = (function() {
         if (message.version != null && message.hasOwnProperty("version"))
             if (!$util.isInteger(message.version))
                 return "version: integer expected";
+        if (message.environment != null && message.hasOwnProperty("environment"))
+            if (!$util.isString(message.environment))
+                return "environment: string expected";
         return null;
     };
 
@@ -6898,6 +7361,8 @@ $root.ModuleReference = (function() {
             message.moduleID = object.moduleID | 0;
         if (object.version != null)
             message.version = object.version | 0;
+        if (object.environment != null)
+            message.environment = String(object.environment);
         return message;
     };
 
@@ -6919,6 +7384,7 @@ $root.ModuleReference = (function() {
         if (options.defaults) {
             object.moduleID = 0;
             object.version = 0;
+            object.environment = "";
         }
         if (message.domain && message.domain.length) {
             object.domain = [];
@@ -6929,6 +7395,8 @@ $root.ModuleReference = (function() {
             object.moduleID = message.moduleID;
         if (message.version != null && message.hasOwnProperty("version"))
             object.version = message.version;
+        if (message.environment != null && message.hasOwnProperty("environment"))
+            object.environment = message.environment;
         return object;
     };
 
