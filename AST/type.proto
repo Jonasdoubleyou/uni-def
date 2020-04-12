@@ -12,19 +12,19 @@ message ComplexTypeReference {
 
 /* Used to refer at a type */
 message TypeReference {
-  oneof primitiveOrComplex {
+  oneof genericOrComplex {
     ComplexTypeReference complex = 2;
-    GenericTypeReference generic = 3;
+    // GenericTypeReference generic = 3;
   }
 }
 
-message GenericTypeReference {
+/* message GenericTypeReference {
   FunctionReference function = 1; // must be in the function this is referencing, or in it's lexicalParent chain
   int32 generic = 2; // the id of the generic function parameter in that function
-}
+} */
 
 message Property {
-  /* unique inside of the type */
+  /* unique inside of the type and all supertypes */
   int32 id = 0;
   TypeReference type = 1;
  /*interpreter-*/optional string name = 2;
@@ -43,18 +43,11 @@ message ObjectType {
 /*A Type that represents a Function.
   A FunctionReference fullfills this type if returns & parameters are either equal or a subtype of the generic parameter
 
-  If a function type is marked virtual, it is called a 'virtual function'
-  Another function type can then reference that virtual function as its virtual parent.
-  The child must have the same parameters as the virtualParent,
-    however the types may be subtypes.
 */
 message FunctionType {
   repeated FunctionTypeParameter parameters = 1;
-  repeated FunctionGenericParameter typeParameters = 2;
+  // repeated FunctionGenericParameter typeParameters = 2;
   TypeReference returns = 3;
-
-  bool virtual = 4;
-  /*optional*/ TypeReference virtualParent = 5;
 }
 
 message FunctionTypeParameter {
@@ -65,13 +58,13 @@ message FunctionTypeParameter {
    /*optional*/string description = 3;
 }
 
-message FunctionGenericParameter {
+/* message FunctionGenericParameter {
   int32 id = 0;
   TypeReference typeBoundary = 1; // All specific types must be a subtype of this
      // Hint for implementations:
-   /*optional*/ string name = 2;
-   /*optional*/string description = 3;
-}
+    string name = 2;
+    string description = 3;
+} */
 
 message UnionType {
   repeated TypeReference members = 1;

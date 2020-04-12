@@ -6,9 +6,13 @@
 Engine is the term used for a computer program or a computer that is able to evaluate a UNI program (as defined in AST)
 according to this specification.
 
+The UNI engine may provide so called native bindings. These are certain engine specific implementations,
+that replace certain functions in UNI. The engine cannot load specific modules, if it does not have a respective native binding.
+How the engine handles the addition of native bindings is implementation specific.
+
 ## Memory Model
 
-A UNI Engine is able to store Values in it's memory (Note: commonly known as Heap).
+A UNI Engine is able to store Values in it's memory.
 It is able to associate a Variable with a certain Value in memory.
 It is able to remember the current Expression executed in a UNI program.
 It is able to store all Values that a tree of Expressions uses.  
@@ -25,7 +29,6 @@ For now, the usage of that is not specified and should be avoided.
 ## Modules
 
 Modules represent a group of Functions and Types that serve a certain functionality.
-Modules can have a "main" Function that gets executed when the Module gets loaded (see Module Loading).
 
 Modules got a domain to identify them in the uni ecosystem, which consists of a List of Identifiers. A domain looks like `local.coolgame.helpers`,
 whereas `local` is the host, `coolgame` a namespace (which can itself be a module e.g. `local.coolgame`),
@@ -41,57 +44,36 @@ Modules also contain information about the edits made to them and by whom (-> Ve
 ## Types
 
 A Type defines the Shape of a Value. 
+There are three ComplexTypes: Object Types, Function Types and Union Types. 
+There are also GenericTypes (Types that might refer to more than one type).
 
-Primitive Types are provided by the UNI engine itself. 
+Unlike other languages, UNI does not have primitive types.
+Instead the standard library provides an extensive set of Object Types that provide those behaviours.
 
-Complex Types are defined in a Module. There are three Complex Types:
-- Object Types
-- Function Types
-- Union Types
+## Object Type
 
-## Primitive Types
-  
-### Void
+An object is a collection of key-value pairs, and an object type is a collection of respective key-type pairs.
 
-The Void Type returns a non existent value. If a Function contains no "return" Expression, the functions return Type is Void. Certain Expressions also evaluate to Void.
-
-All Values of Type Void are considered the same.
-
-### Boolean
-
-The Boolean Type represents either the Value "true" or the Value "false". 
-
-All Booleans with the Value "true" are considered the same. All with the Value "false" are considered the same.
-
-### String
-
-Strings are an array of UTF-8 characters. 
-
-Values of Type String are considered the same, if both represent the same array of characters.
-
-### Int
-
-Int(eger)s are 32bit signed. 
-
-Two Values of Type Integer are the same, if they represent the same bits.
-
-### Float
-
-Floating point numbers according to IEEE 754.
+An object may refer to a supertype, then the object type has the same properties as the supertype (the properties get *inherited*).
+The name of the property shall be unique in the type and all it's supertype.
 
 
-### Symbol
-
-Symbols are very special Primitives. Symbols represent a unique, non readable Value. 
 
 ## Function Type
 
 A Function Type describes a Function with it's parameters and return value.
 
+If a function type is a 'virtual function', 
+it can be called through the [[Virtual Call]].
+All functions, whose function type has the virtual function as a parent,
+get linked to the virtual function.
+Calling the virtual function will then call the linked function whose 
+parameters are the closest supertype of the argument types.
+
 ## Union Type
 
-A Union Type represents a Type, whose value can fullfill one of the types to union. 
-THey allow for polymorphic programming.
+A Union Type represents a Type, whose value can fulfill one of the types to union. 
+They allow for polymorphic programming.
 
 ## Variables
 
@@ -152,24 +134,17 @@ That reference can then be called using [[Call]].
 
 Functions got Variables (some of them are Parameters) and a body, which is a List of Expressions.
 
-## ServiceHook
+## Decorators
 
-A Module can include so called ServiceHooks. These are ways for a Service (a UNI Module with ServiceHooks) to provide an I/O interface to the exterior.
-A ServiceHook defines when and how a certain function could be called from the exterior.
+Decorators are function calls that are called with a function as it's first argument.
+Functions with Decorators may not have a lexical parent.
 
-Some examples:
-
-ServiceHooks could be used to write Unit Tests, the ServiceHook defines how the function has to behave, then if the Tests get run the UNI engine will execute all the Hooks.
+They do provide means to determine when and how functions in UNI get executed.
 
 ```
 @Test.Assert([12, 2], 14)
-@Test.Assert([12, -2], 10)
 fun add(a, b) { /*...*/ }
-```
 
-Another Service provided could be a WebServer:
-
-```
 @Web.Get("/")
 @Web.ErrorRoute(404)
 fun mainRoute(): Web.Response { /*...*/ }
@@ -177,20 +152,6 @@ fun mainRoute(): Web.Response { /*...*/ }
 @Web.Post("/login")
 fun loginRoute(username: String, password: String) { /*...*/ }
 ```
-
-## ServiceDefinition Function
-
-To define your own ServiceHooks you can use the ServiceDefinition function. 
-The function the ServiceDefinition is used on as a ServiceHook must fullfill the first parameter type,
-and will be passed to the ServiceDefintion Function.
-When a ServiceDefinition function gets run depends on the Service and the Engine. 
-User written functions will always be enqueued into the JobQueue after the Modules body.
-
-
-```
-service fun Assert(fn: (a: A, other:B, c: C) => I, arguments: Tuple<A, B, C>, expectedResult: I) { }
-```
-
 
 
 ## (Runtime) Values
@@ -235,7 +196,7 @@ all Values get copied.
 ## Module Loading
 
 When a Module gets loaded into a ServiceRunner, all  Modules the Module depends on will be loaded first in the same ServiceRunner.
-Then a new Job will be created that calls the Modules main function. Afterwards all ServiceHooks will be enqueued in the Job Queue in the order of appearence.
+Then a new Job will be created that calls the Modules main function. Afterwards all Decorator Calls will be enqueued in the Job Queue in the order of appearence.
 After the Job Queue is empty, the Module is considered loaded.
 
 As long as there are external events that cause new Jobs being enqueued into the Job Queue, the Module is considered running.
@@ -244,7 +205,6 @@ If there are no external event sources left, the Module is considered done.
 
 ## Appendix A: Type Matching Rules
 
-A Boolean matches a Boolean, Void matches Void, String matches String, Int matches Int, Float matches Float.
 An ObjectType matches another ObjectType if it contains the same Identifiers, and their Types match.
 
 UnionTypes will be fun:
@@ -338,6 +298,8 @@ UNI - Module:
  fun for<T>(it: Iterator<T>, block: Function<Tuple<T>, *>): Void
  fun range(start: Int, end: Int): Iterator<Int>
  
+ // TYPES
+ fun cast<T>(value: Any)
 
 // COLLECTION
 interface Collection<T>: Iterable<T> {}

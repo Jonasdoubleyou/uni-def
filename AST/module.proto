@@ -10,8 +10,6 @@ message Module {
   /* A list of modules this module depends on,
      that will be loaded by the UNI runtime before executing this program.
 
-     if the modules got main functions, they will be executed before
-     this module's main gets executed.
 
      These modules can then be referenced by their moduleID inside of
      functions and types of this module.
@@ -22,6 +20,14 @@ message Module {
 
   repeated Function functions = 3;
   repeated ComplexType types = 4;
+
+  
+
+  /* A native binding is a collection of implementations inside the UNI engine. 
+     The engine will then replace certain functions defined in the module with engine specific implementations.
+     The engine cannot load a module if it does not provide a specific native binding.
+  */
+  repeated string nativeBindings = 5;
 }
 
 message ModuleReference {
@@ -48,12 +54,4 @@ message ModuleReference {
 
   /* The version should be increased on every breaking change to notify users */
   int32 version = 3;
-
-    /* The environment indicates that this module can only be loaded inside a specific implementation of UNI engine.
-       Two modules might have the same domain and version but different environments.
-       If a module does not have an environment, it can be loaded on every engine.
-       If a module is loaded with no environment being set, the engine may load a module whose environment is the same as the engine's environment.
-       If a module is loaded with an environment being set, but only a module with no environment exists, then that module may be loaded instead.
-  */
-  /*optional*/ string environment = 4;
 }

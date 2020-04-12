@@ -100,9 +100,6 @@ export interface ITypeReference {
 
     /** TypeReference complex */
     complex?: (IComplexTypeReference|null);
-
-    /** TypeReference generic */
-    generic?: (IGenericTypeReference|null);
 }
 
 /** Represents a TypeReference. */
@@ -117,11 +114,8 @@ export class TypeReference implements ITypeReference {
     /** TypeReference complex. */
     public complex?: (IComplexTypeReference|null);
 
-    /** TypeReference generic. */
-    public generic?: (IGenericTypeReference|null);
-
-    /** TypeReference primitiveOrComplex. */
-    public primitiveOrComplex?: ("complex"|"generic");
+    /** TypeReference genericOrComplex. */
+    public genericOrComplex?: "complex";
 
     /**
      * Creates a new TypeReference instance using the specified properties.
@@ -189,102 +183,6 @@ export class TypeReference implements ITypeReference {
 
     /**
      * Converts this TypeReference to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): [ 'object' ].<string, any>;
-}
-
-/** Properties of a GenericTypeReference. */
-export interface IGenericTypeReference {
-
-    /** GenericTypeReference function */
-    "function"?: (IFunctionReference|null);
-
-    /** GenericTypeReference generic */
-    generic?: (number|null);
-}
-
-/** Represents a GenericTypeReference. */
-export class GenericTypeReference implements IGenericTypeReference {
-
-    /**
-     * Constructs a new GenericTypeReference.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IGenericTypeReference);
-
-    /** GenericTypeReference function. */
-    public function?: (IFunctionReference|null);
-
-    /** GenericTypeReference generic. */
-    public generic: number;
-
-    /**
-     * Creates a new GenericTypeReference instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns GenericTypeReference instance
-     */
-    public static create(properties?: IGenericTypeReference): GenericTypeReference;
-
-    /**
-     * Encodes the specified GenericTypeReference message. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
-     * @param message GenericTypeReference message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IGenericTypeReference, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified GenericTypeReference message, length delimited. Does not implicitly {@link GenericTypeReference.verify|verify} messages.
-     * @param message GenericTypeReference message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IGenericTypeReference, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a GenericTypeReference message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns GenericTypeReference
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GenericTypeReference;
-
-    /**
-     * Decodes a GenericTypeReference message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns GenericTypeReference
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GenericTypeReference;
-
-    /**
-     * Verifies a GenericTypeReference message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: [ 'object' ].<string, any>): (string|null);
-
-    /**
-     * Creates a GenericTypeReference message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns GenericTypeReference
-     */
-    public static fromObject(object: [ 'object' ].<string, any>): GenericTypeReference;
-
-    /**
-     * Creates a plain object from a GenericTypeReference message. Also converts values to other types if specified.
-     * @param message GenericTypeReference
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: GenericTypeReference, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
-
-    /**
-     * Converts this GenericTypeReference to JSON.
      * @returns JSON object
      */
     public toJSON(): [ 'object' ].<string, any>;
@@ -512,17 +410,8 @@ export interface IFunctionType {
     /** FunctionType parameters */
     parameters?: (IFunctionTypeParameter[]|null);
 
-    /** FunctionType typeParameters */
-    typeParameters?: (IFunctionGenericParameter[]|null);
-
     /** FunctionType returns */
     returns?: (ITypeReference|null);
-
-    /** FunctionType virtual */
-    virtual?: (boolean|null);
-
-    /** FunctionType virtualParent */
-    virtualParent?: (ITypeReference|null);
 }
 
 /** Represents a FunctionType. */
@@ -537,17 +426,8 @@ export class FunctionType implements IFunctionType {
     /** FunctionType parameters. */
     public parameters: [ 'Array' ].<IFunctionTypeParameter>;
 
-    /** FunctionType typeParameters. */
-    public typeParameters: [ 'Array' ].<IFunctionGenericParameter>;
-
     /** FunctionType returns. */
     public returns?: (ITypeReference|null);
-
-    /** FunctionType virtual. */
-    public virtual: boolean;
-
-    /** FunctionType virtualParent. */
-    public virtualParent?: (ITypeReference|null);
 
     /**
      * Creates a new FunctionType instance using the specified properties.
@@ -723,114 +603,6 @@ export class FunctionTypeParameter implements IFunctionTypeParameter {
 
     /**
      * Converts this FunctionTypeParameter to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): [ 'object' ].<string, any>;
-}
-
-/** Properties of a FunctionGenericParameter. */
-export interface IFunctionGenericParameter {
-
-    /** FunctionGenericParameter id */
-    id?: (number|null);
-
-    /** FunctionGenericParameter typeBoundary */
-    typeBoundary?: (ITypeReference|null);
-
-    /** FunctionGenericParameter name */
-    name?: (string|null);
-
-    /** FunctionGenericParameter description */
-    description?: (string|null);
-}
-
-/** Represents a FunctionGenericParameter. */
-export class FunctionGenericParameter implements IFunctionGenericParameter {
-
-    /**
-     * Constructs a new FunctionGenericParameter.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IFunctionGenericParameter);
-
-    /** FunctionGenericParameter id. */
-    public id: number;
-
-    /** FunctionGenericParameter typeBoundary. */
-    public typeBoundary?: (ITypeReference|null);
-
-    /** FunctionGenericParameter name. */
-    public name: string;
-
-    /** FunctionGenericParameter description. */
-    public description: string;
-
-    /**
-     * Creates a new FunctionGenericParameter instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns FunctionGenericParameter instance
-     */
-    public static create(properties?: IFunctionGenericParameter): FunctionGenericParameter;
-
-    /**
-     * Encodes the specified FunctionGenericParameter message. Does not implicitly {@link FunctionGenericParameter.verify|verify} messages.
-     * @param message FunctionGenericParameter message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IFunctionGenericParameter, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified FunctionGenericParameter message, length delimited. Does not implicitly {@link FunctionGenericParameter.verify|verify} messages.
-     * @param message FunctionGenericParameter message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IFunctionGenericParameter, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a FunctionGenericParameter message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns FunctionGenericParameter
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): FunctionGenericParameter;
-
-    /**
-     * Decodes a FunctionGenericParameter message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns FunctionGenericParameter
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): FunctionGenericParameter;
-
-    /**
-     * Verifies a FunctionGenericParameter message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: [ 'object' ].<string, any>): (string|null);
-
-    /**
-     * Creates a FunctionGenericParameter message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns FunctionGenericParameter
-     */
-    public static fromObject(object: [ 'object' ].<string, any>): FunctionGenericParameter;
-
-    /**
-     * Creates a plain object from a FunctionGenericParameter message. Also converts values to other types if specified.
-     * @param message FunctionGenericParameter
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: FunctionGenericParameter, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
-
-    /**
-     * Converts this FunctionGenericParameter to JSON.
      * @returns JSON object
      */
     public toJSON(): [ 'object' ].<string, any>;
@@ -1988,102 +1760,6 @@ export class Call implements ICall {
     public toJSON(): [ 'object' ].<string, any>;
 }
 
-/** Properties of a VirtualCall. */
-export interface IVirtualCall {
-
-    /** VirtualCall functionType */
-    functionType?: (IComplexTypeReference|null);
-
-    /** VirtualCall arguments */
-    "arguments"?: (IArgument[]|null);
-}
-
-/** Represents a VirtualCall. */
-export class VirtualCall implements IVirtualCall {
-
-    /**
-     * Constructs a new VirtualCall.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IVirtualCall);
-
-    /** VirtualCall functionType. */
-    public functionType?: (IComplexTypeReference|null);
-
-    /** VirtualCall arguments. */
-    public arguments: [ 'Array' ].<IArgument>;
-
-    /**
-     * Creates a new VirtualCall instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns VirtualCall instance
-     */
-    public static create(properties?: IVirtualCall): VirtualCall;
-
-    /**
-     * Encodes the specified VirtualCall message. Does not implicitly {@link VirtualCall.verify|verify} messages.
-     * @param message VirtualCall message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IVirtualCall, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified VirtualCall message, length delimited. Does not implicitly {@link VirtualCall.verify|verify} messages.
-     * @param message VirtualCall message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IVirtualCall, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a VirtualCall message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns VirtualCall
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): VirtualCall;
-
-    /**
-     * Decodes a VirtualCall message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns VirtualCall
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): VirtualCall;
-
-    /**
-     * Verifies a VirtualCall message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: [ 'object' ].<string, any>): (string|null);
-
-    /**
-     * Creates a VirtualCall message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns VirtualCall
-     */
-    public static fromObject(object: [ 'object' ].<string, any>): VirtualCall;
-
-    /**
-     * Creates a plain object from a VirtualCall message. Also converts values to other types if specified.
-     * @param message VirtualCall
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: VirtualCall, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
-
-    /**
-     * Converts this VirtualCall to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): [ 'object' ].<string, any>;
-}
-
 /** Properties of an Argument. */
 export interface IArgument {
 
@@ -2175,102 +1851,6 @@ export class Argument implements IArgument {
 
     /**
      * Converts this Argument to JSON.
-     * @returns JSON object
-     */
-    public toJSON(): [ 'object' ].<string, any>;
-}
-
-/** Properties of a GenericArgument. */
-export interface IGenericArgument {
-
-    /** GenericArgument id */
-    id?: (number|null);
-
-    /** GenericArgument value */
-    value?: (ITypeReference|null);
-}
-
-/** Represents a GenericArgument. */
-export class GenericArgument implements IGenericArgument {
-
-    /**
-     * Constructs a new GenericArgument.
-     * @param [properties] Properties to set
-     */
-    constructor(properties?: IGenericArgument);
-
-    /** GenericArgument id. */
-    public id: number;
-
-    /** GenericArgument value. */
-    public value?: (ITypeReference|null);
-
-    /**
-     * Creates a new GenericArgument instance using the specified properties.
-     * @param [properties] Properties to set
-     * @returns GenericArgument instance
-     */
-    public static create(properties?: IGenericArgument): GenericArgument;
-
-    /**
-     * Encodes the specified GenericArgument message. Does not implicitly {@link GenericArgument.verify|verify} messages.
-     * @param message GenericArgument message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encode(message: IGenericArgument, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Encodes the specified GenericArgument message, length delimited. Does not implicitly {@link GenericArgument.verify|verify} messages.
-     * @param message GenericArgument message or plain object to encode
-     * @param [writer] Writer to encode to
-     * @returns Writer
-     */
-    public static encodeDelimited(message: IGenericArgument, writer?: $protobuf.Writer): $protobuf.Writer;
-
-    /**
-     * Decodes a GenericArgument message from the specified reader or buffer.
-     * @param reader Reader or buffer to decode from
-     * @param [length] Message length if known beforehand
-     * @returns GenericArgument
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): GenericArgument;
-
-    /**
-     * Decodes a GenericArgument message from the specified reader or buffer, length delimited.
-     * @param reader Reader or buffer to decode from
-     * @returns GenericArgument
-     * @throws {Error} If the payload is not a reader or valid buffer
-     * @throws {$protobuf.util.ProtocolError} If required fields are missing
-     */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): GenericArgument;
-
-    /**
-     * Verifies a GenericArgument message.
-     * @param message Plain object to verify
-     * @returns `null` if valid, otherwise the reason why it is not
-     */
-    public static verify(message: [ 'object' ].<string, any>): (string|null);
-
-    /**
-     * Creates a GenericArgument message from a plain object. Also converts values to their respective internal types.
-     * @param object Plain object
-     * @returns GenericArgument
-     */
-    public static fromObject(object: [ 'object' ].<string, any>): GenericArgument;
-
-    /**
-     * Creates a plain object from a GenericArgument message. Also converts values to other types if specified.
-     * @param message GenericArgument
-     * @param [options] Conversion options
-     * @returns Plain object
-     */
-    public static toObject(message: GenericArgument, options?: $protobuf.IConversionOptions): [ 'object' ].<string, any>;
-
-    /**
-     * Converts this GenericArgument to JSON.
      * @returns JSON object
      */
     public toJSON(): [ 'object' ].<string, any>;
@@ -2375,20 +1955,11 @@ export class Access implements IAccess {
 /** Properties of a Literal. */
 export interface ILiteral {
 
-    /** Literal integer */
-    integer?: (number|null);
+    /** Literal data */
+    data?: (string|null);
 
-    /** Literal floating */
-    floating?: (number|null);
-
-    /** Literal bool */
-    bool?: (boolean|null);
-
-    /** Literal str */
-    str?: (string|null);
-
-    /** Literal void */
-    "void"?: (boolean|null);
+    /** Literal type */
+    type?: (IComplexTypeReference|null);
 }
 
 /** Represents a Literal. */
@@ -2400,23 +1971,11 @@ export class Literal implements ILiteral {
      */
     constructor(properties?: ILiteral);
 
-    /** Literal integer. */
-    public integer: number;
-
-    /** Literal floating. */
-    public floating: number;
-
-    /** Literal bool. */
-    public bool: boolean;
-
-    /** Literal str. */
-    public str: string;
-
-    /** Literal void. */
-    public void: boolean;
+    /** Literal data. */
+    public data: string;
 
     /** Literal type. */
-    public type?: ("integer"|"floating"|"bool"|"str"|"void");
+    public type?: (IComplexTypeReference|null);
 
     /**
      * Creates a new Literal instance using the specified properties.
@@ -2606,6 +2165,9 @@ export interface IFunction {
     /** Function pure */
     pure?: (boolean|null);
 
+    /** Function constant */
+    constant?: (boolean|null);
+
     /** Function parameters */
     parameters?: (IVariable[]|null);
 
@@ -2614,6 +2176,9 @@ export interface IFunction {
 
     /** Function body */
     body?: (IExpression[]|null);
+
+    /** Function decorators */
+    decorators?: (ICall[]|null);
 }
 
 /** Represents a Function. */
@@ -2643,6 +2208,9 @@ export class Function implements IFunction {
     /** Function pure. */
     public pure: boolean;
 
+    /** Function constant. */
+    public constant: boolean;
+
     /** Function parameters. */
     public parameters: [ 'Array' ].<IVariable>;
 
@@ -2651,6 +2219,9 @@ export class Function implements IFunction {
 
     /** Function body. */
     public body: [ 'Array' ].<IExpression>;
+
+    /** Function decorators. */
+    public decorators: [ 'Array' ].<ICall>;
 
     /**
      * Creates a new Function instance using the specified properties.
@@ -2737,6 +2308,9 @@ export interface IModule {
 
     /** Module types */
     types?: (IComplexType[]|null);
+
+    /** Module nativeBindings */
+    nativeBindings?: (string[]|null);
 }
 
 /** Represents a Module. */
@@ -2759,6 +2333,9 @@ export class Module implements IModule {
 
     /** Module types. */
     public types: [ 'Array' ].<IComplexType>;
+
+    /** Module nativeBindings. */
+    public nativeBindings: [ 'Array' ].<string>;
 
     /**
      * Creates a new Module instance using the specified properties.
@@ -2842,9 +2419,6 @@ export interface IModuleReference {
 
     /** ModuleReference version */
     version?: (number|null);
-
-    /** ModuleReference environment */
-    environment?: (string|null);
 }
 
 /** Represents a ModuleReference. */
@@ -2864,9 +2438,6 @@ export class ModuleReference implements IModuleReference {
 
     /** ModuleReference version. */
     public version: number;
-
-    /** ModuleReference environment. */
-    public environment: string;
 
     /**
      * Creates a new ModuleReference instance using the specified properties.

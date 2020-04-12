@@ -95,14 +95,6 @@ message Call {
   repeated Argument arguments = 2;
 }
 
-/* A virtual call calls the function that implements a virtual function that implements the closest subtypes */
-   
-message VirtualCall {
-  /* Must refernece a FunctionType whose virtual property is true */
-  ComplexTypeReference functionType = 1;
-  repeated Argument arguments = 2;
-}
-
 
 message Argument {
   /* matches a variable (parameter) of the called function */
@@ -111,10 +103,10 @@ message Argument {
   Expression value = 1; // The type of the value has to match the Parameter's type
 }
 
-message GenericArgument {
+/* message GenericArgument {
   int32 id = 0;
   TypeReference value = 1;
-}
+} */
 
 /* evaluates to a VariableReference by accessing a ComplexType property */
 // optional
@@ -125,13 +117,8 @@ message Access {
 
 /*Values in the code*/
 message Literal {
-  oneof type {
-    int32 integer = 1;
-    float floating = 2;
-    bool bool = 3;
-    string str = 4;
-    bool void = 5;
-  }
+  string data = 0;
+  ComplexTypeReference type = 1;
 }
 
 /* Stops executing the function and returns its value */
@@ -139,6 +126,7 @@ message Return {
   int32 up = 0; // The Call to return to. Goes up the Function.lexicalParent chain 
   Expression value = 1;
 }
+
 
 message Function {
   /* The id of this function, must be unique inside the modules functions. "main" functions got the id 0 */
@@ -168,11 +156,21 @@ message Function {
    */
   bool pure = 5;
 
+  /* A function can be marked constant if it is pure. It will then be executed at compile time.
+     The arguments passed to a constant function call must be either literals or constant function calls. */
+  bool constant = 6;
 
    /* The variables can only be accessed inside this function and its children */
-   repeated Variable parameters = 6;
-   repeated Variable variables = 7;
+   repeated Variable parameters = 7;
+   repeated Variable variables = 8;
   
    /* The "code" executed when calling this function*/
-   repeated Expression body = 8;
+   repeated Expression body = 9;
+
+   /* Decorators are function calls whose first argument is a FunctionReference to this function.
+      Further arguments can be provided to further parameters.
+      Decorators get executed when the module gets loaded.
+      They provide a mechanism to link functions to outside behaviour */
+   repeated Call decorators = 10;
 }
+
